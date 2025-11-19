@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>IMPOSTOR FINAL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #6366f1;
+    --primary-glow: rgba(99, 102, 241, 0.5);
+    --accent: #06b6d4;
+    --impostor: #ff3b30;
+    --impostor-glow: rgba(255, 59, 48, 0.5);
+    --text: #ffffff;
+    --text-dim: #94a3b8;
+    --glass: rgba(15, 23, 42, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #0f172a;
+    color: var(--text);
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* TŁO */
+  .bg-mesh {
+    position: fixed; inset: -50%;
+    background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15), transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(6,182,212,0.15), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(239,68,68,0.1), transparent 50%);
+    animation: meshMove 20s infinite alternate linear;
+    z-index: -1;
+  }
+  @keyframes meshMove {
+    0% { transform: rotate(0deg) scale(1); }
+    100% { transform: rotate(10deg) scale(1.1); }
+  }
+
+  .hidden { display: none !important; }
+  
+  .container {
+    height: 100%; display: flex; flex-direction: column; 
+    padding: env(safe-area-inset-top) 24px calc(20px + env(safe-area-inset-bottom)) 24px;
+    width: 100%; max-width: 500px; margin: 0 auto; overflow-y: auto;
+    position: relative; z-index: 1; scrollbar-width: none;
+  }
+  .container::-webkit-scrollbar { display: none; }
+
+  .fade-in { animation: enterScreen 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  @keyframes enterScreen { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+  h1 { 
+    font-size: 42px; font-weight: 900; margin-bottom: 4px; letter-spacing: -1.5px; line-height: 1;
+    background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; color: transparent;
+  }
+  .sub-title { font-size: 13px; color: var(--accent); font-weight: 700; letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase; }
+  label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; display:block; margin-bottom: 10px; margin-top: 24px; }
+
+  .glass-panel {
+    background: var(--glass); backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); border-radius: 20px;
+  }
+
+  .btn {
+    width: 100%; padding: 20px; border-radius: 18px; border: none;
+    font-size: 18px; font-weight: 800; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .btn:active { transform: scale(0.97); }
+  .primary { background: var(--primary); color: white; box-shadow: 0 8px 30px var(--primary-glow); }
+  .danger { background: var(--impostor); color: white; box-shadow: 0 8px 30px var(--impostor-glow); }
+  .secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
+  .outline { background: transparent; border: 2px solid rgba(255,255,255,0.2); color: var(--text-dim); }
+
+  .input-row {
+    background: rgba(0,0,0,0.3); border-radius: 14px; padding: 6px 16px;
+    display: flex; align-items: center; margin-bottom: 10px;
+    border: 1px solid var(--glass-border); transition: 0.2s;
+  }
+  .input-row:focus-within { border-color: var(--primary); background: rgba(0,0,0,0.5); }
+  .input-row input { background: transparent; border: none; color: white; font-size: 16px; padding: 12px 0; flex: 1; outline: none; font-weight: 600; font-family: inherit; }
+  .del-btn { color: var(--impostor); font-weight: 900; padding: 10px; cursor: pointer; opacity: 0.8; }
+  .add-btn {
+    background: rgba(255,255,255,0.03); border: 2px dashed rgba(255,255,255,0.1); color: var(--text-dim);
+    padding: 14px; border-radius: 14px; text-align: center; font-weight: 700; cursor: pointer; margin-bottom: 10px;
+  }
+
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
+  .cat-item {
+    background: rgba(30, 41, 59, 0.6); padding: 18px; border-radius: 16px;
+    border: 2px solid transparent; cursor: pointer; text-align: center; transition: 0.2s;
+  }
+  .cat-item.active { border-color: var(--accent); background: rgba(6, 182, 212, 0.15); color: white; box-shadow: 0 0 20px rgba(6, 182, 212, 0.2); }
+  .cat-item.hardcore.active { border-color: var(--impostor); background: rgba(239,68,68,0.2); }
+  .cat-item.rap.active { border-color: #a855f7; background: rgba(168, 85, 247, 0.2); }
+  .cat-name { font-weight: 800; font-size: 13px; }
+  .cat-count { font-size: 10px; color: var(--text-dim); margin-top: 4px; font-weight: 600; }
+  
+  .cat-item.hardcore { border-color: rgba(239,68,68,0.3); }
+  .cat-item.hardcore .cat-name { color: #fca5a5; }
+  .cat-item.rap { border-color: rgba(168, 85, 247, 0.3); }
+  .cat-item.rap .cat-name { color: #d8b4fe; }
+
+  .scene { width: 100%; height: 50vh; min-height: 380px; perspective: 1200px; margin: 20px 0 30px 0; cursor: pointer; }
+  .card { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+  .card.flipped { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0; backface-visibility: hidden; border-radius: 32px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px;
+    box-shadow: 0 30px 60px -12px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+  }
+  .back { background: #020617; transform: rotateY(180deg); border: 2px solid var(--accent); }
+  .back.is-impostor { border-color: var(--impostor); background: radial-gradient(circle at center, #450a0a 0%, #000 100%); }
+  .back.reveal-mode { border-color: #fbbf24; background: radial-gradient(circle at center, #422006 0%, #000 100%); }
+
+  .avatar {
+    width: 110px; height: 110px; background: linear-gradient(135deg, var(--primary), #4f46e5); 
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 48px; font-weight: 900; margin-bottom: 24px;
+    box-shadow: 0 0 40px var(--primary-glow); color: white;
+  }
+  .role-tag { font-size: 11px; letter-spacing: 3px; opacity: 0.7; margin-bottom: 12px; font-weight: 800; text-transform: uppercase; }
+  .big-word { font-size: 40px; font-weight: 900; text-align: center; line-height: 1.1; color: white; margin-bottom: 20px; }
+  .hint-container { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px 25px; border-radius: 18px; text-align: center; width: 100%; }
+  .hint-val { font-size: 24px; font-weight: 800; color: var(--accent); }
+  .is-impostor .hint-val { color: var(--impostor); }
+
+  .timer { font-size: 110px; font-weight: 900; margin: 30px 0; text-align: center; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
+  
+  .overlay {
+    position: fixed; inset: 0; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(12px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 100; opacity: 0; pointer-events: none; transition: 0.3s; padding: 30px;
+  }
+  .overlay.show { opacity: 1; pointer-events: auto; }
+  .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: rgba(30,41,59,0.6); border-radius: 16px; }
+  .switch { position: relative; width: 52px; height: 30px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; inset: 0; background: #334155; border-radius: 34px; transition: .3s; }
+  .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: .3s; }
+  input:checked + .slider { background: var(--primary); }
+  input:checked + .slider:before { transform: translateX(22px); }
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+
+<!-- MENU -->
+<div id="v-menu" class="container fade-in" style="justify-content: center; text-align: center;">
+  <h1>IMPOSTOR</h1>
+  <div class="sub-title">by Lisek & Gemini</div>
+  <div style="margin: 40px 0;">
+    <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--accent);">
+      <span style="font-size:50px">🔥</span>
+      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">TYSIĄCE SŁÓW</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Edycja z Awatarami</p>
+    </div>
+  </div>
+  <button class="btn primary" onclick="nav.to('v-setup')">ROZPOCZNIJ GRĘ</button>
+</div>
+
+<!-- SETUP -->
+<div id="v-setup" class="container hidden fade-in">
+  <h1>Konfiguracja</h1>
+  <div class="sub-title" style="margin-bottom:10px">Skład i zasady</div>
+  <label>Gracze</label>
+  <div id="players-list"></div>
+  <div class="add-btn" onclick="game.addPlayer()">+ Dodaj gracza</div>
+  <label>Kategorie</label>
+  <div class="cat-grid" id="cat-grid"></div>
+  <label>Zasady</label>
+  <div class="setting-row">
+    <span style="font-size:14px; font-weight:600">Podpowiedź dla Impostera</span>
+    <label class="switch"><input type="checkbox" id="opt-hint" checked><span class="slider"></span></label>
+  </div>
+  <div class="setting-row" style="margin-top:10px">
+    <span style="font-size:14px; font-weight:600">Czas rundy (sekundy)</span>
+    <input type="number" id="opt-time" value="120" style="width:70px; background:transparent; border:none; color:white; text-align:right; font-size:18px; font-weight:700;">
+  </div>
+  <div style="height: 30px"></div>
+  <button class="btn primary" onclick="game.start()">GRAJ</button>
+</div>
+
+<!-- KARTA -->
+<div id="v-card" class="container hidden fade-in" style="justify-content: center;">
+  <div class="scene">
+    <div class="card" id="game-card" onclick="game.flip()">
+      <div class="face front">
+        <div class="role-tag">RUNDA DLA</div>
+        <div class="avatar" id="c-avatar">?</div>
+        <h1 id="c-name" style="color:white; font-size:36px">Gracz</h1>
+        <div style="margin-top:40px; font-size:12px; font-weight:800; opacity:0.6; animation:pulse 2s infinite">DOTKNIJ KARTY</div>
+      </div>
+      <div class="face back" id="c-back"></div>
+    </div>
+  </div>
+  <div id="card-controls" class="hidden fade-in">
+    <button class="btn secondary" id="btn-next" onclick="game.next()">PRZEKAŻ DALEJ</button>
+    <button class="btn primary hidden" id="btn-ready" onclick="game.finishDealing()">WSZYSCY GOTOWI</button>
+  </div>
+</div>
+
+<!-- STARTER -->
+<div id="v-starter" class="container hidden fade-in" style="text-align:center; justify-content:center;">
+  <div class="role-tag" style="margin-bottom:30px">RUNDĘ ROZPOCZYNA</div>
+  <h1 id="start-name" style="font-size:56px; color:var(--accent); margin-bottom:15px; text-shadow: 0 0 30px rgba(6,182,212,0.4);">NICK</h1>
+  <p style="color:var(--text-dim); font-size:16px">Zadaj pierwsze pytanie.</p>
+  <div style="margin-top:60px; width:100%"><button class="btn primary" onclick="game.startTimer()">START CZASU</button></div>
+</div>
+
+<!-- TIMER -->
+<div id="v-timer" class="container hidden fade-in">
+  <div style="margin-top:auto; text-align:center">
+    <div class="role-tag">POZOSTAŁY CZAS</div>
+    <div class="timer" id="timer-disp">00:00</div>
+    <p style="color:var(--text-dim)">Obserwuj mowę ciała!</p>
+  </div>
+  <div style="margin-top:auto; margin-bottom:40px">
+    <button class="btn secondary" onclick="game.pause()">PAUZA / GŁOSOWANIE</button>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div id="overlay" class="overlay">
+  <h1 style="color:white; margin-bottom:10px">PAUZA</h1>
+  <button class="btn primary" style="width:100%; max-width:300px" onclick="game.resume()">WZNÓW ODLICZANIE</button>
+  <button class="btn danger" style="width:100%; max-width:300px" onclick="game.preReveal()">KONIEC I GŁOSOWANIE</button>
+</div>
+
+<!-- REVEAL -->
+<div id="v-reveal" class="container hidden fade-in" style="justify-content:center;">
+  <h1 style="text-align:center; margin-bottom:10px">FINAŁ</h1>
+  <div class="scene" style="height:400px">
+    <div class="card" id="reveal-card">
+      <div class="face front" style="border-color: #fbbf24; background: radial-gradient(circle, #422006 0%, #020617 100%);">
+        <div style="font-size:70px">?</div>
+        <div style="margin-top:20px; font-weight:900; color:#fbbf24;">KTO TO?</div>
+      </div>
+      <div class="face back reveal-mode">
+        <div class="role-tag" style="color:#fbbf24">IMPOSTEREM BYŁ</div>
+        <div id="rev-imp-name" style="font-size:48px; font-weight:900; color:white; margin:20px 0; text-shadow: 0 0 30px #fbbf24;">NICK</div>
+      </div>
+    </div>
+  </div>
+  <button class="btn primary" id="btn-do-reveal" onclick="game.doReveal()">ODKRYJ PRAWDĘ</button>
+  <div id="reveal-details" class="hidden" style="width:100%; text-align:center; animation:enterScreen 0.8s">
+    <div class="glass-panel" style="padding:20px; margin-bottom:20px">
+      <div class="role-tag">HASŁO</div>
+      <div id="rev-word" style="font-size:32px; font-weight:900; color:var(--accent)">Słowo</div>
+      <div id="rev-hint" style="font-size:14px; color:var(--text-dim); margin-top:8px"></div>
+    </div>
+    <button class="btn secondary" onclick="game.start()">GRAJ PONOWNIE</button>
+    <button class="btn outline" onclick="nav.to('v-menu')">MENU</button>
+  </div>
+</div>
+
+<style>@keyframes pulse { 0%,100% { opacity:0.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.05); } }</style>
+
+<script>
+/* --- BAZA DANYCH --- */
+const DB = {
+  "Polskie Rap Hity": [
+    {w:"Szklanki", h:"🥃💃"}, {w:"Kiss Cam", h:"💋🎥"}, {w:"Złote Tarasy", h:"🏬✨"}, 
+    {w:"Patointeligencja", h:"🏫🚬"}, {w:"Disney", h:"🏰🎢"}, {w:"Ostatnia Nadzieja", h:"🙏💔"},
+    {w:"Polskie Tango", h:"🇵🇱💃"}, {w:"Szampan", h:"🍾🥂"}, {w:"California", h:"🌴☀️"},
+    {w:"Jetlag", h:"✈️😴"}, {w:"Lawenda", h:"🪻💜"}, {w:"Dres", h:"👕👟"},
+    {w:"BFF", h:"👯‍♀️💖"}, {w:"Taxi", h:"🚖🌃"}, {w:"Malibu Barbie", h:"🍹👱‍♀️"},
+    {w:"Chyba że z Tobą", h:"💃🕺"}, {w:"Stan", h:"☁️🎈"}, {w:"Piękny świat", h:"🌍✨"},
+    {w:"Bubbletea", h:"🧋"}, {w:"100 dni do matury", h:"🎓💯"}, {w:"Tamagotchi", h:"👾"},
+    {w:"Język ciała", h:"👅"}, {w:"Candy", h:"🍬"}, {w:"Szafir", h:"💎"}, {w:"Molly", h:"💊"},
+    {w:"Ogrody", h:"🌳"}, {w:"Papuga", h:"🦜"}, {w:"Bigos", h:"🥘"}, {w:"Deszcz", h:"☔️"},
+    {w:"Kebab w cienkim", h:"🥙"}, {w:"Gelato", h:"🍦"}, {w:"Rower", h:"🚲"}, {w:"Pijemy za lepszy czas", h:"🍻"}
+  ],
+  "Polscy Raperzy": [
+    {w:"Taco Hemingway", h:"Wąs"}, {w:"Quebonafide", h:"Egzotyka"}, {w:"Mata", h:"Patoreakcja"},
+    {w:"Bedoes", h:"2115"}, {w:"Oki", h:"Jeżyk"}, {w:"Kizo", h:"Kawa"},
+    {w:"Żabson", h:"Żabka"}, {w:"Kukon", h:"Ogrody"}, {w:"Szpaku", h:"Simba"},
+    {w:"Pezet", h:"Płomień"}, {w:"Sokół", h:"Narrator"}, {w:"Paluch", h:"BOR"},
+    {w:"Malik Montana", h:"Import"}, {w:"White 2115", h:"Łajcior"}, {w:"Sobel", h:"Impreza"},
+    {w:"Young Leosia", h:"Hulanki"}, {w:"Bambi", h:"IRL"}, {w:"Otsochodzi", h:"Tarcho"},
+    {w:"Gibbs", h:"Dopehouse"}, {w:"Chivas", h:"Młody"}, {w:"Kaz Bałagane", h:"Stolica"},
+    {w:"ReTo", h:"Klapki"}, {w:"Guzior", h:"Mefedron"}, {w:"Sarius", h:"Antihype"},
+    {w:"Paktofonika", h:"Jestem Bogiem"}, {w:"Liroy", h:"Scyzoryk"}, {w:"Tede", h:"TVN"},
+    {w:"O.S.T.R.", h:"Skrzypce"}, {w:"Peja", h:"Jeżyce"}, {w:"Popek", h:"Oczy"},
+    {w:"Kabe", h:"Francja"}, {w:"Alberto", h:"Dwutakt"}, {w:"Smolasty", h:"Duże Oczy"},
+    {w:"Mr. Polska", h:"Holandia"}, {w:"Fifi", h:"WWA"}, {w:"Belmondo", h:"Młody G"}
+  ],
+  "Polski Internet": [
+    {w:"Friz", h:"Ekipa"}, {w:"Wersow", h:"Sowa"}, {w:"Wardęga", h:"Las"}, {w:"Kononowicz", h:"Mleko"},
+    {w:"Stanowski", h:"Zero"}, {w:"Boxdel", h:"Włodarz"}, {w:"Fagata", h:"Plan"}, {w:"Natsu", h:"Płatki"},
+    {w:"Mata", h:"McDonald"}, {w:"Lewandowski", h:"Barcelona"}, {w:"Pudzian", h:"Cierpliwość"},
+    {w:"Budda", h:"Loteria"}, {w:"Goats", h:"Projekt"}, {w:"Linkiewicz", h:"Autobus"},
+    {w:"Najman", h:"Częstochowa"}, {w:"Xayoo", h:"Szachy"}, {w:"Gimper", h:"Hajsownicy"},
+    {w:"Japczan", h:"Gruby"}, {w:"Tromba", h:"Wąż"}, {w:"Mlekozyniak", h:"Czapka"},
+    {w:"Książulo", h:"Muala"}, {w:"Dymorfia", h:"Siłownia"}, {w:"Young Multi", h:"Reakcja"},
+    {w:"Pasut", h:"Abstrachuje"}, {w:"Dubiel", h:"Kenia"}, {w:"Blowek", h:"Minecraft"},
+    {w:"Genzie", h:"Dom"}, {w:"Patec", h:"Podróże"}, {w:"Lexy", h:"Chapstick"}, {w:"Mini Majk", h:"Niski"},
+    {w:"Czaro", h:"Magia"}, {w:"Mandzio", h:"Gotowanie"}, {w:"Nitrozyniak", h:"BMW"},
+    {w:"Rafonix", h:"Tibijka"}, {w:"Daniel Magical", h:"Kociołek"}
+  ],
+  "Gry Wideo": [
+    {w:"Minecraft", h:"Klocki"}, {w:"GTA V", h:"Kradzież"}, {w:"Fortnite", h:"Budowanie"},
+    {w:"League of Legends", h:"Toksyczność"}, {w:"CS:GO", h:"Bomba"}, {w:"FIFA", h:"Piłka"},
+    {w:"The Witcher 3", h:"Geralt"}, {w:"Cyberpunk 2077", h:"Bug"}, {w:"Sims", h:"Basen"},
+    {w:"Among Us", h:"Impostor"}, {w:"Roblox", h:"Dzieci"}, {w:"Valorant", h:"Strzelanka"},
+    {w:"Call of Duty", h:"Wojna"}, {w:"Mario", h:"Grzyby"}, {w:"Pokemon", h:"Pikachu"},
+    {w:"Assassin's Creed", h:"Kaptur"}, {w:"God of War", h:"Synu"}, {w:"Red Dead Redemption", h:"Kowboj"},
+    {w:"Tibia", h:"Expienie"}, {w:"Metin2", h:"Kowal"}, {w:"Brawl Stars", h:"Telefon"},
+    {w:"Need for Speed", h:"Wyścigi"}, {w:"Tomb Raider", h:"Lara"}, {w:"Resident Evil", h:"Zombie"}
+  ],
+  "Marki": [
+    {w:"Apple", h:"Jabłko"}, {w:"Nike", h:"Łyżwa"}, {w:"Adidas", h:"Paski"}, {w:"BMW", h:"Kierunkowskaz"},
+    {w:"McDonald's", h:"Burger"}, {w:"Coca-Cola", h:"Mikołaj"}, {w:"Samsung", h:"Galaxy"},
+    {w:"IKEA", h:"Klopsiki"}, {w:"Mercedes", h:"Gwiazda"}, {w:"Audi", h:"Kółka"},
+    {w:"Gucci", h:"Pasek"}, {w:"Tesla", h:"Prąd"}, {w:"Amazon", h:"Paczka"},
+    {w:"Netflix", h:"Serial"}, {w:"YouTube", h:"Subskrypcja"}, {w:"Facebook", h:"Twarz"},
+    {w:"TikTok", h:"Tańce"}, {w:"PlayStation", h:"Konsola"}, {w:"Xbox", h:"Zielony"},
+    {w:"Lego", h:"Ból stopy"}, {w:"Biedronka", h:"Paleta"}, {w:"Lidl", h:"Tydzień"},
+    {w:"Pepsi", h:"Konkurencja"}, {w:"Zara", h:"Ubrania"}, {w:"H&M", h:"Moda"}
+  ],
+  "Geografia": [
+    {w:"Polska", h:"Dom"}, {w:"Warszawa", h:"Stolica"}, {w:"Kraków", h:"Smok"},
+    {w:"Paryż", h:"Wieża"}, {w:"Londyn", h:"Big Ben"}, {w:"Nowy Jork", h:"Statua"},
+    {w:"Egipt", h:"Piramida"}, {w:"Japonia", h:"Sushi"}, {w:"Włochy", h:"Pizza"},
+    {w:"Niemcy", h:"Sąsiad"}, {w:"Rosja", h:"Wódka"}, {w:"Chiny", h:"Mur"},
+    {w:"Australia", h:"Kangur"}, {w:"Brazylia", h:"Karnawał"}, {w:"Tatry", h:"Góry"},
+    {w:"Bałtyk", h:"Morze"}, {w:"Wisła", h:"Rzeka"}, {w:"Sahara", h:"Piasek"},
+    {w:"Mount Everest", h:"Szczyt"}, {w:"Afryka", h:"Kontynent"}, {w:"Antarktyda", h:"Lód"}
+  ],
+  "Sportowcy": [
+    {w:"Lewandowski", h:"Gol"}, {w:"Messi", h:"Argentyna"}, {w:"Ronaldo", h:"Siuuu"},
+    {w:"Małysz", h:"Skoki"}, {w:"Stoch", h:"Kamil"}, {w:"Iga Świątek", h:"Tenis"},
+    {w:"Pudzianowski", h:"Siłacz"}, {w:"Błachowicz", h:"MMA"}, {w:"Tyson", h:"Boks"},
+    {w:"Jordan", h:"Kosz"}, {w:"Kubica", h:"F1"}, {w:"Zmarzlik", h:"Żużel"},
+    {w:"Usain Bolt", h:"Bieg"}, {w:"Phelps", h:"Basen"}, {w:"Schumacher", h:"Ferrari"},
+    {w:"Szczęsny", h:"Bramkarz"}, {w:"Gortat", h:"NBA"}, {w:"Błaszczykowski", h:"Wisła"},
+    {w:"Hurkacz", h:"Serwis"}, {w:"Sochan", h:"Włosy"}
+  ],
+  "Hardcore": [
+    {w:"Inflacja", h:"Drożyzna"}, {w:"Synestezja", h:"Zmysły"}, {w:"Paradoks", h:"Sprzeczność"},
+    {w:"Altruizm", h:"Pomoc"}, {w:"Nostalgia", h:"Wspomnienie"}, {w:"Karma", h:"Powrót"},
+    {w:"Ego", h:"Ja"}, {w:"Metafora", h:"Przenośnia"}, {w:"Ironia", h:"Los"},
+    {w:"Deja vu", h:"Powtórka"}, {w:"Placebo", h:"Cukier"}, {w:"Stereotyp", h:"Schemat"},
+    {w:"Abstrakcja", h:"Sztuka"}, {w:"Chaos", h:"Bałagan"}, {w:"Utopia", h:"Idea"},
+    {w:"Nihilizm", h:"Nic"}, {w:"Prokrastynacja", h:"Zwlekanie"}, {w:"Empatia", h:"Współczucie"},
+    {w:"Euforia", h:"Radość"}, {w:"Introwertyk", h:"Wnętrze"}, {w:"Relatywizm", h:"Punkt widzenia"},
+    {w:"Hipokryzja", h:"Fałsz"}, {w:"Melancholia", h:"Smutek"}, {w:"Sarkazm", h:"Żart"},
+    {w:"Charyzma", h:"Urok"}, {w:"Dedukcja", h:"Sherlock"}, {w:"Intuicja", h:"Przeczucie"}
+  ],
+  "Filmy & Seriale": [
+    {w:"Shrek", h:"Cebula"}, {w:"Titanic", h:"Góra"}, {w:"Harry Potter", h:"Blizna"},
+    {w:"Matrix", h:"Pigułka"}, {w:"Batman", h:"Sierota"}, {w:"Joker", h:"Śmiech"},
+    {w:"Spider-Man", h:"Ugryzienie"}, {w:"Król Lew", h:"Sawanna"}, {w:"Kevin", h:"Złodzieje"},
+    {w:"Wiedźmin", h:"Miecze"}, {w:"James Bond", h:"007"}, {w:"Minionki", h:"Banan"},
+    {w:"Star Wars", h:"Miecz"}, {w:"Władca Pierścieni", h:"Pierścień"}, {w:"Avengers", h:"Rękawica"},
+    {w:"Piraci z Karaibów", h:"Perła"}, {w:"Szybcy i Wściekli", h:"Rodzina"}, {w:"Barbie", h:"Róż"},
+    {w:"Oppenheimer", h:"Bomba"}, {w:"Stranger Things", h:"Nos"}, {w:"Wednesday", h:"Taniec"},
+    {w:"Squid Game", h:"Lalka"}, {w:"Breaking Bad", h:"Kryształ"}, {w:"Gra o Tron", h:"Smok"},
+    {w:"Kiler", h:"Szakal"}, {w:"Chłopaki nie płaczą", h:"Bunkier"}, {w:"Dzień Świra", h:"Adaś"},
+    {w:"Dom z Papieru", h:"Maska"}, {w:"Rick i Morty", h:"Ogórek"}, {w:"Ojciec Chrzestny", h:"Propozycja"}
+  ],
+  "Miejsca": [
+    {w:"Więzienie", h:"Gryps"}, {w:"Szpital", h:"NFZ"}, {w:"Kościół", h:"Taca"},
+    {w:"Lotnisko", h:"Odprawa"}, {w:"Plaża", h:"Parawan"}, {w:"Las", h:"Kleszcz"},
+    {w:"Siłownia", h:"Karnet"}, {w:"Kino", h:"Repertuar"}, {w:"Szkoła", h:"Dzwonek"},
+    {w:"Cmentarz", h:"Znicz"}, {w:"ZOO", h:"Klatka"}, {w:"Apteka", h:"Recepta"},
+    {w:"Biblioteka", h:"Cisza"}, {w:"Basen", h:"Chlor"}, {w:"Stacja Paliw", h:"Hot-dog"},
+    {w:"Poczta", h:"Awizo"}, {w:"Sąd", h:"Wyrok"}, {w:"Teatr", h:"Kurtyna"},
+    {w:"Kasyno", h:"Ruletka"}, {w:"Burdel", h:"Czerwony"}, {w:"Cyrk", h:"Klaun"},
+    {w:"Sauna", h:"Ręcznik"}, {w:"Fryzjer", h:"Strzyżenie"}, {w:"Bar", h:"Piwo"},
+    {w:"Stadion", h:"Mecz"}, {w:"Muzeum", h:"Obraz"}, {w:"Piekarnia", h:"Chleb"}
+  ],
+  "Przedmioty": [
+    {w:"Telefon", h:"Ładowarka"}, {w:"Lustro", h:"Odbicie"}, {w:"Zegar", h:"Czas"},
+    {w:"Portfel", h:"Grosz"}, {w:"Pilot", h:"Baterie"}, {w:"Parasol", h:"Deszcz"},
+    {w:"Laptop", h:"Myszka"}, {w:"Lodówka", h:"Szron"}, {w:"Długopis", h:"Wkład"},
+    {w:"Papier toaletowy", h:"Rolka"}, {w:"Klucze", h:"Brelok"}, {w:"Okulary", h:"Szkła"},
+    {w:"Buty", h:"Sznurowadła"}, {w:"Plecak", h:"Zamek"}, {w:"Krzesło", h:"Oparcie"},
+    {w:"Widelec", h:"Zęby"}, {w:"Szczoteczka", h:"Pasta"}, {w:"Gąbka", h:"Piana"},
+    {w:"Grzebień", h:"Włosy"}, {w:"Słuchawki", h:"Muzyka"}, {w:"Łóżko", h:"Kołdra"},
+    {w:"Dywan", h:"Podłoga"}, {w:"Lampa", h:"Żarówka"}, {w:"Ręcznik", h:"Woda"},
+    {w:"Mydło", h:"Kostka"}, {w:"Skarpetki", h:"Dziura"}, {w:"Czapka", h:"Zima"}
+  ],
+  "Jedzenie": [
+    {w:"Pizza", h:"Ciasto"}, {w:"Sushi", h:"Surowe"}, {w:"Kebab", h:"Baranina"},
+    {w:"Rosół", h:"Niedziela"}, {w:"Schabowy", h:"Panierka"}, {w:"Lody", h:"Gałka"},
+    {w:"Pierogi", h:"Farsz"}, {w:"Bigos", h:"Kapusta"}, {w:"Pączek", h:"Lukier"},
+    {w:"Spaghetti", h:"Nitki"}, {w:"Burger", h:"Bułka"}, {w:"Frytki", h:"Ketchup"},
+    {w:"Jajecznica", h:"Śniadanie"}, {w:"Kanapka", h:"Masło"}, {w:"Zupa", h:"Łyżka"},
+    {w:"Czekolada", h:"Kostka"}, {w:"Tort", h:"Świeczka"}, {w:"Popcorn", h:"Kukurydza"},
+    {w:"Ogórek", h:"Kiszon"}, {w:"Pomidor", h:"Czerwony"}, {w:"Chipsy", h:"Paczka"},
+    {w:"Parówka", h:"Mięso?"}, {w:"Ser", h:"Dziury"}, {w:"Chleb", h:"Skórka"},
+    {w:"Jajko", h:"Żółtko"}, {w:"Masło", h:"Smarowanie"}, {w:"Jabłko", h:"Ogryzek"},
+    {w:"Banan", h:"Skórka"}, {w:"Woda", h:"Kran"}
+  ],
+  "Zwierzęta": [
+    {w:"Pies", h:"Smycz"}, {w:"Kot", h:"Kuweta"}, {w:"Żyrafa", h:"Szyja"},
+    {w:"Kura", h:"Rosół"}, {w:"Świnia", h:"Chlew"}, {w:"Pszczoła", h:"Ul"},
+    {w:"Komar", h:"Krew"}, {w:"Mysz", h:"Pułapka"}, {w:"Wąż", h:"Jad"},
+    {w:"Słoń", h:"Trąba"}, {w:"Rekin", h:"Płetwa"}, {w:"Pingwin", h:"Fraku"},
+    {w:"Małpa", h:"Banan"}, {w:"Krowa", h:"Mleko"}, {w:"Koń", h:"Siodło"},
+    {w:"Ryba", h:"Woda"}, {w:"Pająk", h:"Sieć"}, {w:"Wilk", h:"Wataha"},
+    {w:"Niedźwiedź", h:"Miodek"}, {w:"Delfin", h:"Ssak"}, {w:"Motyl", h:"Kok"},
+    {w:"Żaba", h:"Bocian"}, {w:"Lis", h:"Chytry"}, {w:"Sowa", h:"Noc"},
+    {w:"Biedronka", h:"Kropki"}, {w:"Ślimak", h:"Muszla"}, {w:"Jeż", h:"Igły"}
+  ]
+};
+
+const nav = {
+  to: (id) => {
+    document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+    const el = document.getElementById(id);
+    el.classList.remove('hidden');
+    el.classList.remove('fade-in');
+    void el.offsetWidth; 
+    el.classList.add('fade-in');
+  }
+};
+
+const game = {
+  players: ["Pizdel", "Brzydal", "Lisek"],
+  impostorHistory: {}, currentRoleData: [], wordData: null, hintOn: true, time: 120, timer: null, currIdx: 0,
+
+  addPlayer: function() { this.players.push(""); this.renderPlayers(); },
+  renderPlayers: function() {
+    const el = document.getElementById('players-list');
+    el.innerHTML = '';
+    this.players.forEach((p, i) => {
+      const div = document.createElement('div');
+      div.className = 'input-row';
+      div.innerHTML = `
+        <span style="margin-right:10px; font-weight:800; color:var(--text-dim); font-size:12px">${i+1}.</span>
+        <input type="text" value="${p}" oninput="game.players[${i}]=this.value" placeholder="Nick">
+        ${this.players.length > 3 ? `<div class="del-btn" onclick="game.remPlayer(${i})">✕</div>` : ''}
+      `;
+      el.appendChild(div);
+    });
+  },
+  remPlayer: function(i) { if(this.players.length>3){this.players.splice(i,1); this.renderPlayers();} },
+
+  initSetup: function() {
+    this.renderPlayers();
+    const grid = document.getElementById('cat-grid');
+    grid.innerHTML = '';
+    Object.keys(DB).forEach(k => {
+      const div = document.createElement('div');
+      let cls = 'cat-item';
+      if(k === 'Hardcore') cls += ' hardcore';
+      if(k === 'Polskie Rap Hity' || k === 'Polscy Raperzy') cls += ' rap';
+      div.className = cls + ' active'; 
+      div.innerHTML = `<div class="cat-name">${k}</div><div class="cat-count">${DB[k].length}</div>`;
+      div.onclick = () => div.classList.toggle('active');
+      grid.appendChild(div);
+    });
+  },
+
+  start: function() {
+    const activeCats = Array.from(document.querySelectorAll('.cat-item.active')).map(e => e.querySelector('.cat-name').innerText);
+    if(!activeCats.length) return alert("Wybierz kategorię!");
+    const pList = this.players.filter(p => p.trim());
+    if(pList.length < 3) return alert("Minimum 3 graczy!");
+    this.hintOn = document.getElementById('opt-hint').checked;
+    this.time = parseInt(document.getElementById('opt-time').value) || 120;
+
+    const cat = activeCats[Math.floor(Math.random() * activeCats.length)];
+    const list = DB[cat];
+    const wObj = list[Math.floor(Math.random() * list.length)];
+    this.wordData = { ...wObj, cat: cat };
+
+    let impIdx, safety = 0;
+    do {
+      impIdx = Math.floor(Math.random() * pList.length);
+      const name = pList[impIdx];
+      const streak = this.impostorHistory[name] || 0;
+      if (streak < 2) break; 
+      safety++;
+    } while (safety < 20);
+    pList.forEach((name, i) => {
+      if (i === impIdx) this.impostorHistory[name] = (this.impostorHistory[name] || 0) + 1;
+      else this.impostorHistory[name] = 0;
+    });
+
+    this.currentRoleData = pList.map((name, i) => ({ name: name, isImp: i === impIdx }));
+    this.currIdx = 0;
+    this.setupCard();
+    nav.to('v-card');
+  },
+
+  setupCard: function() {
+    const data = this.currentRoleData[this.currIdx];
+    const card = document.getElementById('game-card');
+    const back = document.getElementById('c-back');
+    const avatarEl = document.getElementById('c-avatar');
+    
+    // Reset karty
+    card.classList.remove('flipped');
+    back.className = 'face back'; 
+    
+    // NAZWA
+    document.getElementById('c-name').innerText = data.name;
+    
+    // --- LOGIKA AWATARÓW ---
+    const nameLower = data.name.toLowerCase().trim();
+    avatarEl.style.background = ''; // Reset background
+    avatarEl.style.fontSize = '';   // Reset font size
+
+    if (nameLower === 'lisek') {
+        avatarEl.innerText = '🦊';
+        avatarEl.style.background = 'linear-gradient(135deg, #f97316, #ea580c)'; // Orange
+    } else if (nameLower === 'pizdel' || nameLower === 'dell') {
+        avatarEl.innerText = '🧟';
+        avatarEl.style.background = 'linear-gradient(135deg, #84cc16, #65a30d)'; // Green
+    } else if (nameLower === 'brzydal' || nameLower === 'brzydki') {
+        avatarEl.innerText = '🚖';
+        avatarEl.style.background = 'linear-gradient(135deg, #facc15, #eab308)'; // Yellow
+    } else {
+        avatarEl.innerText = data.name[0].toUpperCase();
+        // Default gradient defined in CSS
+    }
+    // -----------------------
+
+    document.getElementById('card-controls').classList.add('hidden');
+    
+    let html = '';
+    if(data.isImp) {
+      let hintText = this.wordData.h;
+      let labelText = "PODPOWIEDŹ";
+      if (this.wordData.cat === "Polskie Rap Hity") labelText = "EMOJI HINT";
+      if (!this.hintOn && this.wordData.cat !== "Polskie Rap Hity") hintText = "Brak podpowiedzi";
+      html = `
+        <div class="role-tag" style="color:white">TWOJA ROLA</div>
+        <div class="big-word" style="color:var(--impostor); text-shadow:0 0 20px rgba(239,68,68,0.6)">IMPOSTER</div>
+        <div class="hint-container is-impostor"><div class="hint-label">${labelText}</div><div class="hint-val">${hintText}</div></div>
+      `;
+      back.classList.add('is-impostor');
+    } else {
+      html = `
+        <div class="role-tag">TWOJE HASŁO</div>
+        <div class="big-word" style="color:var(--accent)">${this.wordData.w}</div>
+        <div class="hint-container"><div class="hint-label">KATEGORIA</div><div class="hint-val" style="font-size:18px">${this.wordData.cat}</div></div>
+      `;
+    }
+    back.innerHTML = html;
+  },
+
+  flip: function() {
+    const card = document.getElementById('game-card');
+    if(card.classList.contains('flipped')) return;
+    card.classList.add('flipped');
+    setTimeout(() => {
+      document.getElementById('card-controls').classList.remove('hidden');
+      const isLast = this.currIdx === this.currentRoleData.length - 1;
+      if(isLast) { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-ready').classList.remove('hidden'); }
+      else { document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-ready').classList.add('hidden'); }
+    }, 400);
+  },
+
+  next: function() {
+    const card = document.getElementById('game-card');
+    const back = document.getElementById('c-back');
+    card.classList.remove('flipped');
+    setTimeout(() => { back.className = 'face back'; }, 150); 
+    setTimeout(() => { this.currIdx++; this.setupCard(); }, 600);
+  },
+
+  finishDealing: function() {
+    const startName = this.currentRoleData[Math.floor(Math.random() * this.currentRoleData.length)].name;
+    document.getElementById('start-name').innerText = startName;
+    nav.to('v-starter');
+  },
+
+  startTimer: function() {
+    nav.to('v-timer');
+    this.updateTimerDisplay(this.time);
+    if(this.timer) clearInterval(this.timer);
+    this.timer = setInterval(() => {
+      this.time--;
+      this.updateTimerDisplay(this.time);
+      if(this.time <= 0) { clearInterval(this.timer); try{navigator.vibrate([500,200,500]);}catch(e){} this.preReveal(); }
+    }, 1000);
+  },
+
+  updateTimerDisplay: function(t) {
+    const m = Math.floor(t / 60);
+    const s = t % 60;
+    document.getElementById('timer-disp').innerText = `${m}:${s<10?'0':''}${s}`;
+  },
+
+  pause: function() { clearInterval(this.timer); document.getElementById('overlay').classList.add('show'); },
+  resume: function() { document.getElementById('overlay').classList.remove('show'); this.startTimer(); },
+
+  preReveal: function() {
+    clearInterval(this.timer); document.getElementById('overlay').classList.remove('show');
+    const card = document.getElementById('reveal-card'); card.classList.remove('flipped');
+    document.getElementById('btn-do-reveal').classList.remove('hidden');
+    document.getElementById('reveal-details').classList.add('hidden');
+    nav.to('v-reveal');
+  },
+
+  doReveal: function() {
+    const imposter = this.currentRoleData.find(p => p.isImp);
+    document.getElementById('rev-imp-name').innerText = imposter.name;
+    document.getElementById('rev-word').innerText = this.wordData.w;
+    document.getElementById('rev-hint').innerText = "Podpowiedź: " + this.wordData.h;
+    const card = document.getElementById('reveal-card'); card.classList.add('flipped');
+    document.getElementById('btn-do-reveal').classList.add('hidden');
+    setTimeout(() => { document.getElementById('reveal-details').classList.remove('hidden'); }, 800);
+  }
+};
+
+game.initSetup();
+</script>
+</body>
+</html>
