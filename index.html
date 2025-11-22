@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>IMPOSTOR FINAL</title>
+<title>IMPOSTOR FINAL 2.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -208,6 +208,8 @@
   <div id="card-controls" class="hidden fade-in">
     <button class="btn secondary" id="btn-next" onclick="game.next()">PRZEKAŻ DALEJ</button>
     <button class="btn primary hidden" id="btn-ready" onclick="game.finishDealing()">WSZYSCY GOTOWI</button>
+    <!-- PRZYCISK ANULOWANIA -->
+    <button class="btn outline" style="margin-top:15px; border-color:rgba(239,68,68,0.5); color:#fca5a5; font-size:14px; padding:15px;" onclick="game.cancelRound()">❌ ANULUJ RUNDĘ</button>
   </div>
 </div>
 
@@ -503,32 +505,27 @@ const game = {
     const back = document.getElementById('c-back');
     const avatarEl = document.getElementById('c-avatar');
     
-    // Reset karty
     card.classList.remove('flipped');
     back.className = 'face back'; 
     
-    // NAZWA
     document.getElementById('c-name').innerText = data.name;
     
-    // --- LOGIKA AWATARÓW ---
     const nameLower = data.name.toLowerCase().trim();
-    avatarEl.style.background = ''; // Reset background
-    avatarEl.style.fontSize = '';   // Reset font size
+    avatarEl.style.background = ''; 
+    avatarEl.style.fontSize = '';   
 
     if (nameLower === 'lisek') {
         avatarEl.innerText = '🦊';
-        avatarEl.style.background = 'linear-gradient(135deg, #f97316, #ea580c)'; // Orange
+        avatarEl.style.background = 'linear-gradient(135deg, #f97316, #ea580c)';
     } else if (nameLower === 'pizdel' || nameLower === 'dell') {
         avatarEl.innerText = '🧟';
-        avatarEl.style.background = 'linear-gradient(135deg, #84cc16, #65a30d)'; // Green
+        avatarEl.style.background = 'linear-gradient(135deg, #84cc16, #65a30d)';
     } else if (nameLower === 'brzydal' || nameLower === 'brzydki') {
         avatarEl.innerText = '🚖';
-        avatarEl.style.background = 'linear-gradient(135deg, #facc15, #eab308)'; // Yellow
+        avatarEl.style.background = 'linear-gradient(135deg, #facc15, #eab308)';
     } else {
         avatarEl.innerText = data.name[0].toUpperCase();
-        // Default gradient defined in CSS
     }
-    // -----------------------
 
     document.getElementById('card-controls').classList.add('hidden');
     
@@ -538,9 +535,16 @@ const game = {
       let labelText = "PODPOWIEDŹ";
       if (this.wordData.cat === "Polskie Rap Hity") labelText = "EMOJI HINT";
       if (!this.hintOn && this.wordData.cat !== "Polskie Rap Hity") hintText = "Brak podpowiedzi";
+      
       html = `
         <div class="role-tag" style="color:white">TWOJA ROLA</div>
         <div class="big-word" style="color:var(--impostor); text-shadow:0 0 20px rgba(239,68,68,0.6)">IMPOSTER</div>
+        
+        <!-- KATEGORIA DLA IMPOSTERA -->
+        <div style="font-size:13px; color:var(--text-dim); margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; font-weight:700">
+            KATEGORIA: <span style="color:#fff">${this.wordData.cat}</span>
+        </div>
+
         <div class="hint-container is-impostor"><div class="hint-label">${labelText}</div><div class="hint-val">${hintText}</div></div>
       `;
       back.classList.add('is-impostor');
@@ -572,6 +576,13 @@ const game = {
     card.classList.remove('flipped');
     setTimeout(() => { back.className = 'face back'; }, 150); 
     setTimeout(() => { this.currIdx++; this.setupCard(); }, 600);
+  },
+
+  // NOWA FUNKCJA ANULOWANIA
+  cancelRound: function() {
+    if(confirm("Czy na pewno chcesz anulować tę rundę i wrócić do ustawień?")) {
+        nav.to('v-setup');
+    }
   },
 
   finishDealing: function() {
