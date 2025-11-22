@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>IMPOSTOR FINAL 2.0</title>
+<title>IMPOSTOR FINAL 3.0</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
     --impostor-glow: rgba(255, 59, 48, 0.5);
     --text: #ffffff;
     --text-dim: #94a3b8;
-    --glass: rgba(15, 23, 42, 0.65);
+    --glass: rgba(15, 23, 42, 0.85); /* Ciemniejsze szkło dla czytelności */
     --glass-border: rgba(255, 255, 255, 0.1);
   }
 
@@ -70,8 +70,8 @@
   }
 
   .btn {
-    width: 100%; padding: 20px; border-radius: 18px; border: none;
-    font-size: 18px; font-weight: 800; cursor: pointer;
+    width: 100%; padding: 18px; border-radius: 18px; border: none;
+    font-size: 16px; font-weight: 800; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.2s; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
   }
@@ -138,7 +138,7 @@
   .timer { font-size: 110px; font-weight: 900; margin: 30px 0; text-align: center; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
   
   .overlay {
-    position: fixed; inset: 0; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(12px);
+    position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(15px);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     z-index: 100; opacity: 0; pointer-events: none; transition: 0.3s; padding: 30px;
   }
@@ -150,6 +150,10 @@
   .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: .3s; }
   input:checked + .slider { background: var(--primary); }
   input:checked + .slider:before { transform: translateX(22px); }
+
+  /* Lista przypomnienia */
+  .remind-grid { width: 100%; max-height: 60vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .remind-btn { text-align: left; padding: 15px; font-size: 16px; justify-content: flex-start; }
 </style>
 </head>
 <body>
@@ -164,7 +168,7 @@
     <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--accent);">
       <span style="font-size:50px">🔥</span>
       <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">TYSIĄCE SŁÓW</h3>
-      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Edycja z Awatarami</p>
+      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Randomowy Start & Przypominajka</p>
     </div>
   </div>
   <button class="btn primary" onclick="nav.to('v-setup')">ROZPOCZNIJ GRĘ</button>
@@ -208,7 +212,6 @@
   <div id="card-controls" class="hidden fade-in">
     <button class="btn secondary" id="btn-next" onclick="game.next()">PRZEKAŻ DALEJ</button>
     <button class="btn primary hidden" id="btn-ready" onclick="game.finishDealing()">WSZYSCY GOTOWI</button>
-    <!-- PRZYCISK ANULOWANIA -->
     <button class="btn outline" style="margin-top:15px; border-color:rgba(239,68,68,0.5); color:#fca5a5; font-size:14px; padding:15px;" onclick="game.cancelRound()">❌ ANULUJ RUNDĘ</button>
   </div>
 </div>
@@ -229,15 +232,30 @@
     <p style="color:var(--text-dim)">Obserwuj mowę ciała!</p>
   </div>
   <div style="margin-top:auto; margin-bottom:40px">
+    <button class="btn outline" style="margin-bottom:10px; border-color:var(--accent); color:var(--accent);" onclick="game.showRemindMenu()">❓ PRZYPOMNIJ ROLĘ</button>
     <button class="btn secondary" onclick="game.pause()">PAUZA / GŁOSOWANIE</button>
   </div>
 </div>
 
-<!-- OVERLAY -->
+<!-- PAUSE OVERLAY -->
 <div id="overlay" class="overlay">
   <h1 style="color:white; margin-bottom:10px">PAUZA</h1>
   <button class="btn primary" style="width:100%; max-width:300px" onclick="game.resume()">WZNÓW ODLICZANIE</button>
   <button class="btn danger" style="width:100%; max-width:300px" onclick="game.preReveal()">KONIEC I GŁOSOWANIE</button>
+</div>
+
+<!-- REMIND LIST OVERLAY -->
+<div id="overlay-remind" class="overlay">
+  <h2 style="margin-bottom:20px; font-weight:800; color:var(--accent)">WYBIERZ SIEBIE</h2>
+  <div id="remind-list" class="remind-grid"></div>
+  <button class="btn outline" style="margin-top:10px" onclick="game.closeRemind()">ANULUJ</button>
+</div>
+
+<!-- REMIND SECRET OVERLAY -->
+<div id="overlay-secret" class="overlay">
+  <h2 style="margin-bottom:20px; color:white">TWOJA ROLA</h2>
+  <div id="secret-content" style="width:100%; margin-bottom:30px"></div>
+  <button class="btn primary" onclick="game.closeSecret()">OK, JUŻ WIEM</button>
 </div>
 
 <!-- REVEAL -->
@@ -493,7 +511,15 @@ const game = {
       else this.impostorHistory[name] = 0;
     });
 
+    // 1. Przypisz role
     this.currentRoleData = pList.map((name, i) => ({ name: name, isImp: i === impIdx }));
+
+    // 2. NOWOŚĆ: Losowe tasowanie kolejności rozdawania
+    for (let i = this.currentRoleData.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [this.currentRoleData[i], this.currentRoleData[j]] = [this.currentRoleData[j], this.currentRoleData[i]];
+    }
+
     this.currIdx = 0;
     this.setupCard();
     nav.to('v-card');
@@ -539,12 +565,9 @@ const game = {
       html = `
         <div class="role-tag" style="color:white">TWOJA ROLA</div>
         <div class="big-word" style="color:var(--impostor); text-shadow:0 0 20px rgba(239,68,68,0.6)">IMPOSTER</div>
-        
-        <!-- KATEGORIA DLA IMPOSTERA -->
         <div style="font-size:13px; color:var(--text-dim); margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; font-weight:700">
             KATEGORIA: <span style="color:#fff">${this.wordData.cat}</span>
         </div>
-
         <div class="hint-container is-impostor"><div class="hint-label">${labelText}</div><div class="hint-val">${hintText}</div></div>
       `;
       back.classList.add('is-impostor');
@@ -578,7 +601,6 @@ const game = {
     setTimeout(() => { this.currIdx++; this.setupCard(); }, 600);
   },
 
-  // NOWA FUNKCJA ANULOWANIA
   cancelRound: function() {
     if(confirm("Czy na pewno chcesz anulować tę rundę i wrócić do ustawień?")) {
         nav.to('v-setup');
@@ -610,6 +632,63 @@ const game = {
 
   pause: function() { clearInterval(this.timer); document.getElementById('overlay').classList.add('show'); },
   resume: function() { document.getElementById('overlay').classList.remove('show'); this.startTimer(); },
+
+  /* --- SYSTEM PRZYPOMINANIA ROLI --- */
+  showRemindMenu: function() {
+      const list = document.getElementById('remind-list');
+      list.innerHTML = '';
+      
+      // Sortujemy alfabetycznie dla łatwiejszego szukania
+      const sorted = [...this.currentRoleData].sort((a,b) => a.name.localeCompare(b.name));
+
+      sorted.forEach(p => {
+          const btn = document.createElement('button');
+          btn.className = 'btn secondary remind-btn';
+          btn.innerText = p.name;
+          btn.onclick = () => game.showSecret(p);
+          list.appendChild(btn);
+      });
+      document.getElementById('overlay-remind').classList.add('show');
+  },
+
+  closeRemind: function() {
+      document.getElementById('overlay-remind').classList.remove('show');
+  },
+
+  showSecret: function(p) {
+      const content = document.getElementById('secret-content');
+      let html = '';
+      
+      if(p.isImp) {
+          let hintText = this.wordData.h;
+          let labelText = "PODPOWIEDŹ";
+          if (this.wordData.cat === "Polskie Rap Hity") labelText = "EMOJI HINT";
+          if (!this.hintOn && this.wordData.cat !== "Polskie Rap Hity") hintText = "Brak podpowiedzi";
+
+          html = `
+            <div class="role-tag">TWOJA ROLA</div>
+            <div style="font-size:36px; font-weight:900; color:var(--impostor); margin-bottom:15px">IMPOSTER</div>
+             <div style="font-size:13px; color:var(--text-dim); margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; font-weight:700">
+                KATEGORIA: <span style="color:#fff">${this.wordData.cat}</span>
+            </div>
+            <div class="hint-container is-impostor"><div class="hint-label">${labelText}</div><div class="hint-val">${hintText}</div></div>
+          `;
+      } else {
+          html = `
+            <div class="role-tag">TWOJE HASŁO</div>
+            <div style="font-size:36px; font-weight:900; color:var(--accent); margin-bottom:15px">${this.wordData.w}</div>
+            <div class="hint-container"><div class="hint-label">KATEGORIA</div><div class="hint-val" style="font-size:18px">${this.wordData.cat}</div></div>
+          `;
+      }
+      content.innerHTML = html;
+      document.getElementById('overlay-remind').classList.remove('show');
+      document.getElementById('overlay-secret').classList.add('show');
+  },
+
+  closeSecret: function() {
+      document.getElementById('overlay-secret').classList.remove('show');
+  },
+  /* --------------------------------- */
 
   preReveal: function() {
     clearInterval(this.timer); document.getElementById('overlay').classList.remove('show');
