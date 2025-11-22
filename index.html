@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>IMPOSTOR GOD MODE</title>
+<title>IMPOSTOR LISEK</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@
     position: relative;
   }
 
-  /* TŁO */
+  /* TŁO - WARSTWA NAJNIŻSZA (-2) */
   .bg-mesh {
     position: fixed; inset: -50%;
     background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15), transparent 60%),
@@ -44,26 +44,32 @@
     100% { transform: rotate(10deg) scale(1.1); }
   }
 
-  /* KONFETTI */
+  /* KONFETTI - WARSTWA ŚRODKOWA (0) - ZA KARTĄ */
   .confetti-container {
-    position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden;
+    position: fixed; inset: 0; pointer-events: none; 
+    z-index: 0; /* Pod interfejsem, nad tłem */
+    overflow: hidden;
   }
   .confetti {
     position: absolute; top: -50px;
-    font-size: 24px;
+    font-size: 28px;
+    opacity: 0.8;
     animation: fall linear forwards;
   }
   @keyframes fall {
-    to { transform: translateY(110vh) rotate(720deg); }
+    to { transform: translateY(110vh) rotate(360deg); }
   }
 
   .hidden { display: none !important; }
   
+  /* INTERFEJS - WARSTWA NAJWYŻSZA (2) */
   .container {
     height: 100%; display: flex; flex-direction: column; 
     padding: env(safe-area-inset-top) 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     width: 100%; max-width: 500px; margin: 0 auto; overflow-y: auto;
-    position: relative; z-index: 1; scrollbar-width: none;
+    position: relative; 
+    z-index: 2; /* Musi być wyżej niż konfetti */
+    scrollbar-width: none;
   }
   .container::-webkit-scrollbar { display: none; }
 
@@ -86,7 +92,7 @@
     width: 100%; padding: 18px; border-radius: 18px; border: none;
     font-size: 16px; font-weight: 800; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: all 0.1s; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    transition: transform 0.1s; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
     will-change: transform;
   }
   .btn:active { transform: scale(0.97); }
@@ -125,7 +131,12 @@
   .cat-item.rap .cat-name { color: #d8b4fe; }
 
   .scene { width: 100%; height: 50vh; min-height: 380px; perspective: 1200px; margin: 20px 0 30px 0; cursor: pointer; }
-  .card { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+  .card { 
+    width: 100%; height: 100%; position: relative; 
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Szybsza animacja */
+    transform-style: preserve-3d;
+    will-change: transform; /* FIX WYDAJNOŚCI */
+  }
   .card.flipped { transform: rotateY(180deg); }
   .face {
     position: absolute; inset: 0; backface-visibility: hidden; border-radius: 32px;
@@ -149,6 +160,19 @@
   .hint-val { font-size: 24px; font-weight: 800; color: var(--accent); }
   .is-impostor .hint-val { color: var(--impostor); }
 
+  /* FIX MIGNIĘCIA TEKSTU */
+  .tap-hint {
+    margin-top: 40px; font-size: 12px; font-weight: 800; opacity: 0.6; 
+    animation: pulse 2s infinite;
+    transition: opacity 0.1s; /* Szybkie znikanie */
+  }
+  /* Gdy karta obrócona - ukryj tekst natychmiast */
+  .card.flipped .tap-hint {
+    opacity: 0 !important;
+    visibility: hidden;
+    animation: none;
+  }
+
   .timer { font-size: 110px; font-weight: 900; margin: 30px 0; text-align: center; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
   
   .overlay {
@@ -167,11 +191,13 @@
 
   .remind-grid { width: 100%; max-height: 60vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
   .remind-btn { text-align: left; padding: 15px; font-size: 16px; justify-content: flex-start; }
+  @keyframes pulse { 0%,100% { opacity:0.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.05); } }
 </style>
 </head>
 <body>
 
 <div class="bg-mesh"></div>
+<!-- Konfetti jest teraz niżej w strukturze DOM i ma niższy z-index -->
 <div id="confetti-layer" class="confetti-container"></div>
 
 <!-- MENU -->
@@ -180,9 +206,9 @@
   <div class="sub-title">by Lisek & Gemini</div>
   <div style="margin: 40px 0;">
     <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--accent);">
-      <span style="font-size:50px">🚀</span>
-      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">BAZA GIGANT</h3>
-      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">+ Efekty Specjalne</p>
+      <span style="font-size:50px">💎</span>
+      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">GOD MODE</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">LISEK CWEL EDITION</p>
     </div>
   </div>
   <button class="btn primary" onclick="nav.to('v-setup')">ROZPOCZNIJ GRĘ</button>
@@ -218,7 +244,7 @@
         <div class="role-tag">RUNDA DLA</div>
         <div class="avatar" id="c-avatar">?</div>
         <h1 id="c-name" style="color:white; font-size:36px">Gracz</h1>
-        <div style="margin-top:40px; font-size:12px; font-weight:800; opacity:0.6; animation:pulse 2s infinite">DOTKNIJ KARTY</div>
+        <div class="tap-hint">DOTKNIJ KARTY</div>
       </div>
       <div class="face back" id="c-back"></div>
     </div>
@@ -297,49 +323,47 @@
   </div>
 </div>
 
-<style>@keyframes pulse { 0%,100% { opacity:0.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.05); } }</style>
-
 <script>
-/* --- BAZA DANYCH GIGANT --- */
+/* --- BAZA DANYCH GIGANT (MAX) --- */
 const DB = {
   "Polskie Rap Hity": [
-    {w:"Szklanki", h:"🥃💃"}, {w:"Kiss Cam", h:"💋🎥"}, {w:"Złote Tarasy", h:"🏬✨"}, {w:"Patointeligencja", h:"🏫🚬"}, {w:"Disney", h:"🏰🎢"}, {w:"Ostatnia Nadzieja", h:"🙏💔"}, {w:"Polskie Tango", h:"🇵🇱💃"}, {w:"Szampan", h:"🍾🥂"}, {w:"California", h:"🌴☀️"}, {w:"Jetlag", h:"✈️😴"}, {w:"Lawenda", h:"🪻💜"}, {w:"Dres", h:"👕👟"}, {w:"BFF", h:"👯‍♀️💖"}, {w:"Taxi", h:"🚖🌃"}, {w:"Malibu Barbie", h:"🍹👱‍♀️"}, {w:"Chyba że z Tobą", h:"💃🕺"}, {w:"Stan", h:"☁️🎈"}, {w:"Piękny świat", h:"🌍✨"}, {w:"Bubbletea", h:"🧋"}, {w:"100 dni do matury", h:"🎓💯"}, {w:"Tamagotchi", h:"👾"}, {w:"Język ciała", h:"👅"}, {w:"Candy", h:"🍬"}, {w:"Szafir", h:"💎"}, {w:"Molly", h:"💊"}, {w:"Ogrody", h:"🌳"}, {w:"Papuga", h:"🦜"}, {w:"Bigos", h:"🥘"}, {w:"Deszcz", h:"☔️"}, {w:"Kebab w cienkim", h:"🥙"}, {w:"Gelato", h:"🍦"}, {w:"Rower", h:"🚲"}, {w:"Pijemy za lepszy czas", h:"🍻"}, {w:"Ona by tak chciała", h:"🔥"}, {w:"Eldorado", h:"💰"}, {w:"Sierpień", h:"🗓️"}, {w:"Modelki", h:"👠"}, {w:"Bungee", h:"🪢"}, {w:"Plecak", h:"🎒"}, {w:"Dom", h:"🏠"}, {w:"Wiatr", h:"💨"}
+    {w:"Szklanki", h:"🥃💃"}, {w:"Kiss Cam", h:"💋🎥"}, {w:"Złote Tarasy", h:"🏬✨"}, {w:"Patointeligencja", h:"🏫🚬"}, {w:"Disney", h:"🏰🎢"}, {w:"Ostatnia Nadzieja", h:"🙏💔"}, {w:"Polskie Tango", h:"🇵🇱💃"}, {w:"Szampan", h:"🍾🥂"}, {w:"California", h:"🌴☀️"}, {w:"Jetlag", h:"✈️😴"}, {w:"Lawenda", h:"🪻💜"}, {w:"Dres", h:"👕👟"}, {w:"BFF", h:"👯‍♀️💖"}, {w:"Taxi", h:"🚖🌃"}, {w:"Malibu Barbie", h:"🍹👱‍♀️"}, {w:"Chyba że z Tobą", h:"💃🕺"}, {w:"Stan", h:"☁️🎈"}, {w:"Piękny świat", h:"🌍✨"}, {w:"Bubbletea", h:"🧋"}, {w:"100 dni do matury", h:"🎓💯"}, {w:"Tamagotchi", h:"👾"}, {w:"Język ciała", h:"👅"}, {w:"Candy", h:"🍬"}, {w:"Szafir", h:"💎"}, {w:"Molly", h:"💊"}, {w:"Ogrody", h:"🌳"}, {w:"Papuga", h:"🦜"}, {w:"Bigos", h:"🥘"}, {w:"Deszcz", h:"☔️"}, {w:"Kebab w cienkim", h:"🥙"}, {w:"Gelato", h:"🍦"}, {w:"Rower", h:"🚲"}, {w:"Pijemy za lepszy czas", h:"🍻"}, {w:"Ona by tak chciała", h:"🔥"}, {w:"Eldorado", h:"💰"}, {w:"Sierpień", h:"🗓️"}, {w:"Modelki", h:"👠"}, {w:"Bungee", h:"🪢"}, {w:"Plecak", h:"🎒"}, {w:"Dom", h:"🏠"}, {w:"Wiatr", h:"💨"}, {w:"Kawasaki", h:"🏍️"}, {w:"Gugu", h:"👶"}, {w:"Trap", h:"🕸️"}, {w:"Audi", h:"🚗"}, {w:"Zioło", h:"🌿"}
   ],
   "Polscy Raperzy": [
-    {w:"Taco Hemingway", h:"Wąs"}, {w:"Quebonafide", h:"Egzotyka"}, {w:"Mata", h:"Patoreakcja"}, {w:"Bedoes", h:"2115"}, {w:"Oki", h:"Jeżyk"}, {w:"Kizo", h:"Kawa"}, {w:"Żabson", h:"Żabka"}, {w:"Kukon", h:"Ogrody"}, {w:"Szpaku", h:"Simba"}, {w:"Pezet", h:"Płomień"}, {w:"Sokół", h:"Narrator"}, {w:"Paluch", h:"BOR"}, {w:"Malik Montana", h:"Import"}, {w:"White 2115", h:"Łajcior"}, {w:"Sobel", h:"Impreza"}, {w:"Young Leosia", h:"Hulanki"}, {w:"Bambi", h:"IRL"}, {w:"Otsochodzi", h:"Tarcho"}, {w:"Gibbs", h:"Dopehouse"}, {w:"Chivas", h:"Młody"}, {w:"Kaz Bałagane", h:"Stolica"}, {w:"ReTo", h:"Klapki"}, {w:"Guzior", h:"Mefedron"}, {w:"Sarius", h:"Antihype"}, {w:"Paktofonika", h:"Jestem Bogiem"}, {w:"Liroy", h:"Scyzoryk"}, {w:"Tede", h:"TVN"}, {w:"O.S.T.R.", h:"Skrzypce"}, {w:"Peja", h:"Jeżyce"}, {w:"Popek", h:"Oczy"}, {w:"Kabe", h:"Francja"}, {w:"Alberto", h:"Dwutakt"}, {w:"Smolasty", h:"Duże Oczy"}, {w:"Mr. Polska", h:"Holandia"}, {w:"Fifi", h:"WWA"}, {w:"Belmondo", h:"Młody G"}, {w:"Jan-Rapowanie", h:"Kraków"}, {w:"KęKę", h:"Radom"}, {w:"Białas", h:"SB Maffija"}, {w:"Solar", h:"Fotowoltaika"}, {w:"Wac Toja", h:"Kapitan"}
+    {w:"Taco Hemingway", h:"Wąs"}, {w:"Quebonafide", h:"Egzotyka"}, {w:"Mata", h:"Patoreakcja"}, {w:"Bedoes", h:"2115"}, {w:"Oki", h:"Jeżyk"}, {w:"Kizo", h:"Kawa"}, {w:"Żabson", h:"Żabka"}, {w:"Kukon", h:"Ogrody"}, {w:"Szpaku", h:"Simba"}, {w:"Pezet", h:"Płomień"}, {w:"Sokół", h:"Narrator"}, {w:"Paluch", h:"BOR"}, {w:"Malik Montana", h:"Import"}, {w:"White 2115", h:"Łajcior"}, {w:"Sobel", h:"Impreza"}, {w:"Young Leosia", h:"Hulanki"}, {w:"Bambi", h:"IRL"}, {w:"Otsochodzi", h:"Tarcho"}, {w:"Gibbs", h:"Dopehouse"}, {w:"Chivas", h:"Młody"}, {w:"Kaz Bałagane", h:"Stolica"}, {w:"ReTo", h:"Klapki"}, {w:"Guzior", h:"Mefedron"}, {w:"Sarius", h:"Antihype"}, {w:"Paktofonika", h:"Jestem Bogiem"}, {w:"Liroy", h:"Scyzoryk"}, {w:"Tede", h:"TVN"}, {w:"O.S.T.R.", h:"Skrzypce"}, {w:"Peja", h:"Jeżyce"}, {w:"Popek", h:"Oczy"}, {w:"Kabe", h:"Francja"}, {w:"Alberto", h:"Dwutakt"}, {w:"Smolasty", h:"Duże Oczy"}, {w:"Mr. Polska", h:"Holandia"}, {w:"Fifi", h:"WWA"}, {w:"Belmondo", h:"Młody G"}, {w:"Jan-Rapowanie", h:"Kraków"}, {w:"KęKę", h:"Radom"}, {w:"Białas", h:"SB Maffija"}, {w:"Solar", h:"Fotowoltaika"}, {w:"Wac Toja", h:"Kapitan"}, {w:"Szamz", h:"Głos"}, {w:"Kinny Zimmer", h:"Zuch"}, {w:"Fukaj", h:"Szczecin"}, {w:"Vkie", h:"Kraków"}
   ],
   "Polski Internet": [
-    {w:"Friz", h:"Ekipa"}, {w:"Wersow", h:"Sowa"}, {w:"Wardęga", h:"Las"}, {w:"Kononowicz", h:"Mleko"}, {w:"Stanowski", h:"Zero"}, {w:"Boxdel", h:"Włodarz"}, {w:"Fagata", h:"Plan"}, {w:"Natsu", h:"Płatki"}, {w:"Mata", h:"McDonald"}, {w:"Lewandowski", h:"Barcelona"}, {w:"Pudzian", h:"Cierpliwość"}, {w:"Budda", h:"Loteria"}, {w:"Goats", h:"Projekt"}, {w:"Linkiewicz", h:"Autobus"}, {w:"Najman", h:"Częstochowa"}, {w:"Xayoo", h:"Szachy"}, {w:"Gimper", h:"Hajsownicy"}, {w:"Japczan", h:"Gruby"}, {w:"Tromba", h:"Wąż"}, {w:"Mlekozyniak", h:"Czapka"}, {w:"Książulo", h:"Muala"}, {w:"Dymorfia", h:"Siłownia"}, {w:"Young Multi", h:"Reakcja"}, {w:"Pasut", h:"Abstrachuje"}, {w:"Dubiel", h:"Kenia"}, {w:"Blowek", h:"Minecraft"}, {w:"Genzie", h:"Dom"}, {w:"Patec", h:"Podróże"}, {w:"Lexy", h:"Chapstick"}, {w:"Mini Majk", h:"Niski"}, {w:"Czaro", h:"Magia"}, {w:"Mandzio", h:"Gotowanie"}, {w:"Nitrozyniak", h:"BMW"}, {w:"Rafonix", h:"Tibijka"}, {w:"Daniel Magical", h:"Kociołek"}, {w:"Poczciwy Krzychu", h:"Mustang"}, {w:"Wojtek Gola", h:"Biseks"}, {w:"Maja Staśko", h:"Aktywistka"}, {w:"Dziki Trener", h:"Prawda"}, {w:"Felicjańska", h:"Alkohol"}
+    {w:"Friz", h:"Ekipa"}, {w:"Wersow", h:"Sowa"}, {w:"Wardęga", h:"Las"}, {w:"Kononowicz", h:"Mleko"}, {w:"Stanowski", h:"Zero"}, {w:"Boxdel", h:"Włodarz"}, {w:"Fagata", h:"Plan"}, {w:"Natsu", h:"Płatki"}, {w:"Mata", h:"McDonald"}, {w:"Lewandowski", h:"Barcelona"}, {w:"Pudzian", h:"Cierpliwość"}, {w:"Budda", h:"Loteria"}, {w:"Goats", h:"Projekt"}, {w:"Linkiewicz", h:"Autobus"}, {w:"Najman", h:"Częstochowa"}, {w:"Xayoo", h:"Szachy"}, {w:"Gimper", h:"Hajsownicy"}, {w:"Japczan", h:"Gruby"}, {w:"Tromba", h:"Wąż"}, {w:"Mlekozyniak", h:"Czapka"}, {w:"Książulo", h:"Muala"}, {w:"Dymorfia", h:"Siłownia"}, {w:"Young Multi", h:"Reakcja"}, {w:"Pasut", h:"Abstrachuje"}, {w:"Dubiel", h:"Kenia"}, {w:"Blowek", h:"Minecraft"}, {w:"Genzie", h:"Dom"}, {w:"Patec", h:"Podróże"}, {w:"Lexy", h:"Chapstick"}, {w:"Mini Majk", h:"Niski"}, {w:"Czaro", h:"Magia"}, {w:"Mandzio", h:"Gotowanie"}, {w:"Nitrozyniak", h:"BMW"}, {w:"Rafonix", h:"Tibijka"}, {w:"Daniel Magical", h:"Kociołek"}, {w:"Poczciwy Krzychu", h:"Mustang"}, {w:"Wojtek Gola", h:"Biseks"}, {w:"Maja Staśko", h:"Aktywistka"}, {w:"Dziki Trener", h:"Prawda"}, {w:"Felicjańska", h:"Alkohol"}, {w:"Kamerzysta", h:"Worek"}, {w:"Kruszwil", h:"Prestiż"}, {w:"Stuu", h:"Pingwin"}
   ],
   "Gry Wideo": [
-    {w:"Minecraft", h:"Klocki"}, {w:"GTA V", h:"Kradzież"}, {w:"Fortnite", h:"Budowanie"}, {w:"League of Legends", h:"Toksyczność"}, {w:"CS:GO", h:"Bomba"}, {w:"FIFA", h:"Piłka"}, {w:"The Witcher 3", h:"Geralt"}, {w:"Cyberpunk 2077", h:"Bug"}, {w:"Sims", h:"Basen"}, {w:"Among Us", h:"Impostor"}, {w:"Roblox", h:"Dzieci"}, {w:"Valorant", h:"Strzelanka"}, {w:"Call of Duty", h:"Wojna"}, {w:"Mario", h:"Grzyby"}, {w:"Pokemon", h:"Pikachu"}, {w:"Assassin's Creed", h:"Kaptur"}, {w:"God of War", h:"Synu"}, {w:"Red Dead Redemption", h:"Kowboj"}, {w:"Tibia", h:"Expienie"}, {w:"Metin2", h:"Kowal"}, {w:"Brawl Stars", h:"Telefon"}, {w:"Need for Speed", h:"Wyścigi"}, {w:"Tomb Raider", h:"Lara"}, {w:"Resident Evil", h:"Zombie"}, {w:"Dark Souls", h:"Śmierć"}, {w:"Elden Ring", h:"Pierścień"}, {w:"Rocket League", h:"Samochody"}, {w:"Overwatch", h:"Bohaterowie"}, {w:"World of Warcraft", h:"Ork"}, {w:"Dota 2", h:"Turniej"}, {w:"Subway Surfers", h:"Metro"}, {w:"Clash Royale", h:"Karty"}, {w:"Candy Crush", h:"Cukierki"}
+    {w:"Minecraft", h:"Klocki"}, {w:"GTA V", h:"Kradzież"}, {w:"Fortnite", h:"Budowanie"}, {w:"League of Legends", h:"Toksyczność"}, {w:"CS:GO", h:"Bomba"}, {w:"FIFA", h:"Piłka"}, {w:"The Witcher 3", h:"Geralt"}, {w:"Cyberpunk 2077", h:"Bug"}, {w:"Sims", h:"Basen"}, {w:"Among Us", h:"Impostor"}, {w:"Roblox", h:"Dzieci"}, {w:"Valorant", h:"Strzelanka"}, {w:"Call of Duty", h:"Wojna"}, {w:"Mario", h:"Grzyby"}, {w:"Pokemon", h:"Pikachu"}, {w:"Assassin's Creed", h:"Kaptur"}, {w:"God of War", h:"Synu"}, {w:"Red Dead Redemption", h:"Kowboj"}, {w:"Tibia", h:"Expienie"}, {w:"Metin2", h:"Kowal"}, {w:"Brawl Stars", h:"Telefon"}, {w:"Need for Speed", h:"Wyścigi"}, {w:"Tomb Raider", h:"Lara"}, {w:"Resident Evil", h:"Zombie"}, {w:"Dark Souls", h:"Śmierć"}, {w:"Elden Ring", h:"Pierścień"}, {w:"Rocket League", h:"Samochody"}, {w:"Overwatch", h:"Bohaterowie"}, {w:"World of Warcraft", h:"Ork"}, {w:"Dota 2", h:"Turniej"}, {w:"Subway Surfers", h:"Metro"}, {w:"Clash Royale", h:"Karty"}, {w:"Candy Crush", h:"Cukierki"}, {w:"Tetris", h:"Klocki"}, {w:"Pac-Man", h:"Duchy"}, {w:"Zelda", h:"Link"}, {w:"Halo", h:"Master Chief"}
   ],
   "Marki": [
-    {w:"Apple", h:"Jabłko"}, {w:"Nike", h:"Łyżwa"}, {w:"Adidas", h:"Paski"}, {w:"BMW", h:"Kierunkowskaz"}, {w:"McDonald's", h:"Burger"}, {w:"Coca-Cola", h:"Mikołaj"}, {w:"Samsung", h:"Galaxy"}, {w:"IKEA", h:"Klopsiki"}, {w:"Mercedes", h:"Gwiazda"}, {w:"Audi", h:"Kółka"}, {w:"Gucci", h:"Pasek"}, {w:"Tesla", h:"Prąd"}, {w:"Amazon", h:"Paczka"}, {w:"Netflix", h:"Serial"}, {w:"YouTube", h:"Subskrypcja"}, {w:"Facebook", h:"Twarz"}, {w:"TikTok", h:"Tańce"}, {w:"PlayStation", h:"Konsola"}, {w:"Xbox", h:"Zielony"}, {w:"Lego", h:"Ból stopy"}, {w:"Biedronka", h:"Paleta"}, {w:"Lidl", h:"Tydzień"}, {w:"Pepsi", h:"Konkurencja"}, {w:"Zara", h:"Ubrania"}, {w:"H&M", h:"Moda"}, {w:"Louis Vuitton", h:"Torebka"}, {w:"Rolex", h:"Zegarek"}, {w:"Dior", h:"Perfumy"}, {w:"Puma", h:"Kot"}, {w:"Reebok", h:"Buty"}, {w:"KFC", h:"Kurczak"}, {w:"Burger King", h:"Korona"}, {w:"Starbucks", h:"Kawa"}, {w:"Red Bull", h:"Skrzydła"}, {w:"Monster", h:"Energia"}
+    {w:"Apple", h:"Jabłko"}, {w:"Nike", h:"Łyżwa"}, {w:"Adidas", h:"Paski"}, {w:"BMW", h:"Kierunkowskaz"}, {w:"McDonald's", h:"Burger"}, {w:"Coca-Cola", h:"Mikołaj"}, {w:"Samsung", h:"Galaxy"}, {w:"IKEA", h:"Klopsiki"}, {w:"Mercedes", h:"Gwiazda"}, {w:"Audi", h:"Kółka"}, {w:"Gucci", h:"Pasek"}, {w:"Tesla", h:"Prąd"}, {w:"Amazon", h:"Paczka"}, {w:"Netflix", h:"Serial"}, {w:"YouTube", h:"Subskrypcja"}, {w:"Facebook", h:"Twarz"}, {w:"TikTok", h:"Tańce"}, {w:"PlayStation", h:"Konsola"}, {w:"Xbox", h:"Zielony"}, {w:"Lego", h:"Ból stopy"}, {w:"Biedronka", h:"Paleta"}, {w:"Lidl", h:"Tydzień"}, {w:"Pepsi", h:"Konkurencja"}, {w:"Zara", h:"Ubrania"}, {w:"H&M", h:"Moda"}, {w:"Louis Vuitton", h:"Torebka"}, {w:"Rolex", h:"Zegarek"}, {w:"Dior", h:"Perfumy"}, {w:"Puma", h:"Kot"}, {w:"Reebok", h:"Buty"}, {w:"KFC", h:"Kurczak"}, {w:"Burger King", h:"Korona"}, {w:"Starbucks", h:"Kawa"}, {w:"Red Bull", h:"Skrzydła"}, {w:"Monster", h:"Energia"}, {w:"Żabka", h:"Hot-dog"}, {w:"Orlen", h:"Paliwo"}, {w:"CCC", h:"Buty"}, {w:"Allegro", h:"Zakupy"}
   ],
   "Geografia": [
-    {w:"Polska", h:"Dom"}, {w:"Warszawa", h:"Stolica"}, {w:"Kraków", h:"Smok"}, {w:"Paryż", h:"Wieża"}, {w:"Londyn", h:"Big Ben"}, {w:"Nowy Jork", h:"Statua"}, {w:"Egipt", h:"Piramida"}, {w:"Japonia", h:"Sushi"}, {w:"Włochy", h:"Pizza"}, {w:"Niemcy", h:"Sąsiad"}, {w:"Rosja", h:"Wódka"}, {w:"Chiny", h:"Mur"}, {w:"Australia", h:"Kangur"}, {w:"Brazylia", h:"Karnawał"}, {w:"Tatry", h:"Góry"}, {w:"Bałtyk", h:"Morze"}, {w:"Wisła", h:"Rzeka"}, {w:"Sahara", h:"Piasek"}, {w:"Mount Everest", h:"Szczyt"}, {w:"Afryka", h:"Kontynent"}, {w:"Antarktyda", h:"Lód"}, {w:"Kanada", h:"Liść"}, {w:"Meksyk", h:"Tacos"}, {w:"Hiszpania", h:"Byk"}, {w:"Grecja", h:"Ruiny"}, {w:"Turcja", h:"Kebab"}, {w:"Indie", h:"Curry"}, {w:"Dubaj", h:"Bogactwo"}, {w:"Amazonka", h:"Dżungla"}, {w:"Mazury", h:"Jeziora"}, {w:"Bieszczady", h:"Wilki"}, {w:"Wawel", h:"Król"}
+    {w:"Polska", h:"Dom"}, {w:"Warszawa", h:"Stolica"}, {w:"Kraków", h:"Smok"}, {w:"Paryż", h:"Wieża"}, {w:"Londyn", h:"Big Ben"}, {w:"Nowy Jork", h:"Statua"}, {w:"Egipt", h:"Piramida"}, {w:"Japonia", h:"Sushi"}, {w:"Włochy", h:"Pizza"}, {w:"Niemcy", h:"Sąsiad"}, {w:"Rosja", h:"Wódka"}, {w:"Chiny", h:"Mur"}, {w:"Australia", h:"Kangur"}, {w:"Brazylia", h:"Karnawał"}, {w:"Tatry", h:"Góry"}, {w:"Bałtyk", h:"Morze"}, {w:"Wisła", h:"Rzeka"}, {w:"Sahara", h:"Piasek"}, {w:"Mount Everest", h:"Szczyt"}, {w:"Afryka", h:"Kontynent"}, {w:"Antarktyda", h:"Lód"}, {w:"Kanada", h:"Liść"}, {w:"Meksyk", h:"Tacos"}, {w:"Hiszpania", h:"Byk"}, {w:"Grecja", h:"Ruiny"}, {w:"Turcja", h:"Kebab"}, {w:"Indie", h:"Curry"}, {w:"Dubaj", h:"Bogactwo"}, {w:"Amazonka", h:"Dżungla"}, {w:"Mazury", h:"Jeziora"}, {w:"Bieszczady", h:"Wilki"}, {w:"Wawel", h:"Król"}, {w:"Hawaje", h:"Kwiaty"}, {w:"Islandia", h:"Wulkan"}, {w:"Norwegia", h:"Fiordy"}
   ],
   "Sportowcy": [
-    {w:"Lewandowski", h:"Gol"}, {w:"Messi", h:"Argentyna"}, {w:"Ronaldo", h:"Siuuu"}, {w:"Małysz", h:"Skoki"}, {w:"Stoch", h:"Kamil"}, {w:"Iga Świątek", h:"Tenis"}, {w:"Pudzianowski", h:"Siłacz"}, {w:"Błachowicz", h:"MMA"}, {w:"Tyson", h:"Boks"}, {w:"Jordan", h:"Kosz"}, {w:"Kubica", h:"F1"}, {w:"Zmarzlik", h:"Żużel"}, {w:"Usain Bolt", h:"Bieg"}, {w:"Phelps", h:"Basen"}, {w:"Schumacher", h:"Ferrari"}, {w:"Szczęsny", h:"Bramkarz"}, {w:"Gortat", h:"NBA"}, {w:"Błaszczykowski", h:"Wisła"}, {w:"Hurkacz", h:"Serwis"}, {w:"Sochan", h:"Włosy"}, {w:"Neymar", h:"Fryzura"}, {w:"Mbappe", h:"Żółw"}, {w:"Haaland", h:"Robot"}, {w:"Djokovic", h:"Rakietka"}, {w:"Lebron James", h:"Król"}, {w:"Curry", h:"Trójka"}, {w:"McGregor", h:"Showman"}, {w:"Khabib", h:"Orzeł"}, {w:"Zidane", h:"Główka"}, {w:"Maradona", h:"Ręka Boga"}
+    {w:"Lewandowski", h:"Gol"}, {w:"Messi", h:"Argentyna"}, {w:"Ronaldo", h:"Siuuu"}, {w:"Małysz", h:"Skoki"}, {w:"Stoch", h:"Kamil"}, {w:"Iga Świątek", h:"Tenis"}, {w:"Pudzianowski", h:"Siłacz"}, {w:"Błachowicz", h:"MMA"}, {w:"Tyson", h:"Boks"}, {w:"Jordan", h:"Kosz"}, {w:"Kubica", h:"F1"}, {w:"Zmarzlik", h:"Żużel"}, {w:"Usain Bolt", h:"Bieg"}, {w:"Phelps", h:"Basen"}, {w:"Schumacher", h:"Ferrari"}, {w:"Szczęsny", h:"Bramkarz"}, {w:"Gortat", h:"NBA"}, {w:"Błaszczykowski", h:"Wisła"}, {w:"Hurkacz", h:"Serwis"}, {w:"Sochan", h:"Włosy"}, {w:"Neymar", h:"Fryzura"}, {w:"Mbappe", h:"Żółw"}, {w:"Haaland", h:"Robot"}, {w:"Djokovic", h:"Rakietka"}, {w:"Lebron James", h:"Król"}, {w:"Curry", h:"Trójka"}, {w:"McGregor", h:"Showman"}, {w:"Khabib", h:"Orzeł"}, {w:"Zidane", h:"Główka"}, {w:"Maradona", h:"Ręka Boga"}, {w:"Pele", h:"Król"}, {w:"Radwańska", h:"Kraków"}, {w:"Gołota", h:"Ucieczka"}
   ],
   "Hardcore": [
-    {w:"Inflacja", h:"Drożyzna"}, {w:"Synestezja", h:"Zmysły"}, {w:"Paradoks", h:"Sprzeczność"}, {w:"Altruizm", h:"Pomoc"}, {w:"Nostalgia", h:"Wspomnienie"}, {w:"Karma", h:"Powrót"}, {w:"Ego", h:"Ja"}, {w:"Metafora", h:"Przenośnia"}, {w:"Ironia", h:"Los"}, {w:"Deja vu", h:"Powtórka"}, {w:"Placebo", h:"Cukier"}, {w:"Stereotyp", h:"Schemat"}, {w:"Abstrakcja", h:"Sztuka"}, {w:"Chaos", h:"Bałagan"}, {w:"Utopia", h:"Idea"}, {w:"Nihilizm", h:"Nic"}, {w:"Prokrastynacja", h:"Zwlekanie"}, {w:"Empatia", h:"Współczucie"}, {w:"Euforia", h:"Radość"}, {w:"Introwertyk", h:"Wnętrze"}, {w:"Relatywizm", h:"Punkt widzenia"}, {w:"Hipokryzja", h:"Fałsz"}, {w:"Melancholia", h:"Smutek"}, {w:"Sarkazm", h:"Żart"}, {w:"Charyzma", h:"Urok"}, {w:"Dedukcja", h:"Sherlock"}, {w:"Intuicja", h:"Przeczucie"}, {w:"Ksenofobia", h:"Obcy"}, {w:"Mizantropia", h:"Ludzie"}, {w:"Hedonizm", h:"Przyjemność"}, {w:"Stoicyzm", h:"Spokój"}, {w:"Plagiat", h:"Kradzież"}, {w:"Cenzura", h:"Zakaz"}, {w:"Demagogia", h:"Manipulacja"}, {w:"Eufemizm", h:"Łagodzenie"}
+    {w:"Inflacja", h:"Drożyzna"}, {w:"Synestezja", h:"Zmysły"}, {w:"Paradoks", h:"Sprzeczność"}, {w:"Altruizm", h:"Pomoc"}, {w:"Nostalgia", h:"Wspomnienie"}, {w:"Karma", h:"Powrót"}, {w:"Ego", h:"Ja"}, {w:"Metafora", h:"Przenośnia"}, {w:"Ironia", h:"Los"}, {w:"Deja vu", h:"Powtórka"}, {w:"Placebo", h:"Cukier"}, {w:"Stereotyp", h:"Schemat"}, {w:"Abstrakcja", h:"Sztuka"}, {w:"Chaos", h:"Bałagan"}, {w:"Utopia", h:"Idea"}, {w:"Nihilizm", h:"Nic"}, {w:"Prokrastynacja", h:"Zwlekanie"}, {w:"Empatia", h:"Współczucie"}, {w:"Euforia", h:"Radość"}, {w:"Introwertyk", h:"Wnętrze"}, {w:"Relatywizm", h:"Punkt widzenia"}, {w:"Hipokryzja", h:"Fałsz"}, {w:"Melancholia", h:"Smutek"}, {w:"Sarkazm", h:"Żart"}, {w:"Charyzma", h:"Urok"}, {w:"Dedukcja", h:"Sherlock"}, {w:"Intuicja", h:"Przeczucie"}, {w:"Ksenofobia", h:"Obcy"}, {w:"Mizantropia", h:"Ludzie"}, {w:"Hedonizm", h:"Przyjemność"}, {w:"Stoicyzm", h:"Spokój"}, {w:"Plagiat", h:"Kradzież"}, {w:"Cenzura", h:"Zakaz"}, {w:"Demagogia", h:"Manipulacja"}, {w:"Eufemizm", h:"Łagodzenie"}, {w:"Surrealizm", h:"Sen"}, {w:"Awangarda", h:"Nowość"}, {w:"Ekstrawertyk", h:"Towarzyski"}
   ],
   "Filmy & Seriale": [
-    {w:"Shrek", h:"Cebula"}, {w:"Titanic", h:"Góra"}, {w:"Harry Potter", h:"Blizna"}, {w:"Matrix", h:"Pigułka"}, {w:"Batman", h:"Sierota"}, {w:"Joker", h:"Śmiech"}, {w:"Spider-Man", h:"Ugryzienie"}, {w:"Król Lew", h:"Sawanna"}, {w:"Kevin", h:"Złodzieje"}, {w:"Wiedźmin", h:"Miecze"}, {w:"James Bond", h:"007"}, {w:"Minionki", h:"Banan"}, {w:"Star Wars", h:"Miecz"}, {w:"Władca Pierścieni", h:"Pierścień"}, {w:"Avengers", h:"Rękawica"}, {w:"Piraci z Karaibów", h:"Perła"}, {w:"Szybcy i Wściekli", h:"Rodzina"}, {w:"Barbie", h:"Róż"}, {w:"Oppenheimer", h:"Bomba"}, {w:"Stranger Things", h:"Nos"}, {w:"Wednesday", h:"Taniec"}, {w:"Squid Game", h:"Lalka"}, {w:"Breaking Bad", h:"Kryształ"}, {w:"Gra o Tron", h:"Smok"}, {w:"Kiler", h:"Szakal"}, {w:"Chłopaki nie płaczą", h:"Bunkier"}, {w:"Dzień Świra", h:"Adaś"}, {w:"Dom z Papieru", h:"Maska"}, {w:"Rick i Morty", h:"Ogórek"}, {w:"Ojciec Chrzestny", h:"Propozycja"}, {w:"Incepcja", h:"Sen"}, {w:"Interstellar", h:"Kosmos"}, {w:"Wielki Gatsby", h:"Impreza"}, {w:"Wilk z Wall Street", h:"Pieniądze"}, {w:"Forrest Gump", h:"Bieg"}, {w:"Gladiator", h:"Rzym"}, {w:"Avatar", h:"Niebieski"}
+    {w:"Shrek", h:"Cebula"}, {w:"Titanic", h:"Góra"}, {w:"Harry Potter", h:"Blizna"}, {w:"Matrix", h:"Pigułka"}, {w:"Batman", h:"Sierota"}, {w:"Joker", h:"Śmiech"}, {w:"Spider-Man", h:"Ugryzienie"}, {w:"Król Lew", h:"Sawanna"}, {w:"Kevin", h:"Złodzieje"}, {w:"Wiedźmin", h:"Miecze"}, {w:"James Bond", h:"007"}, {w:"Minionki", h:"Banan"}, {w:"Star Wars", h:"Miecz"}, {w:"Władca Pierścieni", h:"Pierścień"}, {w:"Avengers", h:"Rękawica"}, {w:"Piraci z Karaibów", h:"Perła"}, {w:"Szybcy i Wściekli", h:"Rodzina"}, {w:"Barbie", h:"Róż"}, {w:"Oppenheimer", h:"Bomba"}, {w:"Stranger Things", h:"Nos"}, {w:"Wednesday", h:"Taniec"}, {w:"Squid Game", h:"Lalka"}, {w:"Breaking Bad", h:"Kryształ"}, {w:"Gra o Tron", h:"Smok"}, {w:"Kiler", h:"Szakal"}, {w:"Chłopaki nie płaczą", h:"Bunkier"}, {w:"Dzień Świra", h:"Adaś"}, {w:"Dom z Papieru", h:"Maska"}, {w:"Rick i Morty", h:"Ogórek"}, {w:"Ojciec Chrzestny", h:"Propozycja"}, {w:"Incepcja", h:"Sen"}, {w:"Interstellar", h:"Kosmos"}, {w:"Wielki Gatsby", h:"Impreza"}, {w:"Wilk z Wall Street", h:"Pieniądze"}, {w:"Forrest Gump", h:"Bieg"}, {w:"Gladiator", h:"Rzym"}, {w:"Avatar", h:"Niebieski"}, {w:"Ranczo", h:"Wójt"}, {w:"Świat według Kiepskich", h:"Mocny Full"}
   ],
   "Miejsca": [
-    {w:"Więzienie", h:"Gryps"}, {w:"Szpital", h:"NFZ"}, {w:"Kościół", h:"Taca"}, {w:"Lotnisko", h:"Odprawa"}, {w:"Plaża", h:"Parawan"}, {w:"Las", h:"Kleszcz"}, {w:"Siłownia", h:"Karnet"}, {w:"Kino", h:"Repertuar"}, {w:"Szkoła", h:"Dzwonek"}, {w:"Cmentarz", h:"Znicz"}, {w:"ZOO", h:"Klatka"}, {w:"Apteka", h:"Recepta"}, {w:"Biblioteka", h:"Cisza"}, {w:"Basen", h:"Chlor"}, {w:"Stacja Paliw", h:"Hot-dog"}, {w:"Poczta", h:"Awizo"}, {w:"Sąd", h:"Wyrok"}, {w:"Teatr", h:"Kurtyna"}, {w:"Kasyno", h:"Ruletka"}, {w:"Burdel", h:"Czerwony"}, {w:"Cyrk", h:"Klaun"}, {w:"Sauna", h:"Ręcznik"}, {w:"Fryzjer", h:"Strzyżenie"}, {w:"Bar", h:"Piwo"}, {w:"Stadion", h:"Mecz"}, {w:"Muzeum", h:"Obraz"}, {w:"Piekarnia", h:"Chleb"}, {w:"Warzywniak", h:"Ziemniaki"}, {w:"Biuro", h:"Praca"}, {w:"Hotel", h:"Recepcja"}, {w:"Dworzec", h:"Pociąg"}, {w:"Park", h:"Ławka"}, {w:"Plac Zabaw", h:"Huśtawka"}
+    {w:"Więzienie", h:"Gryps"}, {w:"Szpital", h:"NFZ"}, {w:"Kościół", h:"Taca"}, {w:"Lotnisko", h:"Odprawa"}, {w:"Plaża", h:"Parawan"}, {w:"Las", h:"Kleszcz"}, {w:"Siłownia", h:"Karnet"}, {w:"Kino", h:"Repertuar"}, {w:"Szkoła", h:"Dzwonek"}, {w:"Cmentarz", h:"Znicz"}, {w:"ZOO", h:"Klatka"}, {w:"Apteka", h:"Recepta"}, {w:"Biblioteka", h:"Cisza"}, {w:"Basen", h:"Chlor"}, {w:"Stacja Paliw", h:"Hot-dog"}, {w:"Poczta", h:"Awizo"}, {w:"Sąd", h:"Wyrok"}, {w:"Teatr", h:"Kurtyna"}, {w:"Kasyno", h:"Ruletka"}, {w:"Burdel", h:"Czerwony"}, {w:"Cyrk", h:"Klaun"}, {w:"Sauna", h:"Ręcznik"}, {w:"Fryzjer", h:"Strzyżenie"}, {w:"Bar", h:"Piwo"}, {w:"Stadion", h:"Mecz"}, {w:"Muzeum", h:"Obraz"}, {w:"Piekarnia", h:"Chleb"}, {w:"Warzywniak", h:"Ziemniaki"}, {w:"Biuro", h:"Praca"}, {w:"Hotel", h:"Recepcja"}, {w:"Dworzec", h:"Pociąg"}, {w:"Park", h:"Ławka"}, {w:"Plac Zabaw", h:"Huśtawka"}, {w:"Winda", h:"Guzik"}, {w:"Piwnica", h:"Słoiki"}, {w:"Strych", h:"Kurz"}
   ],
   "Przedmioty": [
-    {w:"Telefon", h:"Ładowarka"}, {w:"Lustro", h:"Odbicie"}, {w:"Zegar", h:"Czas"}, {w:"Portfel", h:"Grosz"}, {w:"Pilot", h:"Baterie"}, {w:"Parasol", h:"Deszcz"}, {w:"Laptop", h:"Myszka"}, {w:"Lodówka", h:"Szron"}, {w:"Długopis", h:"Wkład"}, {w:"Papier toaletowy", h:"Rolka"}, {w:"Klucze", h:"Brelok"}, {w:"Okulary", h:"Szkła"}, {w:"Buty", h:"Sznurowadła"}, {w:"Plecak", h:"Zamek"}, {w:"Krzesło", h:"Oparcie"}, {w:"Widelec", h:"Zęby"}, {w:"Szczoteczka", h:"Pasta"}, {w:"Gąbka", h:"Piana"}, {w:"Grzebień", h:"Włosy"}, {w:"Słuchawki", h:"Muzyka"}, {w:"Łóżko", h:"Kołdra"}, {w:"Dywan", h:"Podłoga"}, {w:"Lampa", h:"Żarówka"}, {w:"Ręcznik", h:"Woda"}, {w:"Mydło", h:"Kostka"}, {w:"Skarpetki", h:"Dziura"}, {w:"Czapka", h:"Zima"}, {w:"Talerz", h:"Obiad"}, {w:"Kubek", h:"Ucho"}, {w:"Nożyczki", h:"Cięcie"}, {w:"Kalkulator", h:"Liczenie"}, {w:"Głośnik", h:"Bas"}, {w:"Karta", h:"Bankomat"}, {w:"Zapalniczka", h:"Ogień"}, {w:"Świeczka", h:"Wosk"}
+    {w:"Telefon", h:"Ładowarka"}, {w:"Lustro", h:"Odbicie"}, {w:"Zegar", h:"Czas"}, {w:"Portfel", h:"Grosz"}, {w:"Pilot", h:"Baterie"}, {w:"Parasol", h:"Deszcz"}, {w:"Laptop", h:"Myszka"}, {w:"Lodówka", h:"Szron"}, {w:"Długopis", h:"Wkład"}, {w:"Papier toaletowy", h:"Rolka"}, {w:"Klucze", h:"Brelok"}, {w:"Okulary", h:"Szkła"}, {w:"Buty", h:"Sznurowadła"}, {w:"Plecak", h:"Zamek"}, {w:"Krzesło", h:"Oparcie"}, {w:"Widelec", h:"Zęby"}, {w:"Szczoteczka", h:"Pasta"}, {w:"Gąbka", h:"Piana"}, {w:"Grzebień", h:"Włosy"}, {w:"Słuchawki", h:"Muzyka"}, {w:"Łóżko", h:"Kołdra"}, {w:"Dywan", h:"Podłoga"}, {w:"Lampa", h:"Żarówka"}, {w:"Ręcznik", h:"Woda"}, {w:"Mydło", h:"Kostka"}, {w:"Skarpetki", h:"Dziura"}, {w:"Czapka", h:"Zima"}, {w:"Talerz", h:"Obiad"}, {w:"Kubek", h:"Ucho"}, {w:"Nożyczki", h:"Cięcie"}, {w:"Kalkulator", h:"Liczenie"}, {w:"Głośnik", h:"Bas"}, {w:"Karta", h:"Bankomat"}, {w:"Zapalniczka", h:"Ogień"}, {w:"Świeczka", h:"Wosk"}, {w:"Miotła", h:"Zamiatanie"}, {w:"Odkurzacz", h:"Worek"}, {w:"Pralka", h:"Wirowanie"}
   ],
   "Jedzenie": [
-    {w:"Pizza", h:"Ciasto"}, {w:"Sushi", h:"Surowe"}, {w:"Kebab", h:"Baranina"}, {w:"Rosół", h:"Niedziela"}, {w:"Schabowy", h:"Panierka"}, {w:"Lody", h:"Gałka"}, {w:"Pierogi", h:"Farsz"}, {w:"Bigos", h:"Kapusta"}, {w:"Pączek", h:"Lukier"}, {w:"Spaghetti", h:"Nitki"}, {w:"Burger", h:"Bułka"}, {w:"Frytki", h:"Ketchup"}, {w:"Jajecznica", h:"Śniadanie"}, {w:"Kanapka", h:"Masło"}, {w:"Zupa", h:"Łyżka"}, {w:"Czekolada", h:"Kostka"}, {w:"Tort", h:"Świeczka"}, {w:"Popcorn", h:"Kukurydza"}, {w:"Ogórek", h:"Kiszon"}, {w:"Pomidor", h:"Czerwony"}, {w:"Chipsy", h:"Paczka"}, {w:"Parówka", h:"Mięso?"}, {w:"Ser", h:"Dziury"}, {w:"Chleb", h:"Skórka"}, {w:"Jajko", h:"Żółtko"}, {w:"Masło", h:"Smarowanie"}, {w:"Jabłko", h:"Ogryzek"}, {w:"Banan", h:"Skórka"}, {w:"Woda", h:"Kran"}, {w:"Cola", h:"Bąbelki"}, {w:"Herbata", h:"Torebka"}, {w:"Kawa", h:"Kofeina"}, {w:"Ryż", h:"Biały"}, {w:"Makaron", h:"Włochy"}, {w:"Sernik", h:"Rodzynki"}
+    {w:"Pizza", h:"Ciasto"}, {w:"Sushi", h:"Surowe"}, {w:"Kebab", h:"Baranina"}, {w:"Rosół", h:"Niedziela"}, {w:"Schabowy", h:"Panierka"}, {w:"Lody", h:"Gałka"}, {w:"Pierogi", h:"Farsz"}, {w:"Bigos", h:"Kapusta"}, {w:"Pączek", h:"Lukier"}, {w:"Spaghetti", h:"Nitki"}, {w:"Burger", h:"Bułka"}, {w:"Frytki", h:"Ketchup"}, {w:"Jajecznica", h:"Śniadanie"}, {w:"Kanapka", h:"Masło"}, {w:"Zupa", h:"Łyżka"}, {w:"Czekolada", h:"Kostka"}, {w:"Tort", h:"Świeczka"}, {w:"Popcorn", h:"Kukurydza"}, {w:"Ogórek", h:"Kiszon"}, {w:"Pomidor", h:"Czerwony"}, {w:"Chipsy", h:"Paczka"}, {w:"Parówka", h:"Mięso?"}, {w:"Ser", h:"Dziury"}, {w:"Chleb", h:"Skórka"}, {w:"Jajko", h:"Żółtko"}, {w:"Masło", h:"Smarowanie"}, {w:"Jabłko", h:"Ogryzek"}, {w:"Banan", h:"Skórka"}, {w:"Woda", h:"Kran"}, {w:"Cola", h:"Bąbelki"}, {w:"Herbata", h:"Torebka"}, {w:"Kawa", h:"Kofeina"}, {w:"Ryż", h:"Biały"}, {w:"Makaron", h:"Włochy"}, {w:"Sernik", h:"Rodzynki"}, {w:"Szarlotka", h:"Cynamon"}, {w:"Placki", h:"Ziemniaczane"}
   ],
   "Zwierzęta": [
-    {w:"Pies", h:"Smycz"}, {w:"Kot", h:"Kuweta"}, {w:"Żyrafa", h:"Szyja"}, {w:"Kura", h:"Rosół"}, {w:"Świnia", h:"Chlew"}, {w:"Pszczoła", h:"Ul"}, {w:"Komar", h:"Krew"}, {w:"Mysz", h:"Pułapka"}, {w:"Wąż", h:"Jad"}, {w:"Słoń", h:"Trąba"}, {w:"Rekin", h:"Płetwa"}, {w:"Pingwin", h:"Fraku"}, {w:"Małpa", h:"Banan"}, {w:"Krowa", h:"Mleko"}, {w:"Koń", h:"Siodło"}, {w:"Ryba", h:"Woda"}, {w:"Pająk", h:"Sieć"}, {w:"Wilk", h:"Wataha"}, {w:"Niedźwiedź", h:"Miodek"}, {w:"Delfin", h:"Ssak"}, {w:"Motyl", h:"Kok"}, {w:"Żaba", h:"Bocian"}, {w:"Lis", h:"Chytry"}, {w:"Sowa", h:"Noc"}, {w:"Biedronka", h:"Kropki"}, {w:"Ślimak", h:"Muszla"}, {w:"Jeż", h:"Igły"}, {w:"Chomik", h:"Kołowrotek"}, {w:"Papuga", h:"Gadanie"}, {w:"Zebra", h:"Paski"}, {w:"Lew", h:"Król"}, {w:"Tygrys", h:"Dżungla"}, {w:"Wiewiórka", h:"Orzech"}, {w:"Krokodyl", h:"Zęby"}, {w:"Hipopotam", h:"Gruby"}
+    {w:"Pies", h:"Smycz"}, {w:"Kot", h:"Kuweta"}, {w:"Żyrafa", h:"Szyja"}, {w:"Kura", h:"Rosół"}, {w:"Świnia", h:"Chlew"}, {w:"Pszczoła", h:"Ul"}, {w:"Komar", h:"Krew"}, {w:"Mysz", h:"Pułapka"}, {w:"Wąż", h:"Jad"}, {w:"Słoń", h:"Trąba"}, {w:"Rekin", h:"Płetwa"}, {w:"Pingwin", h:"Fraku"}, {w:"Małpa", h:"Banan"}, {w:"Krowa", h:"Mleko"}, {w:"Koń", h:"Siodło"}, {w:"Ryba", h:"Woda"}, {w:"Pająk", h:"Sieć"}, {w:"Wilk", h:"Wataha"}, {w:"Niedźwiedź", h:"Miodek"}, {w:"Delfin", h:"Ssak"}, {w:"Motyl", h:"Kok"}, {w:"Żaba", h:"Bocian"}, {w:"Lis", h:"Chytry"}, {w:"Sowa", h:"Noc"}, {w:"Biedronka", h:"Kropki"}, {w:"Ślimak", h:"Muszla"}, {w:"Jeż", h:"Igły"}, {w:"Chomik", h:"Kołowrotek"}, {w:"Papuga", h:"Gadanie"}, {w:"Zebra", h:"Paski"}, {w:"Lew", h:"Król"}, {w:"Tygrys", h:"Dżungla"}, {w:"Wiewiórka", h:"Orzech"}, {w:"Krokodyl", h:"Zęby"}, {w:"Hipopotam", h:"Gruby"}, {w:"Wielbłąd", h:"Garb"}, {w:"Panda", h:"Bambus"}
   ]
 };
 
@@ -357,18 +381,17 @@ const nav = {
 /* SYSTEM KONFETTI */
 function spawnConfetti(emoji) {
   const container = document.getElementById('confetti-layer');
-  const count = 35; // Ilość cząsteczek
+  const count = 40; 
   
   for (let i = 0; i < count; i++) {
     const el = document.createElement('div');
     el.classList.add('confetti');
     el.innerText = emoji;
     el.style.left = Math.random() * 100 + 'vw';
-    el.style.animationDuration = (Math.random() * 2 + 2) + 's'; // 2-4s
+    el.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
     el.style.fontSize = (Math.random() * 20 + 20) + 'px';
     container.appendChild(el);
     
-    // Usuń po animacji
     setTimeout(() => el.remove(), 4000);
   }
 }
@@ -463,19 +486,18 @@ const game = {
     avatarEl.style.background = ''; 
     avatarEl.style.fontSize = '';   
 
-    // --- LOGIKA EMOJI + KONFETTI ---
+    // KONFETTI LOGIC - triggers when card is READY (before flip) but visual only when flipped?
+    // NO, user wants confetti ON REVEAL. So we trigger it in 'flip' function.
+    
     if (nameLower === 'lisek') {
         avatarEl.innerText = '🦊';
         avatarEl.style.background = 'linear-gradient(135deg, #f97316, #ea580c)';
-        spawnConfetti('🦊');
     } else if (nameLower === 'pizdel' || nameLower === 'dell') {
         avatarEl.innerText = '🧟';
         avatarEl.style.background = 'linear-gradient(135deg, #84cc16, #65a30d)';
-        spawnConfetti('🧟');
     } else if (nameLower === 'brzydal' || nameLower === 'brzydki') {
         avatarEl.innerText = '🚖';
         avatarEl.style.background = 'linear-gradient(135deg, #facc15, #eab308)';
-        spawnConfetti('🚖');
     } else {
         avatarEl.innerText = data.name[0].toUpperCase();
     }
@@ -511,7 +533,16 @@ const game = {
   flip: function() {
     const card = document.getElementById('game-card');
     if(card.classList.contains('flipped')) return;
+    
     card.classList.add('flipped');
+    
+    // TRIGGER CONFETTI ON FLIP
+    const data = this.currentRoleData[this.currIdx];
+    const nameLower = data.name.toLowerCase().trim();
+    if (nameLower === 'lisek') spawnConfetti('🦊');
+    else if (nameLower === 'pizdel' || nameLower === 'dell') spawnConfetti('🧟');
+    else if (nameLower === 'brzydal' || nameLower === 'brzydki') spawnConfetti('🚖');
+
     setTimeout(() => {
       document.getElementById('card-controls').classList.remove('hidden');
       const isLast = this.currIdx === this.currentRoleData.length - 1;
