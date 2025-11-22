@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>IMPOSTOR LISEK</title>
+<title>IMPOSTOR FAIR PLAY</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@
     position: relative;
   }
 
-  /* TŁO - WARSTWA NAJNIŻSZA (-2) */
+  /* TŁO */
   .bg-mesh {
     position: fixed; inset: -50%;
     background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15), transparent 60%),
@@ -44,10 +44,10 @@
     100% { transform: rotate(10deg) scale(1.1); }
   }
 
-  /* KONFETTI - WARSTWA ŚRODKOWA (0) - ZA KARTĄ */
+  /* KONFETTI - POD SPODEM */
   .confetti-container {
     position: fixed; inset: 0; pointer-events: none; 
-    z-index: 0; /* Pod interfejsem, nad tłem */
+    z-index: 0; 
     overflow: hidden;
   }
   .confetti {
@@ -62,13 +62,13 @@
 
   .hidden { display: none !important; }
   
-  /* INTERFEJS - WARSTWA NAJWYŻSZA (2) */
+  /* UI - NA WIERZCHU */
   .container {
     height: 100%; display: flex; flex-direction: column; 
     padding: env(safe-area-inset-top) 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     width: 100%; max-width: 500px; margin: 0 auto; overflow-y: auto;
     position: relative; 
-    z-index: 2; /* Musi być wyżej niż konfetti */
+    z-index: 2;
     scrollbar-width: none;
   }
   .container::-webkit-scrollbar { display: none; }
@@ -133,9 +133,9 @@
   .scene { width: 100%; height: 50vh; min-height: 380px; perspective: 1200px; margin: 20px 0 30px 0; cursor: pointer; }
   .card { 
     width: 100%; height: 100%; position: relative; 
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Szybsza animacja */
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     transform-style: preserve-3d;
-    will-change: transform; /* FIX WYDAJNOŚCI */
+    will-change: transform;
   }
   .card.flipped { transform: rotateY(180deg); }
   .face {
@@ -160,18 +160,12 @@
   .hint-val { font-size: 24px; font-weight: 800; color: var(--accent); }
   .is-impostor .hint-val { color: var(--impostor); }
 
-  /* FIX MIGNIĘCIA TEKSTU */
+  /* FIX MIGNIĘCIA */
   .tap-hint {
     margin-top: 40px; font-size: 12px; font-weight: 800; opacity: 0.6; 
-    animation: pulse 2s infinite;
-    transition: opacity 0.1s; /* Szybkie znikanie */
+    animation: pulse 2s infinite; transition: opacity 0.1s;
   }
-  /* Gdy karta obrócona - ukryj tekst natychmiast */
-  .card.flipped .tap-hint {
-    opacity: 0 !important;
-    visibility: hidden;
-    animation: none;
-  }
+  .card.flipped .tap-hint { opacity: 0 !important; visibility: hidden; animation: none; }
 
   .timer { font-size: 110px; font-weight: 900; margin: 30px 0; text-align: center; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
   
@@ -197,7 +191,6 @@
 <body>
 
 <div class="bg-mesh"></div>
-<!-- Konfetti jest teraz niżej w strukturze DOM i ma niższy z-index -->
 <div id="confetti-layer" class="confetti-container"></div>
 
 <!-- MENU -->
@@ -206,9 +199,9 @@
   <div class="sub-title">by Lisek & Gemini</div>
   <div style="margin: 40px 0;">
     <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--accent);">
-      <span style="font-size:50px">💎</span>
-      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">GOD MODE</h3>
-      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">LISEK CWEL EDITION</p>
+      <span style="font-size:50px">⚖️</span>
+      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">FAIR PLAY</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Impostor tylko raz na cykl</p>
     </div>
   </div>
   <button class="btn primary" onclick="nav.to('v-setup')">ROZPOCZNIJ GRĘ</button>
@@ -324,7 +317,7 @@
 </div>
 
 <script>
-/* --- BAZA DANYCH GIGANT (MAX) --- */
+/* --- BAZA DANYCH (MAX) --- */
 const DB = {
   "Polskie Rap Hity": [
     {w:"Szklanki", h:"🥃💃"}, {w:"Kiss Cam", h:"💋🎥"}, {w:"Złote Tarasy", h:"🏬✨"}, {w:"Patointeligencja", h:"🏫🚬"}, {w:"Disney", h:"🏰🎢"}, {w:"Ostatnia Nadzieja", h:"🙏💔"}, {w:"Polskie Tango", h:"🇵🇱💃"}, {w:"Szampan", h:"🍾🥂"}, {w:"California", h:"🌴☀️"}, {w:"Jetlag", h:"✈️😴"}, {w:"Lawenda", h:"🪻💜"}, {w:"Dres", h:"👕👟"}, {w:"BFF", h:"👯‍♀️💖"}, {w:"Taxi", h:"🚖🌃"}, {w:"Malibu Barbie", h:"🍹👱‍♀️"}, {w:"Chyba że z Tobą", h:"💃🕺"}, {w:"Stan", h:"☁️🎈"}, {w:"Piękny świat", h:"🌍✨"}, {w:"Bubbletea", h:"🧋"}, {w:"100 dni do matury", h:"🎓💯"}, {w:"Tamagotchi", h:"👾"}, {w:"Język ciała", h:"👅"}, {w:"Candy", h:"🍬"}, {w:"Szafir", h:"💎"}, {w:"Molly", h:"💊"}, {w:"Ogrody", h:"🌳"}, {w:"Papuga", h:"🦜"}, {w:"Bigos", h:"🥘"}, {w:"Deszcz", h:"☔️"}, {w:"Kebab w cienkim", h:"🥙"}, {w:"Gelato", h:"🍦"}, {w:"Rower", h:"🚲"}, {w:"Pijemy za lepszy czas", h:"🍻"}, {w:"Ona by tak chciała", h:"🔥"}, {w:"Eldorado", h:"💰"}, {w:"Sierpień", h:"🗓️"}, {w:"Modelki", h:"👠"}, {w:"Bungee", h:"🪢"}, {w:"Plecak", h:"🎒"}, {w:"Dom", h:"🏠"}, {w:"Wiatr", h:"💨"}, {w:"Kawasaki", h:"🏍️"}, {w:"Gugu", h:"👶"}, {w:"Trap", h:"🕸️"}, {w:"Audi", h:"🚗"}, {w:"Zioło", h:"🌿"}
@@ -398,7 +391,8 @@ function spawnConfetti(emoji) {
 
 const game = {
   players: ["Pizdel", "Brzydal", "Lisek"],
-  impostorHistory: {}, currentRoleData: [], wordData: null, hintOn: true, time: 120, timer: null, currIdx: 0,
+  pastImpostors: [], // Historia Impostorów w bieżącym cyklu
+  currentRoleData: [], wordData: null, hintOn: true, time: 120, timer: null, currIdx: 0,
 
   addPlayer: function() { this.players.push(""); this.renderPlayers(); },
   renderPlayers: function() {
@@ -446,20 +440,28 @@ const game = {
     const wObj = list[Math.floor(Math.random() * list.length)];
     this.wordData = { ...wObj, cat: cat };
 
-    let impIdx, safety = 0;
-    do {
-      impIdx = Math.floor(Math.random() * pList.length);
-      const name = pList[impIdx];
-      const streak = this.impostorHistory[name] || 0;
-      if (streak < 2) break; 
-      safety++;
-    } while (safety < 20);
-    pList.forEach((name, i) => {
-      if (i === impIdx) this.impostorHistory[name] = (this.impostorHistory[name] || 0) + 1;
-      else this.impostorHistory[name] = 0;
-    });
+    // --- LOGIKA: IMPOSTOR TYLKO RAZ ---
+    let eligible = pList.filter(name => !this.pastImpostors.includes(name));
+    
+    // Jeśli wszyscy już byli, resetujemy listę
+    if (eligible.length === 0) {
+        this.pastImpostors = [];
+        eligible = pList;
+        // Opcjonalnie: alert("Nowy cykl! Wszyscy znów mogą być Impostorem.");
+    }
 
-    this.currentRoleData = pList.map((name, i) => ({ name: name, isImp: i === impIdx }));
+    // Losowanie Impostera spośród "czystych"
+    const impName = eligible[Math.floor(Math.random() * eligible.length)];
+    
+    // Dodanie do historii
+    this.pastImpostors.push(impName);
+
+    // Przypisanie ról
+    this.currentRoleData = pList.map(name => ({
+        name: name,
+        isImp: name === impName
+    }));
+
     // Shuffle order
     for (let i = this.currentRoleData.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -486,9 +488,7 @@ const game = {
     avatarEl.style.background = ''; 
     avatarEl.style.fontSize = '';   
 
-    // KONFETTI LOGIC - triggers when card is READY (before flip) but visual only when flipped?
-    // NO, user wants confetti ON REVEAL. So we trigger it in 'flip' function.
-    
+    // --- LOGIKA AWATARÓW ---
     if (nameLower === 'lisek') {
         avatarEl.innerText = '🦊';
         avatarEl.style.background = 'linear-gradient(135deg, #f97316, #ea580c)';
