@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>IMPOSTOR EMOJI MODE</title>
+<title>IMPOSTOR FIXED</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -44,16 +44,13 @@
     100% { transform: rotate(10deg) scale(1.1); }
   }
 
-  /* KONFETTI - WARSTWA ŚRODKOWA (0) - ZA KARTĄ */
+  /* KONFETTI */
   .confetti-container {
-    position: fixed; inset: 0; pointer-events: none; 
-    z-index: 0; 
-    overflow: hidden;
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
   }
   .confetti {
     position: absolute; top: -50px;
-    font-size: 28px;
-    opacity: 0.8;
+    font-size: 28px; opacity: 0.8;
     animation: fall linear forwards;
   }
   @keyframes fall {
@@ -62,14 +59,12 @@
 
   .hidden { display: none !important; }
   
-  /* INTERFEJS - WARSTWA NAJWYŻSZA (2) */
+  /* UI */
   .container {
     height: 100%; display: flex; flex-direction: column; 
     padding: env(safe-area-inset-top) 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     width: 100%; max-width: 500px; margin: 0 auto; overflow-y: auto;
-    position: relative; 
-    z-index: 2; 
-    scrollbar-width: none;
+    position: relative; z-index: 2; scrollbar-width: none;
   }
   .container::-webkit-scrollbar { display: none; }
 
@@ -131,12 +126,7 @@
   .cat-item.rap .cat-name { color: #d8b4fe; }
 
   .scene { width: 100%; height: 50vh; min-height: 380px; perspective: 1200px; margin: 20px 0 30px 0; cursor: pointer; }
-  .card { 
-    width: 100%; height: 100%; position: relative; 
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    transform-style: preserve-3d;
-    will-change: transform;
-  }
+  .card { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); transform-style: preserve-3d; will-change: transform; }
   .card.flipped { transform: rotateY(180deg); }
   .face {
     position: absolute; inset: 0; backface-visibility: hidden; border-radius: 32px;
@@ -160,11 +150,7 @@
   .hint-val { font-size: 24px; font-weight: 800; color: var(--accent); }
   .is-impostor .hint-val { color: var(--impostor); }
 
-  /* FIX MIGNIĘCIA TEKSTU */
-  .tap-hint {
-    margin-top: 40px; font-size: 12px; font-weight: 800; opacity: 0.6; 
-    animation: pulse 2s infinite; transition: opacity 0.1s;
-  }
+  .tap-hint { margin-top: 40px; font-size: 12px; font-weight: 800; opacity: 0.6; animation: pulse 2s infinite; transition: opacity 0.1s; }
   .card.flipped .tap-hint { opacity: 0 !important; visibility: hidden; animation: none; }
 
   .timer { font-size: 110px; font-weight: 900; margin: 30px 0; text-align: center; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
@@ -199,9 +185,9 @@
   <div class="sub-title">by Lisek & Gemini</div>
   <div style="margin: 40px 0;">
     <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--accent);">
-      <span style="font-size:50px">🎭</span>
-      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">TRYB EMOJI</h3>
-      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Utrudnienie dla Impostora</p>
+      <span style="font-size:50px">👑</span>
+      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">CORRECTED</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Pełna kontrola Emoji/Tekst</p>
     </div>
   </div>
   <button class="btn primary" onclick="nav.to('v-setup')">ROZPOCZNIJ GRĘ</button>
@@ -218,7 +204,6 @@
   <div class="cat-grid" id="cat-grid"></div>
   <label>Zasady</label>
   
-  <!-- NOWY PRZEŁĄCZNIK EMOJI -->
   <div class="setting-row">
     <span style="font-size:14px; font-weight:600; color:#fbbf24;">TRYB EMOJI (DLA WSZYSTKICH)</span>
     <label class="switch"><input type="checkbox" id="opt-emoji-all"><span class="slider"></span></label>
@@ -324,10 +309,10 @@
 </div>
 
 <script>
-/* --- BAZA DANYCH Z EMOJI DLA KAŻDEGO SŁOWA --- */
+/* --- BAZA DANYCH Z NAPRAWIONYMI TEKSTAMI W RAP HITACH --- */
 const DB = {
   "Polskie Rap Hity": [
-    {w:"Szklanki", h:"🥃💃", e:"🥃"}, {w:"Kiss Cam", h:"💋🎥", e:"💋"}, {w:"Złote Tarasy", h:"🏬✨", e:"🏬"}, {w:"Patointeligencja", h:"🏫🚬", e:"🏫"}, {w:"Disney", h:"🏰🎢", e:"🏰"}, {w:"Ostatnia Nadzieja", h:"🙏💔", e:"💔"}, {w:"Polskie Tango", h:"🇵🇱💃", e:"🇵🇱"}, {w:"Szampan", h:"🍾🥂", e:"🍾"}, {w:"California", h:"🌴☀️", e:"🌴"}, {w:"Jetlag", h:"✈️😴", e:"✈️"}, {w:"Lawenda", h:"🪻💜", e:"💜"}, {w:"Dres", h:"👕👟", e:"👕"}, {w:"BFF", h:"👯‍♀️💖", e:"👯‍♀️"}, {w:"Taxi", h:"🚖🌃", e:"🚖"}, {w:"Malibu Barbie", h:"🍹👱‍♀️", e:"🍹"}, {w:"Chyba że z Tobą", h:"💃🕺", e:"💃"}, {w:"Stan", h:"☁️🎈", e:"☁️"}, {w:"Piękny świat", h:"🌍✨", e:"🌍"}, {w:"Bubbletea", h:"🧋", e:"🧋"}, {w:"100 dni do matury", h:"🎓💯", e:"🎓"}, {w:"Tamagotchi", h:"👾", e:"👾"}, {w:"Język ciała", h:"👅", e:"👅"}, {w:"Candy", h:"🍬", e:"🍬"}, {w:"Szafir", h:"💎", e:"💎"}, {w:"Molly", h:"💊", e:"💊"}, {w:"Ogrody", h:"🌳", e:"🌳"}, {w:"Papuga", h:"🦜", e:"🦜"}, {w:"Bigos", h:"🥘", e:"🥘"}, {w:"Deszcz", h:"☔️", e:"☔️"}, {w:"Kebab w cienkim", h:"🥙", e:"🥙"}, {w:"Gelato", h:"🍦", e:"🍦"}, {w:"Rower", h:"🚲", e:"🚲"}, {w:"Pijemy za lepszy czas", h:"🍻", e:"🍻"}, {w:"Ona by tak chciała", h:"🔥", e:"🔥"}, {w:"Eldorado", h:"💰", e:"💰"}, {w:"Sierpień", h:"🗓️", e:"🗓️"}, {w:"Modelki", h:"👠", e:"👠"}, {w:"Bungee", h:"🪢", e:"🪢"}, {w:"Plecak", h:"🎒", e:"🎒"}, {w:"Dom", h:"🏠", e:"🏠"}, {w:"Wiatr", h:"💨", e:"💨"}, {w:"Kawasaki", h:"🏍️", e:"🏍️"}, {w:"Gugu", h:"👶", e:"👶"}, {w:"Trap", h:"🕸️", e:"🕸️"}, {w:"Audi", h:"🚗", e:"🚗"}, {w:"Zioło", h:"🌿", e:"🌿"}
+    {w:"Szklanki", h:"Young Leosia", e:"🥃"}, {w:"Kiss Cam", h:"Mata", e:"💋"}, {w:"Złote Tarasy", h:"Bedoes", e:"🏬"}, {w:"Patointeligencja", h:"Mata Liceum", e:"🏫"}, {w:"Disney", h:"Kizo", e:"🏰"}, {w:"Ostatnia Nadzieja", h:"Sobel", e:"💔"}, {w:"Polskie Tango", h:"Taco", e:"🇵🇱"}, {w:"Szampan", h:"Sanah", e:"🍾"}, {w:"California", h:"White 2115", e:"🌴"}, {w:"Jetlag", h:"Malik", e:"✈️"}, {w:"Lawenda", h:"Bedoes", e:"💜"}, {w:"Dres", h:"Kizo", e:"👕"}, {w:"BFF", h:"Bambi", e:"👯‍♀️"}, {w:"Taxi", h:"Kizo", e:"🚖"}, {w:"Malibu Barbie", h:"Club 2020", e:"🍹"}, {w:"Chyba że z Tobą", h:"Modelki", e:"💃"}, {w:"Stan", h:"Sobel", e:"☁️"}, {w:"Piękny świat", h:"Gibbs", e:"🌍"}, {w:"Bubbletea", h:"Quebo", e:"🧋"}, {w:"100 dni do matury", h:"Mata", e:"🎓"}, {w:"Tamagotchi", h:"Taco", e:"👾"}, {w:"Język ciała", h:"Tymek", e:"👅"}, {w:"Candy", h:"Quebo", e:"🍬"}, {w:"Szafir", h:"Mata", e:"💎"}, {w:"Molly", h:"ReTo", e:"💊"}, {w:"Ogrody", h:"Kukon", e:"🌳"}, {w:"Papuga", h:"Mata", e:"🦜"}, {w:"Bigos", h:"Kabe", e:"🥘"}, {w:"Deszcz", h:"Taco", e:"☔️"}, {w:"Kebab w cienkim", h:"Smolasty", e:"🥙"}, {w:"Gelato", h:"Kukon", e:"🍦"}, {w:"Rower", h:"Lech Rocher", e:"🚲"}, {w:"Pijemy za lepszy czas", h:"Smolasty", e:"🍻"}, {w:"Ona by tak chciała", h:"Ronnie Ferrari", e:"🔥"}, {w:"Eldorado", h:"Bedoes", e:"💰"}, {w:"Sierpień", h:"Oki", e:"🗓️"}, {w:"Modelki", h:"Sobel", e:"👠"}, {w:"Bungee", h:"Gibbs", e:"🪢"}, {w:"Plecak", h:"Białas", e:"🎒"}, {w:"Dom", h:"Bitamina", e:"🏠"}, {w:"Wiatr", h:"Oki", e:"💨"}, {w:"Kawasaki", h:"Żabson", e:"🏍️"}, {w:"Gugu", h:"Szpaku", e:"👶"}, {w:"Trap", h:"White", e:"🕸️"}, {w:"Audi", h:"ReTo", e:"🚗"}, {w:"Zioło", h:"Sarius", e:"🌿"}
   ],
   "Polscy Raperzy": [
     {w:"Taco Hemingway", h:"Wąs", e:"👨🏻"}, {w:"Quebonafide", h:"Egzotyka", e:"🗺️"}, {w:"Mata", h:"Patoreakcja", e:"🤬"}, {w:"Bedoes", h:"2115", e:"🐻"}, {w:"Oki", h:"Jeżyk", e:"🦔"}, {w:"Kizo", h:"Kawa", e:"☕"}, {w:"Żabson", h:"Żabka", e:"🐸"}, {w:"Kukon", h:"Ogrody", e:"🌹"}, {w:"Szpaku", h:"Simba", e:"🦁"}, {w:"Pezet", h:"Płomień", e:"🔥"}, {w:"Sokół", h:"Narrator", e:"🎤"}, {w:"Paluch", h:"BOR", e:"🦾"}, {w:"Malik Montana", h:"Import", e:"📦"}, {w:"White 2115", h:"Łajcior", e:"⚪"}, {w:"Sobel", h:"Impreza", e:"🎉"}, {w:"Young Leosia", h:"Hulanki", e:"💃"}, {w:"Bambi", h:"IRL", e:"🦌"}, {w:"Otsochodzi", h:"Tarcho", e:"🏢"}, {w:"Gibbs", h:"Dopehouse", e:"🏠"}, {w:"Chivas", h:"Młody", e:"👶"}, {w:"Kaz Bałagane", h:"Stolica", e:"🌆"}, {w:"ReTo", h:"Klapki", e:"🩴"}, {w:"Guzior", h:"Mefedron", e:"💊"}, {w:"Sarius", h:"Antihype", e:"🚫"}, {w:"Paktofonika", h:"Jestem Bogiem", e:"😇"}, {w:"Liroy", h:"Scyzoryk", e:"🔪"}, {w:"Tede", h:"TVN", e:"📺"}, {w:"O.S.T.R.", h:"Skrzypce", e:"🎻"}, {w:"Peja", h:"Jeżyce", e:"🏢"}, {w:"Popek", h:"Oczy", e:"👀"}, {w:"Kabe", h:"Francja", e:"🇫🇷"}, {w:"Alberto", h:"Dwutakt", e:"🏀"}, {w:"Smolasty", h:"Duże Oczy", e:"👀"}, {w:"Mr. Polska", h:"Holandia", e:"🇳🇱"}, {w:"Fifi", h:"WWA", e:"🌇"}, {w:"Belmondo", h:"Młody G", e:"🧼"}, {w:"Jan-Rapowanie", h:"Kraków", e:"🥨"}, {w:"KęKę", h:"Radom", e:"📮"}, {w:"Białas", h:"SB Maffija", e:"🐝"}, {w:"Solar", h:"Fotowoltaika", e:"☀️"}, {w:"Wac Toja", h:"Kapitan", e:"⚓"}, {w:"Szamz", h:"Głos", e:"🗣️"}, {w:"Kinny Zimmer", h:"Zuch", e:"⚜️"}, {w:"Fukaj", h:"Szczecin", e:"🚤"}, {w:"Vkie", h:"Kraków", e:"🗡️"}
@@ -510,16 +495,18 @@ const game = {
       let hintText = this.wordData.h;
       let labelText = "PODPOWIEDŹ";
       
-      // LOGIKA EMOJI MODE
-      if (this.wordData.cat === "Polskie Rap Hity" || this.emojiMode) {
+      // --- SZTYWNA LOGIKA EMOJI / TEKST ---
+      if (this.emojiMode) {
+          // Jeśli tryb emoji włączony -> ZAWSZE emoji
           labelText = "EMOJI HINT";
-          // Jeśli jest emoji w bazie, użyj. Jeśli nie, fallback na tekst (ale w tej bazie są wszystkie)
-          hintText = this.wordData.e || hintText; 
+          hintText = this.wordData.e; // Bierzemy z pola 'e'
+      } else {
+          // Jeśli tryb emoji wyłączony -> ZAWSZE tekst
+          labelText = "PODPOWIEDŹ";
+          hintText = this.wordData.h; // Bierzemy z pola 'h' (teraz wszędzie jest tekst)
       }
 
-      if (!this.hintOn && this.wordData.cat !== "Polskie Rap Hity" && !this.emojiMode) {
-          hintText = "Brak podpowiedzi";
-      }
+      if (!this.hintOn) hintText = "Brak podpowiedzi";
       
       html = `
         <div class="role-tag" style="color:white">TWOJA ROLA</div>
@@ -619,12 +606,16 @@ const game = {
           let hintText = this.wordData.h;
           let labelText = "PODPOWIEDŹ";
           
-          if (this.wordData.cat === "Polskie Rap Hity" || this.emojiMode) {
+          // --- SZTYWNA LOGIKA EMOJI / TEKST ---
+          if (this.emojiMode) {
               labelText = "EMOJI HINT";
-              hintText = this.wordData.e || hintText;
+              hintText = this.wordData.e;
+          } else {
+              labelText = "PODPOWIEDŹ";
+              hintText = this.wordData.h;
           }
           
-          if (!this.hintOn && this.wordData.cat !== "Polskie Rap Hity" && !this.emojiMode) hintText = "Brak podpowiedzi";
+          if (!this.hintOn) hintText = "Brak podpowiedzi";
           
           html = `
             <div class="role-tag">TWOJA ROLA</div>
@@ -659,7 +650,7 @@ const game = {
     const imposter = this.currentRoleData.find(p => p.isImp);
     document.getElementById('rev-imp-name').innerText = imposter.name;
     document.getElementById('rev-word').innerText = this.wordData.w;
-    document.getElementById('rev-hint').innerText = "Podpowiedź: " + this.wordData.h;
+    document.getElementById('rev-hint').innerText = "Podpowiedź: " + (this.emojiMode ? this.wordData.e : this.wordData.h);
     const card = document.getElementById('reveal-card'); card.classList.add('flipped');
     document.getElementById('btn-do-reveal').classList.add('hidden');
     setTimeout(() => { document.getElementById('reveal-details').classList.remove('hidden'); }, 800);
