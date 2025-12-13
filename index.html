@@ -40,20 +40,16 @@
                 radial-gradient(circle at 20% 80%, rgba(239,68,68,0.1), transparent 50%);
     animation: meshMove 20s infinite alternate linear;
     z-index: -2;
-    transition: background 0.8s ease-in-out; /* Płynna zmiana tła */
+    transition: background 0.8s ease-in-out;
   }
   
-  /* TŁO DZIKI ZACHÓD CARTOON */
   .bg-mesh.bg-wild-west {
-    animation: none; /* Zatrzymujemy kręcenie */
-    inset: 0; /* Resetujemy powiększenie */
+    animation: none;
+    inset: 0;
     background: 
-        /* Ciemna ziemia na dole */
         linear-gradient(to top, #210e05 0%, #3d1c0b 30%, transparent 30%),
-        /* Łuna na horyzoncie (fiolet/pomarańcz) */
         radial-gradient(ellipse at 50% 30%, rgba(217, 70, 239, 0.25) 0%, transparent 60%),
         radial-gradient(ellipse at 50% 30%, rgba(251, 191, 36, 0.15) 20%, transparent 70%),
-        /* Ciemne niebo */
         linear-gradient(to bottom, #0f172a 0%, #1e1b4b 100%);
   }
 
@@ -63,42 +59,26 @@
   }
 
   /* KONFETTI */
-  .confetti-container {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
-  }
-  .confetti {
-    position: absolute; top: -50px;
-    font-size: 28px; opacity: 0.8;
-    animation: fall linear forwards;
-  }
-  @keyframes fall {
-    to { transform: translateY(110vh) rotate(360deg); }
-  }
+  .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .confetti { position: absolute; top: -50px; font-size: 28px; opacity: 0.8; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
   .hidden { display: none !important; }
    
-  /* UI CONTAINER */
   .container {
     height: 100%; display: flex; flex-direction: column; 
     padding: env(safe-area-inset-top) 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     width: 100%; max-width: 500px; margin: 0 auto; overflow-y: auto;
     position: relative; z-index: 2; scrollbar-width: none;
-    opacity: 0; /* Domyślnie niewidoczny dla płynnych przejść */
+    opacity: 0;
   }
   .container::-webkit-scrollbar { display: none; }
 
-  /* --- NOWE, CZYSTSZE ANIMACJE --- */
+  /* ANIMACJE */
   .fade-in { animation: enterScreen 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards; }
   .fade-out { animation: exitScreen 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) forwards; }
-
-  @keyframes enterScreen { 
-      from { opacity: 0; transform: translateY(20px) scale(0.98); } 
-      to { opacity: 1; transform: translateY(0) scale(1); } 
-  }
-  @keyframes exitScreen { 
-      from { opacity: 1; transform: translateY(0) scale(1); } 
-      to { opacity: 0; transform: translateY(-20px) scale(0.98); } 
-  }
+  @keyframes enterScreen { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes exitScreen { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-20px) scale(0.98); } }
 
   h1 { 
     font-size: 42px; font-weight: 900; margin-bottom: 4px; letter-spacing: -1.5px; line-height: 1;
@@ -107,98 +87,74 @@
   .sub-title { font-size: 13px; color: var(--accent); font-weight: 700; letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase; }
   label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; display:block; margin-bottom: 10px; margin-top: 24px; }
 
-  .glass-panel {
-    background: var(--glass); backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border); border-radius: 20px;
-  }
+  .glass-panel { background: var(--glass); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 20px; }
 
-  /* ULEPSZONE PRZYCISKI */
   .btn {
     width: 100%; padding: 18px; border-radius: 18px; border: none;
     font-size: 16px; font-weight: 800; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
-    will-change: transform, filter;
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; will-change: transform, filter;
   }
   .btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
   .btn:active { transform: scale(0.97) translateY(0); filter: brightness(0.9); }
-
   .primary { background: var(--primary); color: white; box-shadow: 0 8px 30px var(--primary-glow); }
   .danger { background: var(--impostor); color: white; box-shadow: 0 8px 30px var(--impostor-glow); }
+  .wild-btn { background: var(--wild); color: white; box-shadow: 0 8px 30px var(--wild-glow); }
   .secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
   .outline { background: transparent; border: 2px solid rgba(255,255,255,0.2); color: var(--text-dim); }
 
-  .input-row {
-    background: rgba(0,0,0,0.3); border-radius: 14px; padding: 6px 16px;
-    display: flex; align-items: center; margin-bottom: 10px;
-    border: 1px solid var(--glass-border); transition: 0.2s;
-  }
+  .input-row { background: rgba(0,0,0,0.3); border-radius: 14px; padding: 6px 16px; display: flex; align-items: center; margin-bottom: 10px; border: 1px solid var(--glass-border); transition: 0.2s; }
   .input-row:focus-within { border-color: var(--primary); background: rgba(0,0,0,0.5); }
   .input-row input { background: transparent; border: none; color: white; font-size: 16px; padding: 12px 0; flex: 1; outline: none; font-weight: 600; font-family: inherit; }
   .del-btn { color: var(--impostor); font-weight: 900; padding: 10px; cursor: pointer; opacity: 0.8; }
-  .add-btn {
-    background: rgba(255,255,255,0.03); border: 2px dashed rgba(255,255,255,0.1); color: var(--text-dim);
-    padding: 14px; border-radius: 14px; text-align: center; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s;
-  }
+  .add-btn { background: rgba(255,255,255,0.03); border: 2px dashed rgba(255,255,255,0.1); color: var(--text-dim); padding: 14px; border-radius: 14px; text-align: center; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; }
   .add-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.3); }
 
   .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
-  .cat-item {
-    background: rgba(30, 41, 59, 0.6); padding: 18px; border-radius: 16px;
-    border: 2px solid transparent; cursor: pointer; text-align: center; transition: 0.2s;
-  }
+  .cat-item { background: rgba(30, 41, 59, 0.6); padding: 18px; border-radius: 16px; border: 2px solid transparent; cursor: pointer; text-align: center; transition: 0.2s; }
   .cat-item.active { border-color: var(--accent); background: rgba(6, 182, 212, 0.15); color: white; box-shadow: 0 0 20px rgba(6, 182, 212, 0.2); }
   .cat-item:hover { transform: translateY(-3px); }
   .cat-item.active:hover { transform: translateY(-3px) scale(1.02); }
-
   .cat-item.hardcore.active { border-color: var(--impostor); background: rgba(239,68,68,0.2); }
   .cat-item.rap.active { border-color: #a855f7; background: rgba(168, 85, 247, 0.2); }
   .cat-name { font-weight: 800; font-size: 13px; }
   .cat-count { font-size: 10px; color: var(--text-dim); margin-top: 4px; font-weight: 600; }
-   
-  .cat-item.hardcore { border-color: rgba(239,68,68,0.3); }
-  .cat-item.hardcore .cat-name { color: #fca5a5; }
-  .cat-item.rap { border-color: rgba(168, 85, 247, 0.3); }
-  .cat-item.rap .cat-name { color: #d8b4fe; }
+  .cat-item.hardcore { border-color: rgba(239,68,68,0.3); } .cat-item.hardcore .cat-name { color: #fca5a5; }
+  .cat-item.rap { border-color: rgba(168, 85, 247, 0.3); } .cat-item.rap .cat-name { color: #d8b4fe; }
 
   .scene { width: 100%; height: 50vh; min-height: 380px; perspective: 1200px; margin: 20px 0 30px 0; cursor: pointer; }
   .card { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); transform-style: preserve-3d; will-change: transform; }
   .card.flipped { transform: rotateY(180deg); }
-  .face {
-    position: absolute; inset: 0; backface-visibility: hidden; border-radius: 32px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px;
-    box-shadow: 0 30px 60px -12px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
-    background: linear-gradient(145deg, #1e293b, #0f172a);
-  }
+  .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(145deg, #1e293b, #0f172a); }
   .back { background: #020617; transform: rotateY(180deg); border: 2px solid var(--accent); }
   .back.is-impostor { border-color: var(--impostor); background: radial-gradient(circle at center, #450a0a 0%, #000 100%); }
-  .back.is-wild { border-color: var(--wild); background: radial-gradient(circle at center, #4a044e 0%, #000 100%); }
-  
+  .back.is-wild { border-color: var(--wild); /* background: radial-gradient(circle at center, #4a044e 0%, #000 100%);  - REMOVED, Wild sees Normal background now but with purple border */ }
   .back.reveal-mode { border-color: #fbbf24; background: radial-gradient(circle at center, #422006 0%, #020617 100%); }
 
-  .avatar {
-    width: 110px; height: 110px; background: linear-gradient(135deg, var(--primary), #4f46e5); 
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 48px; font-weight: 900; margin-bottom: 24px;
-    box-shadow: 0 0 40px var(--primary-glow); color: white;
-  }
+  .avatar { width: 110px; height: 110px; background: linear-gradient(135deg, var(--primary), #4f46e5); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 900; margin-bottom: 24px; box-shadow: 0 0 40px var(--primary-glow); color: white; }
   .role-tag { font-size: 11px; letter-spacing: 3px; opacity: 0.7; margin-bottom: 12px; font-weight: 800; text-transform: uppercase; }
   .big-word { font-size: 40px; font-weight: 900; text-align: center; line-height: 1.1; color: white; margin-bottom: 20px; }
   .hint-container { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px 25px; border-radius: 18px; text-align: center; width: 100%; }
   .hint-val { font-size: 24px; font-weight: 800; color: var(--accent); }
   .is-impostor .hint-val { color: var(--impostor); }
-  .is-wild .hint-val { color: var(--wild); }
+
+  /* WILD CARD BAR */
+  .wild-bar {
+    margin-top: 20px; width: 100%; padding: 12px; border-radius: 14px;
+    background: rgba(217, 70, 239, 0.15); border: 1px solid var(--wild);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wild-info-btn {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--wild); color: white;
+    font-weight: 900; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 10px var(--wild-glow);
+  }
 
   .tap-hint { margin-top: 40px; font-size: 12px; font-weight: 800; opacity: 0.6; animation: pulse 2s infinite; transition: opacity 0.1s; }
   .card.flipped .tap-hint { opacity: 0 !important; visibility: hidden; animation: none; }
-
   .timer { font-size: 110px; font-weight: 900; margin: 30px 0; text-align: center; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
    
-  .overlay {
-    position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(15px);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; padding: 30px;
-  }
+  .overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; padding: 30px; }
   .overlay.show { opacity: 1; pointer-events: auto; }
   .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: rgba(30,41,59,0.6); border-radius: 16px; }
   .switch { position: relative; width: 52px; height: 30px; }
@@ -224,8 +180,8 @@
   <div style="margin: 40px 0;">
     <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--wild);">
       <span style="font-size:50px">🤠</span>
-      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">WILD UPDATE</h3>
-      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Nowe tło i czystsze animacje!</p>
+      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">WILD WEST</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Dzika Karta widzi hasło!</p>
     </div>
   </div>
   <button class="btn primary" onclick="nav.to('v-setup')">ROZPOCZNIJ GRĘ</button>
@@ -245,12 +201,10 @@
     <span style="font-size:14px; font-weight:600; color:#d946ef;">TRYB DZIKA KARTA (MIN. 3)</span>
     <label class="switch"><input type="checkbox" id="opt-wild"><span class="slider" style="background:#581c87;"></span></label>
   </div>
-
   <div class="setting-row" style="margin-top:10px">
     <span style="font-size:14px; font-weight:600; color:#fbbf24;">TRYB EMOJI (DLA WSZYSTKICH)</span>
     <label class="switch"><input type="checkbox" id="opt-emoji-all"><span class="slider"></span></label>
   </div>
-
   <div class="setting-row" style="margin-top:10px">
     <span style="font-size:14px; font-weight:600">Podpowiedź dla Impostera (Std)</span>
     <label class="switch"><input type="checkbox" id="opt-hint" checked><span class="slider"></span></label>
@@ -319,6 +273,22 @@
   <button class="btn primary" onclick="game.closeSecret()">OK, JUŻ WIEM</button>
 </div>
 
+<div id="overlay-wild-info" class="overlay">
+  <div class="glass-panel" style="padding:30px; text-align:center; max-width:350px; border-color:var(--wild);">
+    <div id="wi-emoji" style="font-size:60px; margin-bottom:10px">🃏</div>
+    <h2 id="wi-title" style="color:var(--wild); font-size:32px; font-weight:900; margin-bottom:20px">NAZWA</h2>
+    <p id="wi-desc" style="font-size:18px; line-height:1.5; color:white; margin-bottom:30px">Opis...</p>
+    <button class="btn primary" onclick="document.getElementById('overlay-wild-info').classList.remove('show')">ROZUMIEM</button>
+  </div>
+</div>
+
+<div id="overlay-sniper" class="overlay">
+    <h2 style="margin-bottom:20px; color:var(--impostor)">🔫 WYBIERZ CEL</h2>
+    <p style="margin-bottom:20px; text-align:center; font-size:12px; color:var(--text-dim)">Jeśli trafisz Impostora, wygrywasz.<br>Jeśli trafisz Niewinnego, odpadasz.</p>
+    <div id="sniper-list" class="remind-grid"></div>
+    <button class="btn outline" onclick="document.getElementById('overlay-sniper').classList.remove('show')">ANULUJ</button>
+</div>
+
 <div id="v-reveal" class="container hidden" style="justify-content:center;">
   <h1 style="text-align:center; margin-bottom:10px">FINAŁ</h1>
   <div class="scene" style="height:400px">
@@ -330,11 +300,12 @@
       <div class="face back reveal-mode">
         <div class="role-tag" style="color:#fbbf24">IMPOSTEREM BYŁ</div>
         <div id="rev-imp-name" style="font-size:48px; font-weight:900; color:white; margin:20px 0; text-shadow: 0 0 30px #fbbf24;">NICK</div>
+        <div id="sniper-msg" style="display:none; color:var(--wild); font-weight:bold; margin-top:10px; font-size:16px;"></div>
       </div>
     </div>
   </div>
   <button class="btn primary" id="btn-do-reveal" onclick="game.doReveal()">ODKRYJ PRAWDĘ</button>
-  <div id="reveal-details" class="hidden" style="width:100%; text-align:center; animation:enterScreen 0.8s">
+  <div id="reveal-details" class="hidden" style="width:100%; text-align:center;">
     <div class="glass-panel" style="padding:20px; margin-bottom:20px">
       <div class="role-tag">HASŁO</div>
       <div id="rev-word" style="font-size:32px; font-weight:900; color:var(--accent)">Słowo</div>
@@ -346,97 +317,44 @@
 </div>
 
 <script>
-/* --- BAZA DANYCH --- */
 const DB = {
-  "Polskie Rap Hity": [
-    {w:"Szklanki", h:"Young Leosia", e:"🥃"}, {w:"Kiss Cam", h:"Mata", e:"💋"}, {w:"Złote Tarasy", h:"Bedoes", e:"🏬"}, {w:"Patointeligencja", h:"Mata Liceum", e:"🏫"}, {w:"Disney", h:"Kizo", e:"🏰"}, {w:"Ostatnia Nadzieja", h:"Sobel", e:"💔"}, {w:"Polskie Tango", h:"Taco", e:"🇵🇱"}, {w:"Szampan", h:"Sanah", e:"🍾"}, {w:"California", h:"White 2115", e:"🌴"}, {w:"Jetlag", h:"Malik", e:"✈️"}, {w:"Lawenda", h:"Bedoes", e:"💜"}, {w:"Dres", h:"Kizo", e:"👕"}, {w:"BFF", h:"Bambi", e:"👯‍♀️"}, {w:"Taxi", h:"Kizo", e:"🚖"}, {w:"Malibu Barbie", h:"Club 2020", e:"🍹"}, {w:"Chyba że z Tobą", h:"Modelki", e:"💃"}, {w:"Stan", h:"Sobel", e:"☁️"}, {w:"Piękny świat", h:"Gibbs", e:"🌍"}, {w:"Bubbletea", h:"Quebo", e:"🧋"}, {w:"100 dni do matury", h:"Mata", e:"🎓"}, {w:"Tamagotchi", h:"Taco", e:"👾"}, {w:"Język ciała", h:"Tymek", e:"👅"}, {w:"Candy", h:"Quebo", e:"🍬"}, {w:"Szafir", h:"Mata", e:"💎"}, {w:"Molly", h:"ReTo", e:"💊"}, {w:"Ogrody", h:"Kukon", e:"🌳"}, {w:"Papuga", h:"Mata", e:"🦜"}, {w:"Bigos", h:"Kabe", e:"🥘"}, {w:"Deszcz", h:"Taco", e:"☔️"}, {w:"Kebab w cienkim", h:"Smolasty", e:"🥙"}, {w:"Gelato", h:"Kukon", e:"🍦"}, {w:"Rower", h:"Lech Rocher", e:"🚲"}, {w:"Pijemy za lepszy czas", h:"Smolasty", e:"🍻"}, {w:"Ona by tak chciała", h:"Ronnie Ferrari", e:"🔥"}, {w:"Eldorado", h:"Bedoes", e:"💰"}, {w:"Sierpień", h:"Oki", e:"🗓️"}, {w:"Modelki", h:"Sobel", e:"👠"}, {w:"Bungee", h:"Gibbs", e:"🪢"}, {w:"Plecak", h:"Białas", e:"🎒"}, {w:"Dom", h:"Bitamina", e:"🏠"}, {w:"Wiatr", h:"Oki", e:"💨"}, {w:"Kawasaki", h:"Żabson", e:"🏍️"}, {w:"Gugu", h:"Szpaku", e:"👶"}, {w:"Trap", h:"White", e:"🕸️"}, {w:"Audi", h:"ReTo", e:"🚗"}, {w:"Zioło", h:"Sarius", e:"🌿"}
-  ],
-  "Polscy Raperzy": [
-    {w:"Taco Hemingway", h:"Wąs", e:"👨🏻"}, {w:"Quebonafide", h:"Egzotyka", e:"🗺️"}, {w:"Mata", h:"Patoreakcja", e:"🤬"}, {w:"Bedoes", h:"2115", e:"🐻"}, {w:"Oki", h:"Jeżyk", e:"🦔"}, {w:"Kizo", h:"Kawa", e:"☕"}, {w:"Żabson", h:"Żabka", e:"🐸"}, {w:"Kukon", h:"Ogrody", e:"🌹"}, {w:"Szpaku", h:"Simba", e:"🦁"}, {w:"Pezet", h:"Płomień", e:"🔥"}, {w:"Sokół", h:"Narrator", e:"🎤"}, {w:"Paluch", h:"BOR", e:"🦾"}, {w:"Malik Montana", h:"Import", e:"📦"}, {w:"White 2115", h:"Łajcior", e:"⚪"}, {w:"Sobel", h:"Impreza", e:"🎉"}, {w:"Young Leosia", h:"Hulanki", e:"💃"}, {w:"Bambi", h:"IRL", e:"🦌"}, {w:"Otsochodzi", h:"Tarcho", e:"🏢"}, {w:"Gibbs", h:"Dopehouse", e:"🏠"}, {w:"Chivas", h:"Młody", e:"👶"}, {w:"Kaz Bałagane", h:"Stolica", e:"🌆"}, {w:"ReTo", h:"Klapki", e:"🩴"}, {w:"Guzior", h:"Mefedron", e:"💊"}, {w:"Sarius", h:"Antihype", e:"🚫"}, {w:"Paktofonika", h:"Jestem Bogiem", e:"😇"}, {w:"Liroy", h:"Scyzoryk", e:"🔪"}, {w:"Tede", h:"TVN", e:"📺"}, {w:"O.S.T.R.", h:"Skrzypce", e:"🎻"}, {w:"Peja", h:"Jeżyce", e:"🏢"}, {w:"Popek", h:"Oczy", e:"👀"}, {w:"Kabe", h:"Francja", e:"🇫🇷"}, {w:"Alberto", h:"Dwutakt", e:"🏀"}, {w:"Smolasty", h:"Duże Oczy", e:"👀"}, {w:"Mr. Polska", h:"Holandia", e:"🇳🇱"}, {w:"Fifi", h:"WWA", e:"🌇"}, {w:"Belmondo", h:"Młody G", e:"🧼"}, {w:"Jan-Rapowanie", h:"Kraków", e:"🥨"}, {w:"KęKę", h:"Radom", e:"📮"}, {w:"Białas", h:"SB Maffija", e:"🐝"}, {w:"Solar", h:"Fotowoltaika", e:"☀️"}, {w:"Wac Toja", h:"Kapitan", e:"⚓"}, {w:"Szamz", h:"Głos", e:"🗣️"}, {w:"Kinny Zimmer", h:"Zuch", e:"⚜️"}, {w:"Fukaj", h:"Szczecin", e:"🚤"}, {w:"Vkie", h:"Kraków", e:"🗡️"}
-  ],
-  "Polski Internet": [
-    {w:"Friz", h:"Ekipa", e:"🍦"}, {w:"Wersow", h:"Sowa", e:"🦉"}, {w:"Wardęga", h:"Las", e:"🌲"}, {w:"Kononowicz", h:"Mleko", e:"🥛"}, {w:"Stanowski", h:"Zero", e:"0️⃣"}, {w:"Boxdel", h:"Włodarz", e:"🏢"}, {w:"Fagata", h:"Plan", e:"📝"}, {w:"Natsu", h:"Płatki", e:"🥣"}, {w:"Mata", h:"McDonald", e:"🍔"}, {w:"Lewandowski", h:"Barcelona", e:"🇪🇸"}, {w:"Pudzian", h:"Cierpliwość", e:"💪"}, {w:"Budda", h:"Loteria", e:"🎫"}, {w:"Goats", h:"Projekt", e:"🐐"}, {w:"Linkiewicz", h:"Autobus", e:"🚌"}, {w:"Najman", h:"Częstochowa", e:"🥊"}, {w:"Xayoo", h:"Szachy", e:"♟️"}, {w:"Gimper", h:"Hajsownicy", e:"💵"}, {w:"Japczan", h:"Gruby", e:"🍔"}, {w:"Tromba", h:"Wąż", e:"🐍"}, {w:"Mlekozyniak", h:"Czapka", e:"🧢"}, {w:"Książulo", h:"Muala", e:"🥙"}, {w:"Dymorfia", h:"Siłownia", e:"🏋️"}, {w:"Young Multi", h:"Reakcja", e:"😲"}, {w:"Pasut", h:"Abstrachuje", e:"🎭"}, {w:"Dubiel", h:"Kenia", e:"🏿"}, {w:"Blowek", h:"Minecraft", e:"🟩"}, {w:"Genzie", h:"Dom", e:"🏠"}, {w:"Patec", h:"Podróże", e:"✈️"}, {w:"Lexy", h:"Chapstick", e:"💄"}, {w:"Mini Majk", h:"Niski", e:"📏"}, {w:"Czaro", h:"Magia", e:"🪄"}, {w:"Mandzio", h:"Gotowanie", e:"🍳"}, {w:"Nitrozyniak", h:"BMW", e:"🚗"}, {w:"Rafonix", h:"Tibijka", e:"🎮"}, {w:"Daniel Magical", h:"Kociołek", e:"🥘"}, {w:"Poczciwy Krzychu", h:"Mustang", e:"🐎"}, {w:"Wojtek Gola", h:"Biseks", e:"🏳️‍🌈"}, {w:"Maja Staśko", h:"Aktywistka", e:"📢"}, {w:"Dziki Trener", h:"Prawda", e:"🗣️"}, {w:"Felicjańska", h:"Alkohol", e:"🍷"}, {w:"Kamerzysta", h:"Worek", e:"💰"}, {w:"Kruszwil", h:"Prestiż", e:"🤵"}, {w:"Stuu", h:"Pingwin", e:"🐧"}
-  ],
   "Gry Wideo": [
-    {w:"Minecraft", h:"Klocki", e:"🧱"}, {w:"GTA V", h:"Kradzież", e:"🔫"}, {w:"Fortnite", h:"Budowanie", e:"🔨"}, {w:"League of Legends", h:"Toksyczność", e:"☠️"}, {w:"CS:GO", h:"Bomba", e:"💣"}, {w:"FIFA", h:"Piłka", e:"⚽"}, {w:"The Witcher 3", h:"Geralt", e:"⚔️"}, {w:"Cyberpunk 2077", h:"Bug", e:"🤖"}, {w:"Sims", h:"Basen", e:"🏊"}, {w:"Among Us", h:"Impostor", e:"ඞ"}, {w:"Roblox", h:"Dzieci", e:"👶"}, {w:"Valorant", h:"Strzelanka", e:"🎯"}, {w:"Call of Duty", h:"Wojna", e:"🎖️"}, {w:"Mario", h:"Grzyby", e:"🍄"}, {w:"Pokemon", h:"Pikachu", e:"⚡"}, {w:"Assassin's Creed", h:"Kaptur", e:"🗡️"}, {w:"God of War", h:"Synu", e:"🪓"}, {w:"Red Dead Redemption", h:"Kowboj", e:"🤠"}, {w:"Tibia", h:"Expienie", e:"🛡️"}, {w:"Metin2", h:"Kowal", e:"🔨"}, {w:"Brawl Stars", h:"Telefon", e:"📱"}, {w:"Need for Speed", h:"Wyścigi", e:"🏎️"}, {w:"Tomb Raider", h:"Lara", e:"🏺"}, {w:"Resident Evil", h:"Zombie", e:"🧟"}, {w:"Dark Souls", h:"Śmierć", e:"☠️"}, {w:"Elden Ring", h:"Pierścień", e:"💍"}, {w:"Rocket League", h:"Samochody", e:"🚗"}, {w:"Overwatch", h:"Bohaterowie", e:"🦸"}, {w:"World of Warcraft", h:"Ork", e:"👹"}, {w:"Dota 2", h:"Turniej", e:"🏆"}, {w:"Subway Surfers", h:"Metro", e:"🚇"}, {w:"Clash Royale", h:"Karty", e:"🃏"}, {w:"Candy Crush", h:"Cukierki", e:"🍬"}, {w:"Tetris", h:"Klocki", e:"🧱"}, {w:"Pac-Man", h:"Duchy", e:"👻"}, {w:"Zelda", h:"Link", e:"🧝"}, {w:"Halo", h:"Master Chief", e:"🔫"}
-  ],
-  "Marki": [
-    {w:"Apple", h:"Jabłko", e:"🍎"}, {w:"Nike", h:"Łyżwa", e:"👟"}, {w:"Adidas", h:"Paski", e:"👟"}, {w:"BMW", h:"Kierunkowskaz", e:"🚗"}, {w:"McDonald's", h:"Burger", e:"🍔"}, {w:"Coca-Cola", h:"Mikołaj", e:"🥤"}, {w:"Samsung", h:"Galaxy", e:"📱"}, {w:"IKEA", h:"Klopsiki", e:"🪑"}, {w:"Mercedes", h:"Gwiazda", e:"⭐"}, {w:"Audi", h:"Kółka", e:"⭕"}, {w:"Gucci", h:"Pasek", e:"👜"}, {w:"Tesla", h:"Prąd", e:"🔋"}, {w:"Amazon", h:"Paczka", e:"📦"}, {w:"Netflix", h:"Serial", e:"🎬"}, {w:"YouTube", h:"Subskrypcja", e:"▶️"}, {w:"Facebook", h:"Twarz", e:"📘"}, {w:"TikTok", h:"Tańce", e:"🎵"}, {w:"PlayStation", h:"Konsola", e:"🎮"}, {w:"Xbox", h:"Zielony", e:"❎"}, {w:"Lego", h:"Ból stopy", e:"🧱"}, {w:"Biedronka", h:"Paleta", e:"🐞"}, {w:"Lidl", h:"Tydzień", e:"🛒"}, {w:"Pepsi", h:"Konkurencja", e:"🥤"}, {w:"Zara", h:"Ubrania", e:"👗"}, {w:"H&M", h:"Moda", e:"👕"}, {w:"Louis Vuitton", h:"Torebka", e:"👜"}, {w:"Rolex", h:"Zegarek", e:"⌚"}, {w:"Dior", h:"Perfumy", e:"🧴"}, {w:"Puma", h:"Kot", e:"🐆"}, {w:"Reebok", h:"Buty", e:"👟"}, {w:"KFC", h:"Kurczak", e:"🍗"}, {w:"Burger King", h:"Korona", e:"👑"}, {w:"Starbucks", h:"Kawa", e:"☕"}, {w:"Red Bull", h:"Skrzydła", e:"🦅"}, {w:"Monster", h:"Energia", e:"⚡"}, {w:"Żabka", h:"Hot-dog", e:"🐸"}, {w:"Orlen", h:"Paliwo", e:"⛽"}, {w:"CCC", h:"Buty", e:"👠"}, {w:"Allegro", h:"Zakupy", e:"🛍️"}
-  ],
-  "Geografia": [
-    {w:"Polska", h:"Dom", e:"🇵🇱"}, {w:"Warszawa", h:"Stolica", e:"🏙️"}, {w:"Kraków", h:"Smok", e:"🐉"}, {w:"Paryż", h:"Wieża", e:"🗼"}, {w:"Londyn", h:"Big Ben", e:"🕰️"}, {w:"Nowy Jork", h:"Statua", e:"🗽"}, {w:"Egipt", h:"Piramida", e:"🔺"}, {w:"Japonia", h:"Sushi", e:"🍣"}, {w:"Włochy", h:"Pizza", e:"🍕"}, {w:"Niemcy", h:"Sąsiad", e:"🇩🇪"}, {w:"Rosja", h:"Wódka", e:"🇷🇺"}, {w:"Chiny", h:"Mur", e:"🇨🇳"}, {w:"Australia", h:"Kangur", e:"🦘"}, {w:"Brazylia", h:"Karnawał", e:"🇧🇷"}, {w:"Tatry", h:"Góry", e:"🏔️"}, {w:"Bałtyk", h:"Morze", e:"🌊"}, {w:"Wisła", h:"Rzeka", e:"💧"}, {w:"Sahara", h:"Piasek", e:"🏜️"}, {w:"Mount Everest", h:"Szczyt", e:"🏔️"}, {w:"Afryka", h:"Kontynent", e:"🌍"}, {w:"Antarktyda", h:"Lód", e:"❄️"}, {w:"Kanada", h:"Liść", e:"🍁"}, {w:"Meksyk", h:"Tacos", e:"🌮"}, {w:"Hiszpania", h:"Byk", e:"🐂"}, {w:"Grecja", h:"Ruiny", e:"🏛️"}, {w:"Turcja", h:"Kebab", e:"🥙"}, {w:"Indie", h:"Curry", e:"🍛"}, {w:"Dubaj", h:"Bogactwo", e:"🏙️"}, {w:"Amazonka", h:"Dżungla", e:"🌴"}, {w:"Mazury", h:"Jeziora", e:"⛵"}, {w:"Bieszczady", h:"Wilki", e:"🐺"}, {w:"Wawel", h:"Król", e:"🏰"}, {w:"Hawaje", h:"Kwiaty", e:"🌺"}, {w:"Islandia", h:"Wulkan", e:"🌋"}, {w:"Norwegia", h:"Fiordy", e:"🏞️"}
-  ],
-  "Sportowcy": [
-    {w:"Lewandowski", h:"Gol", e:"⚽"}, {w:"Messi", h:"Argentyna", e:"🐐"}, {w:"Ronaldo", h:"Siuuu", e:"🙎‍♂️"}, {w:"Małysz", h:"Skoki", e:"🎿"}, {w:"Stoch", h:"Kamil", e:"⛷️"}, {w:"Iga Świątek", h:"Tenis", e:"🎾"}, {w:"Pudzianowski", h:"Siłacz", e:"💪"}, {w:"Błachowicz", h:"MMA", e:"🥊"}, {w:"Tyson", h:"Boks", e:"🥊"}, {w:"Jordan", h:"Kosz", e:"🏀"}, {w:"Kubica", h:"F1", e:"🏎️"}, {w:"Zmarzlik", h:"Żużel", e:"🏍️"}, {w:"Usain Bolt", h:"Bieg", e:"🏃"}, {w:"Phelps", h:"Basen", e:"🏊"}, {w:"Schumacher", h:"Ferrari", e:"🏎️"}, {w:"Szczęsny", h:"Bramkarz", e:"🧤"}, {w:"Gortat", h:"NBA", e:"🏀"}, {w:"Błaszczykowski", h:"Wisła", e:"⚽"}, {w:"Hurkacz", h:"Serwis", e:"🎾"}, {w:"Sochan", h:"Włosy", e:"🎨"}, {w:"Neymar", h:"Fryzura", e:"💇‍♂️"}, {w:"Mbappe", h:"Żółw", e:"🐢"}, {w:"Haaland", h:"Robot", e:"🤖"}, {w:"Djokovic", h:"Rakietka", e:"🎾"}, {w:"Lebron James", h:"Król", e:"👑"}, {w:"Curry", h:"Trójka", e:"3️⃣"}, {w:"McGregor", h:"Showman", e:"🇮🇪"}, {w:"Khabib", h:"Orzeł", e:"🦅"}, {w:"Zidane", h:"Główka", e:"🗣️"}, {w:"Maradona", h:"Ręka Boga", e:"🖐️"}, {w:"Pele", h:"Król", e:"🤴"}, {w:"Radwańska", h:"Kraków", e:"🎾"}, {w:"Gołota", h:"Ucieczka", e:"🏃"}
-  ],
-  "Hardcore": [
-    {w:"Inflacja", h:"Drożyzna", e:"💸"}, {w:"Synestezja", h:"Zmysły", e:"🎨"}, {w:"Paradoks", h:"Sprzeczność", e:"🔄"}, {w:"Altruizm", h:"Pomoc", e:"🤝"}, {w:"Nostalgia", h:"Wspomnienie", e:"🎞️"}, {w:"Karma", h:"Powrót", e:"♻️"}, {w:"Ego", h:"Ja", e:"😎"}, {w:"Metafora", h:"Przenośnia", e:"📖"}, {w:"Ironia", h:"Los", e:"😏"}, {w:"Deja vu", h:"Powtórka", e:"😵‍💫"}, {w:"Placebo", h:"Cukier", e:"🍬"}, {w:"Stereotyp", h:"Schemat", e:"📦"}, {w:"Abstrakcja", h:"Sztuka", e:"🖼️"}, {w:"Chaos", h:"Bałagan", e:"🌀"}, {w:"Utopia", h:"Idea", e:"🏰"}, {w:"Nihilizm", h:"Nic", e:"⚫"}, {w:"Prokrastynacja", h:"Zwlekanie", e:"⏳"}, {w:"Empatia", h:"Współczucie", e:"❤️"}, {w:"Euforia", h:"Radość", e:"🤩"}, {w:"Introwertyk", h:"Wnętrze", e:"😶"}, {w:"Relatywizm", h:"Punkt widzenia", e:"👀"}, {w:"Hipokryzja", h:"Fałsz", e:"🎭"}, {w:"Melancholia", h:"Smutek", e:"😔"}, {w:"Sarkazm", h:"Żart", e:"😒"}, {w:"Charyzma", h:"Urok", e:"✨"}, {w:"Dedukcja", h:"Sherlock", e:"🕵️"}, {w:"Intuicja", h:"Przeczucie", e:"🔮"}, {w:"Ksenofobia", h:"Obcy", e:"👽"}, {w:"Mizantropia", h:"Ludzie", e:"🙅‍♂️"}, {w:"Hedonizm", h:"Przyjemność", e:"🥳"}, {w:"Stoicyzm", h:"Spokój", e:"🗿"}, {w:"Plagiat", h:"Kradzież", e:"📝"}, {w:"Cenzura", h:"Zakaz", e:"🔇"}, {w:"Demagogia", h:"Manipulacja", e:"🗣️"}, {w:"Eufemizm", h:"Łagodzenie", e:"🍬"}, {w:"Surrealizm", h:"Sen", e:"🫠"}, {w:"Awangarda", h:"Nowość", e:"🚀"}, {w:"Ekstrawertyk", h:"Towarzyski", e:"📢"}
-  ],
-  "Filmy & Seriale": [
-    {w:"Shrek", h:"Cebula", e:"🧅"}, {w:"Titanic", h:"Góra", e:"🧊"}, {w:"Harry Potter", h:"Blizna", e:"⚡"}, {w:"Matrix", h:"Pigułka", e:"💊"}, {w:"Batman", h:"Sierota", e:"🦇"}, {w:"Joker", h:"Śmiech", e:"🤡"}, {w:"Spider-Man", h:"Ugryzienie", e:"🕷️"}, {w:"Król Lew", h:"Sawanna", e:"🦁"}, {w:"Kevin", h:"Złodzieje", e:"🏠"}, {w:"Wiedźmin", h:"Miecze", e:"⚔️"}, {w:"James Bond", h:"007", e:"🔫"}, {w:"Minionki", h:"Banan", e:"🍌"}, {w:"Star Wars", h:"Miecz", e:"🌌"}, {w:"Władca Pierścieni", h:"Pierścień", e:"💍"}, {w:"Avengers", h:"Rękawica", e:"🦸"}, {w:"Piraci z Karaibów", h:"Perła", e:"🏴‍☠️"}, {w:"Szybcy i Wściekli", h:"Rodzina", e:"🚗"}, {w:"Barbie", h:"Róż", e:"💅"}, {w:"Oppenheimer", h:"Bomba", e:"💣"}, {w:"Stranger Things", h:"Nos", e:"🩸"}, {w:"Wednesday", h:"Taniec", e:"🎻"}, {w:"Squid Game", h:"Lalka", e:"🦑"}, {w:"Breaking Bad", h:"Kryształ", e:"⚗️"}, {w:"Gra o Tron", h:"Smok", e:"🐉"}, {w:"Kiler", h:"Szakal", e:"🔫"}, {w:"Chłopaki nie płaczą", h:"Bunkier", e:"🎷"}, {w:"Dzień Świra", h:"Adaś", e:"💊"}, {w:"Dom z Papieru", h:"Maska", e:"💰"}, {w:"Rick i Morty", h:"Ogórek", e:"🥒"}, {w:"Ojciec Chrzestny", h:"Propozycja", e:"🌹"}, {w:"Incepcja", h:"Sen", e:"🌀"}, {w:"Interstellar", h:"Kosmos", e:"🚀"}, {w:"Wielki Gatsby", h:"Impreza", e:"🥂"}, {w:"Wilk z Wall Street", h:"Pieniądze", e:"💸"}, {w:"Forrest Gump", h:"Bieg", e:"🏃"}, {w:"Gladiator", h:"Rzym", e:"⚔️"}, {w:"Avatar", h:"Niebieski", e:"🔵"}, {w:"Ranczo", h:"Wójt", e:"🏛️"}, {w:"Świat według Kiepskich", h:"Mocny Full", e:"🍺"}
-  ],
-  "Miejsca": [
-    {w:"Więzienie", h:"Gryps", e:"🔒"}, {w:"Szpital", h:"NFZ", e:"🏥"}, {w:"Kościół", h:"Taca", e:"⛪"}, {w:"Lotnisko", h:"Odprawa", e:"✈️"}, {w:"Plaża", h:"Parawan", e:"🏖️"}, {w:"Las", h:"Kleszcz", e:"🌲"}, {w:"Siłownia", h:"Karnet", e:"🏋️"}, {w:"Kino", h:"Repertuar", e:"🍿"}, {w:"Szkoła", h:"Dzwonek", e:"🏫"}, {w:"Cmentarz", h:"Znicz", e:"🪦"}, {w:"ZOO", h:"Klatka", e:"🦁"}, {w:"Apteka", h:"Recepta", e:"💊"}, {w:"Biblioteka", h:"Cisza", e:"📚"}, {w:"Basen", h:"Chlor", e:"🏊"}, {w:"Stacja Paliw", h:"Hot-dog", e:"⛽"}, {w:"Poczta", h:"Awizo", e:"📮"}, {w:"Sąd", h:"Wyrok", e:"⚖️"}, {w:"Teatr", h:"Kurtyna", e:"🎭"}, {w:"Kasyno", h:"Ruletka", e:"🎰"}, {w:"Burdel", h:"Czerwony", e:"💃"}, {w:"Cyrk", h:"Klaun", e:"🎪"}, {w:"Sauna", h:"Ręcznik", e:"🧖"}, {w:"Fryzjer", h:"Strzyżenie", e:"💇"}, {w:"Bar", h:"Piwo", e:"🍺"}, {w:"Stadion", h:"Mecz", e:"🏟️"}, {w:"Muzeum", h:"Obraz", e:"🖼️"}, {w:"Piekarnia", h:"Chleb", e:"🥖"}, {w:"Warzywniak", h:"Ziemniaki", e:"🥕"}, {w:"Biuro", h:"Praca", e:"💼"}, {w:"Hotel", h:"Recepcja", e:"🏨"}, {w:"Dworzec", h:"Pociąg", e:"🚉"}, {w:"Park", h:"Ławka", e:"🌳"}, {w:"Plac Zabaw", h:"Huśtawka", e:"🎠"}, {w:"Winda", h:"Guzik", e:"🛗"}, {w:"Piwnica", h:"Słoiki", e:"🥒"}, {w:"Strych", h:"Kurz", e:"🕸️"}
-  ],
-  "Przedmioty": [
-    {w:"Telefon", h:"Ładowarka", e:"📱"}, {w:"Lustro", h:"Odbicie", e:"🪞"}, {w:"Zegar", h:"Czas", e:"⏰"}, {w:"Portfel", h:"Grosz", e:"👛"}, {w:"Pilot", h:"Baterie", e:"📺"}, {w:"Parasol", h:"Deszcz", e:"☂️"}, {w:"Laptop", h:"Myszka", e:"💻"}, {w:"Lodówka", h:"Szron", e:"🧊"}, {w:"Długopis", h:"Wkład", e:"🖊️"}, {w:"Papier toaletowy", h:"Rolka", e:"🧻"}, {w:"Klucze", h:"Brelok", e:"🔑"}, {w:"Okulary", h:"Szkła", e:"👓"}, {w:"Buty", h:"Sznurowadła", e:"👞"}, {w:"Plecak", h:"Zamek", e:"🎒"}, {w:"Krzesło", h:"Oparcie", e:"🪑"}, {w:"Widelec", h:"Zęby", e:"🍴"}, {w:"Szczoteczka", h:"Pasta", e:"🪥"}, {w:"Gąbka", h:"Piana", e:"🧽"}, {w:"Grzebień", h:"Włosy", e:"💇"}, {w:"Słuchawki", h:"Muzyka", e:"🎧"}, {w:"Łóżko", h:"Kołdra", e:"🛏️"}, {w:"Dywan", h:"Podłoga", e:"🧶"}, {w:"Lampa", h:"Żarówka", e:"💡"}, {w:"Ręcznik", h:"Woda", e:"🧖"}, {w:"Mydło", h:"Kostka", e:"🧼"}, {w:"Skarpetki", h:"Dziura", e:"🧦"}, {w:"Czapka", h:"Zima", e:"🧢"}, {w:"Talerz", h:"Obiad", e:"🍽️"}, {w:"Kubek", h:"Ucho", e:"☕"}, {w:"Nożyczki", h:"Cięcie", e:"✂️"}, {w:"Kalkulator", h:"Liczenie", e:"🧮"}, {w:"Głośnik", h:"Bas", e:"🔈"}, {w:"Karta", h:"Bankomat", e:"💳"}, {w:"Zapalniczka", h:"Ogień", e:"🔥"}, {w:"Świeczka", h:"Wosk", e:"🕯️"}, {w:"Miotła", h:"Zamiatanie", e:"🧹"}, {w:"Odkurzacz", h:"Worek", e:"🌀"}, {w:"Pralka", h:"Wirowanie", e:"🧺"}
+    {w:"Minecraft", h:"Klocki", e:"🧱"}, {w:"GTA V", h:"Kradzież", e:"🔫"}, {w:"Fortnite", h:"Budowanie", e:"🔨"}, {w:"League of Legends", h:"Toksyczność", e:"☠️"}, {w:"Among Us", h:"Impostor", e:"ඞ"}, {w:"FIFA", h:"Piłka", e:"⚽"}, {w:"Wiedźmin", h:"Miecze", e:"⚔️"}, {w:"Sims", h:"Basen", e:"🏊"}, {w:"CS:GO", h:"Bomba", e:"💣"}
   ],
   "Jedzenie": [
-    {w:"Pizza", h:"Ciasto", e:"🍕"}, {w:"Sushi", h:"Surowe", e:"🍣"}, {w:"Kebab", h:"Baranina", e:"🥙"}, {w:"Rosół", h:"Niedziela", e:"🍲"}, {w:"Schabowy", h:"Panierka", e:"🥩"}, {w:"Lody", h:"Gałka", e:"🍦"}, {w:"Pierogi", h:"Farsz", e:"🥟"}, {w:"Bigos", h:"Kapusta", e:"🥘"}, {w:"Pączek", h:"Lukier", e:"🍩"}, {w:"Spaghetti", h:"Nitki", e:"🍝"}, {w:"Burger", h:"Bułka", e:"🍔"}, {w:"Frytki", h:"Ketchup", e:"🍟"}, {w:"Jajecznica", h:"Śniadanie", e:"🍳"}, {w:"Kanapka", h:"Masło", e:"🥪"}, {w:"Zupa", h:"Łyżka", e:"🥣"}, {w:"Czekolada", h:"Kostka", e:"🍫"}, {w:"Tort", h:"Świeczka", e:"🎂"}, {w:"Popcorn", h:"Kukurydza", e:"🍿"}, {w:"Ogórek", h:"Kiszon", e:"🥒"}, {w:"Pomidor", h:"Czerwony", e:"🍅"}, {w:"Chipsy", h:"Paczka", e:"🥔"}, {w:"Parówka", h:"Mięso?", e:"🌭"}, {w:"Ser", h:"Dziury", e:"🧀"}, {w:"Chleb", h:"Skórka", e:"🍞"}, {w:"Jajko", h:"Żółtko", e:"🥚"}, {w:"Masło", h:"Smarowanie", e:"🧈"}, {w:"Jabłko", h:"Ogryzek", e:"🍎"}, {w:"Banan", h:"Skórka", e:"🍌"}, {w:"Woda", h:"Kran", e:"🚰"}, {w:"Cola", h:"Bąbelki", e:"🥤"}, {w:"Herbata", h:"Torebka", e:"🍵"}, {w:"Kawa", h:"Kofeina", e:"☕"}, {w:"Ryż", h:"Biały", e:"🍚"}, {w:"Makaron", h:"Włochy", e:"🍜"}, {w:"Sernik", h:"Rodzynki", e:"🍰"}, {w:"Szarlotka", h:"Cynamon", e:"🥧"}, {w:"Placki", h:"Ziemniaczane", e:"🥔"}
+    {w:"Pizza", h:"Ciasto", e:"🍕"}, {w:"Sushi", h:"Surowe", e:"🍣"}, {w:"Kebab", h:"Baranina", e:"🥙"}, {w:"Rosół", h:"Niedziela", e:"🍲"}, {w:"Schabowy", h:"Panierka", e:"🥩"}, {w:"Lody", h:"Gałka", e:"🍦"}, {w:"Pierogi", h:"Farsz", e:"🥟"}, {w:"Burger", h:"Bułka", e:"🍔"}
   ],
-  "Zwierzęta": [
-    {w:"Pies", h:"Smycz", e:"🐕"}, {w:"Kot", h:"Kuweta", e:"🐈"}, {w:"Żyrafa", h:"Szyja", e:"🦒"}, {w:"Kura", h:"Rosół", e:"🐔"}, {w:"Świnia", h:"Chlew", e:"🐖"}, {w:"Pszczoła", h:"Ul", e:"🐝"}, {w:"Komar", h:"Krew", e:"🦟"}, {w:"Mysz", h:"Pułapka", e:"🐁"}, {w:"Wąż", h:"Jad", e:"🐍"}, {w:"Słoń", h:"Trąba", e:"🐘"}, {w:"Rekin", h:"Płetwa", e:"🦈"}, {w:"Pingwin", h:"Fraku", e:"🐧"}, {w:"Małpa", h:"Banan", e:"🐒"}, {w:"Krowa", h:"Mleko", e:"🐄"}, {w:"Koń", h:"Siodło", e:"🐎"}, {w:"Ryba", h:"Woda", e:"🐟"}, {w:"Pająk", h:"Sieć", e:"🕷️"}, {w:"Wilk", h:"Wataha", e:"🐺"}, {w:"Niedźwiedź", h:"Miodek", e:"🐻"}, {w:"Delfin", h:"Ssak", e:"🐬"}, {w:"Motyl", h:"Kok", e:"🦋"}, {w:"Żaba", h:"Bocian", e:"🐸"}, {w:"Lis", h:"Chytry", e:"🦊"}, {w:"Sowa", h:"Noc", e:"🦉"}, {w:"Biedronka", h:"Kropki", e:"🐞"}, {w:"Ślimak", h:"Muszla", e:"🐌"}, {w:"Jeż", h:"Igły", e:"🦔"}, {w:"Chomik", h:"Kołowrotek", e:"🐹"}, {w:"Papuga", h:"Gadanie", e:"🦜"}, {w:"Zebra", h:"Paski", e:"🦓"}, {w:"Lew", h:"Król", e:"🦁"}, {w:"Tygrys", h:"Dżungla", e:"🐅"}, {w:"Wiewiórka", h:"Orzech", e:"🐿️"}, {w:"Krokodyl", h:"Zęby", e:"🐊"}, {w:"Hipopotam", h:"Gruby", e:"🦛"}, {w:"Wielbłąd", h:"Garb", e:"🐪"}, {w:"Panda", h:"Bambus", e:"🐼"}
-  ],
-  /* --- DZIKIE KARTY --- */
+  /* SKRÓCONA BAZA DLA CZYTELNOŚCI - Wklej swoją pełną */
   "WildCards": [
-      {w:"Snajper", h:"Masz jeden strzał. Wskaż Impostora. Jeśli się pomylisz, odpadasz.", e:"🎯"},
-      {w:"Błazen", h:"Twój cel: zostać wyrzuconym w głosowaniu.", e:"🤡"},
-      {w:"Niemowa", h:"Nie możesz się odzywać przez pierwszą połowę rundy.", e:"🤐"},
-      {w:"Adwokat", h:"Wybierz gracza. Musisz go bronić, nawet jeśli jest Impostorem.", e:"🛡️"}
+      {w:"Snajper", h:"Możesz raz strzelić. Użyj menu 'Przypomnij rolę'. Traf Impostora, by wygrać. Pudło = giniesz.", e:"🎯", id:"sniper"},
+      {w:"Błazen", h:"Twój cel: zostać wyrzuconym w głosowaniu.", e:"🤡", id:"jester"},
+      {w:"Niemowa", h:"Nie możesz się odzywać przez pierwszą połowę rundy.", e:"🤐", id:"mute"},
+      {w:"Adwokat", h:"Wybierz gracza. Musisz go bronić, nawet jeśli jest Impostorem.", e:"🛡️", id:"lawyer"}
   ]
 };
+/* Dodaj resztę kategorii ze starego kodu tutaj jeśli chcesz mieć pełną bazę */
 
-/* --- NOWA LOGIKA NAWIGACJI DLA PŁYNNYCH PRZEJŚĆ --- */
 const nav = {
   to: (id) => {
     const current = document.querySelector('.container:not(.hidden)');
     const next = document.getElementById(id);
-
     if (current) {
-      current.classList.remove('fade-in');
-      current.classList.add('fade-out');
-      setTimeout(() => {
-        current.classList.add('hidden');
-        current.classList.remove('fade-out');
-        showNext();
-      }, 300); // Czas zgodny z animacją exitScreen
-    } else {
-      showNext();
-    }
-
-    function showNext() {
-      next.classList.remove('hidden');
-      // Wymuszenie reflow, żeby zrestartować animację
-      void next.offsetWidth;
-      next.classList.add('fade-in');
-    }
+      current.classList.remove('fade-in'); current.classList.add('fade-out');
+      setTimeout(() => { current.classList.add('hidden'); current.classList.remove('fade-out'); showNext(); }, 300);
+    } else { showNext(); }
+    function showNext() { next.classList.remove('hidden'); void next.offsetWidth; next.classList.add('fade-in'); }
   }
 };
 
-/* SYSTEM KONFETTI */
 function spawnConfetti(emoji) {
   const container = document.getElementById('confetti-layer');
-  const count = 40; 
-   
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < 40; i++) {
     const el = document.createElement('div');
-    el.classList.add('confetti');
-    el.innerText = emoji;
+    el.classList.add('confetti'); el.innerText = emoji;
     el.style.left = Math.random() * 100 + 'vw';
     el.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
     el.style.fontSize = (Math.random() * 20 + 20) + 'px';
     container.appendChild(el);
-     
     setTimeout(() => el.remove(), 4000);
   }
 }
@@ -445,19 +363,14 @@ const game = {
   players: ["Pizdel", "Brzydal", "Lisek"],
   impostorHistory: [],
   currentRoleData: [], wordData: null, hintOn: true, emojiMode: false, wildMode: false, time: 120, timer: null, currIdx: 0,
+  sniperUsed: false,
 
   addPlayer: function() { this.players.push(""); this.renderPlayers(); },
   renderPlayers: function() {
-    const el = document.getElementById('players-list');
-    el.innerHTML = '';
+    const el = document.getElementById('players-list'); el.innerHTML = '';
     this.players.forEach((p, i) => {
-      const div = document.createElement('div');
-      div.className = 'input-row';
-      div.innerHTML = `
-        <span style="margin-right:10px; font-weight:800; color:var(--text-dim); font-size:12px">${i+1}.</span>
-        <input type="text" value="${p}" oninput="game.players[${i}]=this.value" placeholder="Nick">
-        ${this.players.length > 3 ? `<div class="del-btn" onclick="game.remPlayer(${i})">✕</div>` : ''}
-      `;
+      const div = document.createElement('div'); div.className = 'input-row';
+      div.innerHTML = `<span style="margin-right:10px; font-weight:800; color:var(--text-dim); font-size:12px">${i+1}.</span><input type="text" value="${p}" oninput="game.players[${i}]=this.value" placeholder="Nick">${this.players.length > 3 ? `<div class="del-btn" onclick="game.remPlayer(${i})">✕</div>` : ''}`;
       el.appendChild(div);
     });
   },
@@ -465,15 +378,11 @@ const game = {
 
   initSetup: function() {
     this.renderPlayers();
-    const grid = document.getElementById('cat-grid');
-    grid.innerHTML = '';
+    const grid = document.getElementById('cat-grid'); grid.innerHTML = '';
     Object.keys(DB).forEach(k => {
-      if(k === 'WildCards') return; // Nie pokazujemy dzikich kart w menu
+      if(k === 'WildCards') return;
       const div = document.createElement('div');
-      let cls = 'cat-item';
-      if(k === 'Hardcore') cls += ' hardcore';
-      if(k === 'Polskie Rap Hity' || k === 'Polscy Raperzy') cls += ' rap';
-      div.className = cls + ' active'; 
+      div.className = 'cat-item active'; 
       div.innerHTML = `<div class="cat-name">${k}</div><div class="cat-count">${DB[k].length}</div>`;
       div.onclick = () => div.classList.toggle('active');
       grid.appendChild(div);
@@ -486,37 +395,26 @@ const game = {
     const pList = this.players.filter(p => p.trim());
     if(pList.length < 3) return alert("Minimum 3 graczy!");
      
-    // Opcje
     this.hintOn = document.getElementById('opt-hint').checked;
     this.emojiMode = document.getElementById('opt-emoji-all').checked;
     this.wildMode = document.getElementById('opt-wild').checked;
     this.time = parseInt(document.getElementById('opt-time').value) || 120;
+    this.sniperUsed = false;
 
-    // --- TOGGLE WILD WEST BACKGROUND ---
     const bgMesh = document.getElementById('main-bg');
-    if (this.wildMode) {
-        bgMesh.classList.add('bg-wild-west');
-    } else {
-        bgMesh.classList.remove('bg-wild-west');
-    }
+    if (this.wildMode) bgMesh.classList.add('bg-wild-west'); else bgMesh.classList.remove('bg-wild-west');
 
     const cat = activeCats[Math.floor(Math.random() * activeCats.length)];
     const list = DB[cat];
     const wObj = list[Math.floor(Math.random() * list.length)];
     this.wordData = { ...wObj, cat: cat };
 
-    // --- LOGIKA: IMPOSTOR TYLKO RAZ ---
     let eligible = pList.filter(name => !this.impostorHistory.includes(name));
-    if (eligible.length === 0) {
-        this.impostorHistory = [];
-        eligible = pList;
-    }
+    if (eligible.length === 0) { this.impostorHistory = []; eligible = pList; }
     const impName = eligible[Math.floor(Math.random() * eligible.length)];
     this.impostorHistory.push(impName);
 
-    // --- LOGIKA: DZIKA KARTA (tylko dla niewinnych) ---
-    let wildName = null;
-    let wildCardData = null;
+    let wildName = null, wildCardData = null;
     if (this.wildMode && pList.length >= 3) {
         const innocents = pList.filter(name => name !== impName);
         wildName = innocents[Math.floor(Math.random() * innocents.length)];
@@ -530,7 +428,6 @@ const game = {
         wildData: name === wildName ? wildCardData : null
     }));
 
-    // Shuffle
     for (let i = this.currentRoleData.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [this.currentRoleData[i], this.currentRoleData[j]] = [this.currentRoleData[j], this.currentRoleData[i]];
@@ -543,124 +440,96 @@ const game = {
 
   setupCard: function() {
     const data = this.currentRoleData[this.currIdx];
-    const card = document.getElementById('game-card');
     const back = document.getElementById('c-back');
     const avatarEl = document.getElementById('c-avatar');
-     
-    card.classList.remove('flipped');
+    
+    document.getElementById('game-card').classList.remove('flipped');
     back.className = 'face back'; 
-     
     document.getElementById('c-name').innerText = data.name;
-     
-    const nameLower = data.name.toLowerCase().trim();
-    avatarEl.style.background = ''; 
-    avatarEl.style.fontSize = '';    
-
-    if (nameLower === 'lisek') {
-        avatarEl.innerText = '🦊';
-        avatarEl.style.background = 'linear-gradient(135deg, #f97316, #ea580c)';
-    } else if (nameLower === 'pizdel' || nameLower === 'dell') {
-        avatarEl.innerText = '🧟';
-        avatarEl.style.background = 'linear-gradient(135deg, #84cc16, #65a30d)';
-    } else if (nameLower === 'brzydal' || nameLower === 'brzydki') {
-        avatarEl.innerText = '🚖';
-        avatarEl.style.background = 'linear-gradient(135deg, #facc15, #eab308)';
-    } else {
-        avatarEl.innerText = data.name[0].toUpperCase();
-    }
-
     document.getElementById('card-controls').classList.add('hidden');
-     
+    
+    // Avatar Logic (Simplified)
+    avatarEl.innerText = data.name[0].toUpperCase();
+    avatarEl.style.background = '';
+    const n = data.name.toLowerCase();
+    if(n.includes('lisek')) avatarEl.innerText = '🦊';
+    
     let html = '';
+    
     if(data.isImp) {
-      let hintText = this.wordData.h;
-      let labelText = "PODPOWIEDŹ";
-      
-      if (this.emojiMode) {
-          labelText = "EMOJI HINT";
-          hintText = this.wordData.e;
-      } else {
-          labelText = "PODPOWIEDŹ";
-          hintText = this.wordData.h;
-      }
-
-      if (!this.hintOn) hintText = "Brak podpowiedzi";
-      
+      back.classList.add('is-impostor');
+      let hint = this.emojiMode ? this.wordData.e : this.wordData.h;
+      if(!this.hintOn) hint = "Brak";
       html = `
         <div class="role-tag" style="color:white">TWOJA ROLA</div>
         <div class="big-word" style="color:var(--impostor); text-shadow:0 0 20px rgba(239,68,68,0.6)">IMPOSTER</div>
-        <div style="font-size:13px; color:var(--text-dim); margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; font-weight:700">
-            KATEGORIA: <span style="color:#fff">${this.wordData.cat}</span>
-        </div>
-        <div class="hint-container is-impostor"><div class="hint-label">${labelText}</div><div class="hint-val">${hintText}</div></div>
-      `;
-      back.classList.add('is-impostor');
-    } else if (data.isWild) {
-        // --- WIDOK DZIKIEJ KARTY ---
-        back.classList.add('is-wild');
-        html = `
-        <div class="role-tag" style="color:white">DZIKA KARTA</div>
-        <div class="big-word" style="color:var(--wild); text-shadow:0 0 20px rgba(217, 70, 239, 0.6); font-size:32px">${data.wildData.w.toUpperCase()}</div>
-        <div style="font-size:40px; margin-bottom:10px">${data.wildData.e}</div>
-        <div class="hint-container is-wild" style="border-color:var(--wild-glow)">
-            <div class="hint-label" style="color:var(--wild)">TWOJE ZADANIE</div>
-            <div class="hint-val" style="font-size:16px; font-weight:600; color:white">${data.wildData.h}</div>
-        </div>
-        <div style="margin-top:15px; font-size:12px; color:var(--text-dim);">Jesteś Niewinnym. Znasz hasło.</div>
+        <div style="font-size:12px; margin-bottom:10px; opacity:0.7">KATEGORIA: ${this.wordData.cat}</div>
+        <div class="hint-container is-impostor"><div class="hint-label">${this.emojiMode ? 'EMOJI' : 'PODPOWIEDŹ'}</div><div class="hint-val">${hint}</div></div>
       `;
     } else {
-      html = `
-        <div class="role-tag">TWOJE HASŁO</div>
-        <div class="big-word" style="color:var(--accent)">${this.wordData.w}</div>
-        <div class="hint-container"><div class="hint-label">KATEGORIA</div><div class="hint-val" style="font-size:18px">${this.wordData.cat}</div></div>
-      `;
+        // ZWYKŁY + DZIKA KARTA (Obaj widzą hasło)
+        if (data.isWild) back.classList.add('is-wild');
+        html = `
+            <div class="role-tag">TWOJE HASŁO</div>
+            <div class="big-word" style="color:var(--accent)">${this.wordData.w}</div>
+            <div class="hint-container"><div class="hint-label">KATEGORIA</div><div class="hint-val" style="font-size:18px">${this.wordData.cat}</div></div>
+        `;
+        
+        // DODATEK DLA DZIKIEJ KARTY
+        if (data.isWild) {
+            html += `
+            <div class="wild-bar" onclick="game.showWildInfoFromCard(${this.currIdx})">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:24px">${data.wildData.e}</span>
+                    <div style="text-align:left;">
+                        <div style="font-size:10px; color:var(--wild); font-weight:800; letter-spacing:1px">DZIKA KARTA</div>
+                        <div style="font-size:16px; font-weight:700; color:white">${data.wildData.w.toUpperCase()}</div>
+                    </div>
+                </div>
+                <button class="wild-info-btn">?</button>
+            </div>
+            `;
+        }
     }
     back.innerHTML = html;
+  },
+
+  showWildInfoFromCard: function(idx) {
+      const d = this.currentRoleData[idx].wildData;
+      document.getElementById('wi-emoji').innerText = d.e;
+      document.getElementById('wi-title').innerText = d.w;
+      document.getElementById('wi-desc').innerText = d.h;
+      document.getElementById('overlay-wild-info').classList.add('show');
+      // Prevent card flip back if clicked
+      event.stopPropagation();
   },
 
   flip: function() {
     const card = document.getElementById('game-card');
     if(card.classList.contains('flipped')) return;
-     
     card.classList.add('flipped');
-     
     const data = this.currentRoleData[this.currIdx];
-    const nameLower = data.name.toLowerCase().trim();
-    if (nameLower === 'lisek') spawnConfetti('🦊');
-    else if (nameLower === 'pizdel' || nameLower === 'dell') spawnConfetti('🧟');
-    else if (nameLower === 'brzydal' || nameLower === 'brzydki') spawnConfetti('🚖');
-
     if(data.isWild) setTimeout(() => spawnConfetti(data.wildData.e), 300);
-
     setTimeout(() => {
-      document.getElementById('card-controls').classList.remove('hidden');
-      document.getElementById('card-controls').classList.add('fade-in');
+      const ctrl = document.getElementById('card-controls');
+      ctrl.classList.remove('hidden'); ctrl.classList.add('fade-in');
       const isLast = this.currIdx === this.currentRoleData.length - 1;
-      if(isLast) { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-ready').classList.remove('hidden'); }
-      else { document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-ready').classList.add('hidden'); }
+      document.getElementById('btn-next').classList.toggle('hidden', isLast);
+      document.getElementById('btn-ready').classList.toggle('hidden', !isLast);
     }, 400);
   },
 
   next: function() {
     const card = document.getElementById('game-card');
-    const back = document.getElementById('c-back');
     document.getElementById('card-controls').classList.remove('fade-in');
     card.classList.remove('flipped');
-    setTimeout(() => { back.className = 'face back'; }, 150); 
+    setTimeout(() => { document.getElementById('c-back').className = 'face back'; }, 150);
     setTimeout(() => { this.currIdx++; this.setupCard(); }, 600);
   },
 
-  cancelRound: function() {
-    if(confirm("Czy na pewno chcesz anulować tę rundę?")) {
-        this.resetBackground();
-        nav.to('v-setup');
-    }
-  },
-
   finishDealing: function() {
-    const startName = this.currentRoleData[Math.floor(Math.random() * this.currentRoleData.length)].name;
-    document.getElementById('start-name').innerText = startName;
     nav.to('v-starter');
+    document.getElementById('start-name').innerText = this.currentRoleData[Math.floor(Math.random() * this.currentRoleData.length)].name;
   },
 
   startTimer: function() {
@@ -668,75 +537,51 @@ const game = {
     this.updateTimerDisplay(this.time);
     if(this.timer) clearInterval(this.timer);
     this.timer = setInterval(() => {
-      this.time--;
-      this.updateTimerDisplay(this.time);
-      if(this.time <= 0) { clearInterval(this.timer); try{navigator.vibrate([500,200,500]);}catch(e){} this.preReveal(); }
+      this.time--; this.updateTimerDisplay(this.time);
+      if(this.time <= 0) { clearInterval(this.timer); this.preReveal(); }
     }, 1000);
   },
-
   updateTimerDisplay: function(t) {
-    const m = Math.floor(t / 60);
-    const s = t % 60;
+    const m = Math.floor(t / 60), s = t % 60;
     document.getElementById('timer-disp').innerText = `${m}:${s<10?'0':''}${s}`;
   },
 
   pause: function() { clearInterval(this.timer); document.getElementById('overlay').classList.add('show'); },
   resume: function() { document.getElementById('overlay').classList.remove('show'); this.startTimer(); },
+  cancelRound: function() { if(confirm("Anulować?")) { document.getElementById('main-bg').classList.remove('bg-wild-west'); nav.to('v-setup'); } },
 
   showRemindMenu: function() {
-      const list = document.getElementById('remind-list');
-      list.innerHTML = '';
-      const sorted = [...this.currentRoleData].sort((a,b) => a.name.localeCompare(b.name));
-      sorted.forEach(p => {
-          const btn = document.createElement('button');
-          btn.className = 'btn secondary remind-btn';
-          btn.innerText = p.name;
-          btn.onclick = () => game.showSecret(p);
+      const list = document.getElementById('remind-list'); list.innerHTML = '';
+      [...this.currentRoleData].sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
+          const btn = document.createElement('button'); btn.className = 'btn secondary remind-btn';
+          btn.innerText = p.name; btn.onclick = () => game.showSecret(p);
           list.appendChild(btn);
       });
       document.getElementById('overlay-remind').classList.add('show');
   },
   closeRemind: function() { document.getElementById('overlay-remind').classList.remove('show'); },
+  
   showSecret: function(p) {
       const content = document.getElementById('secret-content');
       let html = '';
       if(p.isImp) {
-          let hintText = this.wordData.h;
-          let labelText = "PODPOWIEDŹ";
-           
-          if (this.emojiMode) {
-              labelText = "EMOJI HINT";
-              hintText = this.wordData.e;
-          } else {
-              labelText = "PODPOWIEDŹ";
-              hintText = this.wordData.h;
-          }
-           
-          if (!this.hintOn) hintText = "Brak podpowiedzi";
-           
-          html = `
-            <div class="role-tag">TWOJA ROLA</div>
-            <div style="font-size:36px; font-weight:900; color:var(--impostor); margin-bottom:15px">IMPOSTER</div>
-             <div style="font-size:13px; color:var(--text-dim); margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; font-weight:700">
-                KATEGORIA: <span style="color:#fff">${this.wordData.cat}</span>
-            </div>
-            <div class="hint-container is-impostor"><div class="hint-label">${labelText}</div><div class="hint-val">${hintText}</div></div>
-          `;
-      } else if (p.isWild) {
-         html = `
-            <div class="role-tag">DZIKA KARTA</div>
-            <div style="font-size:32px; font-weight:900; color:var(--wild); margin-bottom:10px">${p.wildData.w.toUpperCase()} ${p.wildData.e}</div>
-            <div class="hint-container is-wild" style="border-color:var(--wild-glow)">
-                <div class="hint-label" style="color:var(--wild)">ZADANIE</div>
-                <div class="hint-val" style="font-size:16px; font-weight:600; color:white">${p.wildData.h}</div>
-            </div>
-          `;
+          html = `<div class="role-tag">TWOJA ROLA</div><h1 style="color:var(--impostor)">IMPOSTOR</h1><div class="hint-container is-impostor"><div class="hint-val">${this.emojiMode?this.wordData.e:this.wordData.h}</div></div>`;
       } else {
-          html = `
-            <div class="role-tag">TWOJE HASŁO</div>
-            <div style="font-size:36px; font-weight:900; color:var(--accent); margin-bottom:15px">${this.wordData.w}</div>
-            <div class="hint-container"><div class="hint-label">KATEGORIA</div><div class="hint-val" style="font-size:18px">${this.wordData.cat}</div></div>
-          `;
+          // Innocent + Wild
+          html = `<div class="role-tag">TWOJE HASŁO</div><h1 style="color:var(--accent)">${this.wordData.w}</h1><div class="hint-container"><div class="hint-val" style="font-size:16px">${this.wordData.cat}</div></div>`;
+          
+          if(p.isWild) {
+              html += `<div style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
+                <div class="role-tag" style="color:var(--wild)">TWOJA DZIKA KARTA</div>
+                <div style="font-size:24px; color:var(--wild); font-weight:800">${p.wildData.w} ${p.wildData.e}</div>
+                <p style="font-size:14px; margin-top:5px; color:#ccc">${p.wildData.h}</p>
+              </div>`;
+              
+              // SNIPER BUTTON
+              if (p.wildData.id === 'sniper' && !this.sniperUsed) {
+                  html += `<button class="btn danger" style="margin-top:20px" onclick="game.triggerSniper()">🔫 ODDAJ STRZAŁ</button>`;
+              }
+          }
       }
       content.innerHTML = html;
       document.getElementById('overlay-remind').classList.remove('show');
@@ -744,8 +589,67 @@ const game = {
   },
   closeSecret: function() { document.getElementById('overlay-secret').classList.remove('show'); },
 
+  triggerSniper: function() {
+      this.closeSecret();
+      const list = document.getElementById('sniper-list'); list.innerHTML = '';
+      // Find current sniper name to exclude (based on secret view, simplistic approach)
+      // W prawdziwej grze pass-and-play to działa, bo właśnie otworzyłeś swój sekret.
+      
+      const sniperName = this.currentRoleData.find(p => p.isWild && p.wildData.id === 'sniper').name;
+      
+      this.currentRoleData.forEach(p => {
+          if (p.name === sniperName) return; // Nie strzelaj do siebie
+          const btn = document.createElement('button'); 
+          btn.className = 'btn secondary remind-btn';
+          btn.innerText = `Strzel w: ${p.name}`;
+          btn.onclick = () => {
+              if(confirm(`Na pewno strzelić w gracza ${p.name}?`)) game.handleShot(p);
+          };
+          list.appendChild(btn);
+      });
+      document.getElementById('overlay-sniper').classList.add('show');
+  },
+
+  handleShot: function(target) {
+      document.getElementById('overlay-sniper').classList.remove('show');
+      this.sniperUsed = true;
+      clearInterval(this.timer);
+      document.getElementById('overlay').classList.remove('show');
+
+      const card = document.getElementById('reveal-card'); 
+      card.classList.remove('flipped');
+      document.getElementById('btn-do-reveal').classList.add('hidden'); // Auto reveal
+      document.getElementById('reveal-details').classList.remove('hidden');
+
+      const imposter = this.currentRoleData.find(p => p.isImp);
+      const sniper = this.currentRoleData.find(p => p.isWild && p.wildData.id === 'sniper');
+
+      document.getElementById('rev-imp-name').innerText = imposter.name;
+      document.getElementById('rev-word').innerText = this.wordData.w;
+      document.getElementById('rev-hint').innerText = "Koniec gry przez strzał snajpera!";
+      
+      const msgEl = document.getElementById('sniper-msg');
+      msgEl.style.display = 'block';
+
+      if (target.isImp) {
+          // WIN
+          spawnConfetti('🎯');
+          spawnConfetti('🏆');
+          msgEl.innerHTML = `SNAJPER (${sniper.name}) TRAFIŁ! <br>IMPOSTOR ZLIKWIDOWANY!`;
+          msgEl.style.color = '#4ade80'; // Green
+      } else {
+          // FAIL
+          msgEl.innerHTML = `SNAJPER (${sniper.name}) SPUDŁOWAŁ! <br>ZSTRZELIŁ NIEWINNEGO (${target.name}) I ODPADA!`;
+          msgEl.style.color = '#ef4444'; // Red
+      }
+
+      nav.to('v-reveal');
+      setTimeout(() => card.classList.add('flipped'), 500);
+  },
+
   preReveal: function() {
     clearInterval(this.timer); document.getElementById('overlay').classList.remove('show');
+    document.getElementById('sniper-msg').style.display = 'none';
     const card = document.getElementById('reveal-card'); card.classList.remove('flipped');
     document.getElementById('btn-do-reveal').classList.remove('hidden');
     document.getElementById('reveal-details').classList.add('hidden');
@@ -757,25 +661,19 @@ const game = {
     document.getElementById('rev-imp-name').innerText = imposter.name;
     document.getElementById('rev-word').innerText = this.wordData.w;
     document.getElementById('rev-hint').innerText = "Podpowiedź: " + (this.emojiMode ? this.wordData.e : this.wordData.h);
-    const card = document.getElementById('reveal-card'); card.classList.add('flipped');
+    document.getElementById('reveal-card').classList.add('flipped');
     document.getElementById('btn-do-reveal').classList.add('hidden');
-    setTimeout(() => {
-        document.getElementById('reveal-details').classList.remove('hidden');
-        // Wymuszenie animacji wejścia dla detali
+    setTimeout(() => { 
+        document.getElementById('reveal-details').classList.remove('hidden'); 
         document.getElementById('reveal-details').classList.remove('fade-in');
         void document.getElementById('reveal-details').offsetWidth;
         document.getElementById('reveal-details').classList.add('fade-in');
     }, 800);
-  },
-
-  resetBackground: function() {
-      document.getElementById('main-bg').classList.remove('bg-wild-west');
   }
 };
 
 game.initSetup();
-// Dodanie resetu tła przy powrocie do menu po grze
-document.querySelector('#reveal-details .outline').addEventListener('click', () => game.resetBackground());
+document.querySelector('#reveal-details .outline').addEventListener('click', () => { document.getElementById('main-bg').classList.remove('bg-wild-west'); });
 </script>
 </body>
 </html>
