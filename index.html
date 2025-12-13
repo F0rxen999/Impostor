@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>IMPOSTOR WILD WEST</title>
+<title>IMPOSTOR WILD WEST FIXED</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -33,6 +33,7 @@
   }
 
   /* --- TŁA --- */
+  /* Standardowe tło */
   .bg-mesh {
     position: fixed; inset: -50%;
     background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15), transparent 60%),
@@ -40,17 +41,30 @@
                 radial-gradient(circle at 20% 80%, rgba(239,68,68,0.1), transparent 50%);
     animation: meshMove 20s infinite alternate linear;
     z-index: -2;
-    transition: background 0.8s ease-in-out;
+    transition: all 0.8s ease-in-out;
+    transform-origin: center;
   }
   
+  /* NOWE TŁO DZIKI ZACHÓD (Cartoon Sunset) */
   .bg-mesh.bg-wild-west {
-    animation: none;
-    inset: 0;
+    animation: none; /* Zatrzymujemy animację obrotu */
+    inset: 0; /* Resetujemy rozmiar */
+    transform: scale(1) !important; /* Resetujemy skalę */
+    
+    /* Dwa gradienty nałożone na siebie tworzą horyzont */
     background: 
-        linear-gradient(to top, #210e05 0%, #3d1c0b 30%, transparent 30%),
-        radial-gradient(ellipse at 50% 30%, rgba(217, 70, 239, 0.25) 0%, transparent 60%),
-        radial-gradient(ellipse at 50% 30%, rgba(251, 191, 36, 0.15) 20%, transparent 70%),
-        linear-gradient(to bottom, #0f172a 0%, #1e1b4b 100%);
+        /* 1. ZIEMIA (Dolne 35%) - Ciemnobrązowa pustynia z ostrym odcięciem */
+        linear-gradient(to top, #1a120b 0%, #3a2618 35%, transparent 35.1%),
+
+        /* 2. NIEBO (Całość, ale widoczne u góry) - Zachód słońca w kolorach Dzikiej Karty */
+        linear-gradient(to bottom, 
+            #020617 0%,   /* Ciemna noc u góry */
+            #1e1b4b 40%,  /* Granatowe niebo */
+            #9333ea 70%,  /* Fioletowy zmierzch (Wild color) */
+            #f97316 100%  /* Pomarańczowy horyzont */
+        );
+    background-color: #0f172a; /* Kolor bazowy */
+    background-attachment: fixed; /* Tło "przyklejone" podczas przewijania */
   }
 
   @keyframes meshMove {
@@ -128,7 +142,7 @@
   .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(145deg, #1e293b, #0f172a); }
   .back { background: #020617; transform: rotateY(180deg); border: 2px solid var(--accent); }
   .back.is-impostor { border-color: var(--impostor); background: radial-gradient(circle at center, #450a0a 0%, #000 100%); }
-  .back.is-wild { border-color: var(--wild); /* background: radial-gradient(circle at center, #4a044e 0%, #000 100%);  - REMOVED, Wild sees Normal background now but with purple border */ }
+  .back.is-wild { border-color: var(--wild); /* background: radial-gradient(circle at center, #4a044e 0%, #000 100%); */ }
   .back.reveal-mode { border-color: #fbbf24; background: radial-gradient(circle at center, #422006 0%, #020617 100%); }
 
   .avatar { width: 110px; height: 110px; background: linear-gradient(135deg, var(--primary), #4f46e5); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 900; margin-bottom: 24px; box-shadow: 0 0 40px var(--primary-glow); color: white; }
