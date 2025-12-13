@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<title>IMPOSTOR FIXED</title>
+<title>IMPOSTOR WILD WEST</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -13,6 +13,8 @@
     --accent: #06b6d4;
     --impostor: #ff3b30;
     --impostor-glow: rgba(255, 59, 48, 0.5);
+    --wild: #d946ef;
+    --wild-glow: rgba(217, 70, 239, 0.5);
     --text: #ffffff;
     --text-dim: #94a3b8;
     --glass: rgba(15, 23, 42, 0.85);
@@ -20,7 +22,7 @@
   }
 
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
-  
+   
   body {
     font-family: 'Outfit', sans-serif;
     background: #0f172a;
@@ -30,7 +32,7 @@
     position: relative;
   }
 
-  /* TŁO */
+  /* --- TŁA --- */
   .bg-mesh {
     position: fixed; inset: -50%;
     background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15), transparent 60%),
@@ -38,7 +40,23 @@
                 radial-gradient(circle at 20% 80%, rgba(239,68,68,0.1), transparent 50%);
     animation: meshMove 20s infinite alternate linear;
     z-index: -2;
+    transition: background 0.8s ease-in-out; /* Płynna zmiana tła */
   }
+  
+  /* TŁO DZIKI ZACHÓD CARTOON */
+  .bg-mesh.bg-wild-west {
+    animation: none; /* Zatrzymujemy kręcenie */
+    inset: 0; /* Resetujemy powiększenie */
+    background: 
+        /* Ciemna ziemia na dole */
+        linear-gradient(to top, #210e05 0%, #3d1c0b 30%, transparent 30%),
+        /* Łuna na horyzoncie (fiolet/pomarańcz) */
+        radial-gradient(ellipse at 50% 30%, rgba(217, 70, 239, 0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 30%, rgba(251, 191, 36, 0.15) 20%, transparent 70%),
+        /* Ciemne niebo */
+        linear-gradient(to bottom, #0f172a 0%, #1e1b4b 100%);
+  }
+
   @keyframes meshMove {
     0% { transform: rotate(0deg) scale(1); }
     100% { transform: rotate(10deg) scale(1.1); }
@@ -58,18 +76,29 @@
   }
 
   .hidden { display: none !important; }
-  
-  /* UI */
+   
+  /* UI CONTAINER */
   .container {
     height: 100%; display: flex; flex-direction: column; 
     padding: env(safe-area-inset-top) 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     width: 100%; max-width: 500px; margin: 0 auto; overflow-y: auto;
     position: relative; z-index: 2; scrollbar-width: none;
+    opacity: 0; /* Domyślnie niewidoczny dla płynnych przejść */
   }
   .container::-webkit-scrollbar { display: none; }
 
-  .fade-in { animation: enterScreen 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-  @keyframes enterScreen { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+  /* --- NOWE, CZYSTSZE ANIMACJE --- */
+  .fade-in { animation: enterScreen 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards; }
+  .fade-out { animation: exitScreen 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) forwards; }
+
+  @keyframes enterScreen { 
+      from { opacity: 0; transform: translateY(20px) scale(0.98); } 
+      to { opacity: 1; transform: translateY(0) scale(1); } 
+  }
+  @keyframes exitScreen { 
+      from { opacity: 1; transform: translateY(0) scale(1); } 
+      to { opacity: 0; transform: translateY(-20px) scale(0.98); } 
+  }
 
   h1 { 
     font-size: 42px; font-weight: 900; margin-bottom: 4px; letter-spacing: -1.5px; line-height: 1;
@@ -83,14 +112,17 @@
     border: 1px solid var(--glass-border); border-radius: 20px;
   }
 
+  /* ULEPSZONE PRZYCISKI */
   .btn {
     width: 100%; padding: 18px; border-radius: 18px; border: none;
     font-size: 16px; font-weight: 800; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: transform 0.1s; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
-    will-change: transform;
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    will-change: transform, filter;
   }
-  .btn:active { transform: scale(0.97); }
+  .btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+  .btn:active { transform: scale(0.97) translateY(0); filter: brightness(0.9); }
+
   .primary { background: var(--primary); color: white; box-shadow: 0 8px 30px var(--primary-glow); }
   .danger { background: var(--impostor); color: white; box-shadow: 0 8px 30px var(--impostor-glow); }
   .secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
@@ -106,8 +138,9 @@
   .del-btn { color: var(--impostor); font-weight: 900; padding: 10px; cursor: pointer; opacity: 0.8; }
   .add-btn {
     background: rgba(255,255,255,0.03); border: 2px dashed rgba(255,255,255,0.1); color: var(--text-dim);
-    padding: 14px; border-radius: 14px; text-align: center; font-weight: 700; cursor: pointer; margin-bottom: 10px;
+    padding: 14px; border-radius: 14px; text-align: center; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s;
   }
+  .add-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.3); }
 
   .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
   .cat-item {
@@ -115,11 +148,14 @@
     border: 2px solid transparent; cursor: pointer; text-align: center; transition: 0.2s;
   }
   .cat-item.active { border-color: var(--accent); background: rgba(6, 182, 212, 0.15); color: white; box-shadow: 0 0 20px rgba(6, 182, 212, 0.2); }
+  .cat-item:hover { transform: translateY(-3px); }
+  .cat-item.active:hover { transform: translateY(-3px) scale(1.02); }
+
   .cat-item.hardcore.active { border-color: var(--impostor); background: rgba(239,68,68,0.2); }
   .cat-item.rap.active { border-color: #a855f7; background: rgba(168, 85, 247, 0.2); }
   .cat-name { font-weight: 800; font-size: 13px; }
   .cat-count { font-size: 10px; color: var(--text-dim); margin-top: 4px; font-weight: 600; }
-  
+   
   .cat-item.hardcore { border-color: rgba(239,68,68,0.3); }
   .cat-item.hardcore .cat-name { color: #fca5a5; }
   .cat-item.rap { border-color: rgba(168, 85, 247, 0.3); }
@@ -136,7 +172,9 @@
   }
   .back { background: #020617; transform: rotateY(180deg); border: 2px solid var(--accent); }
   .back.is-impostor { border-color: var(--impostor); background: radial-gradient(circle at center, #450a0a 0%, #000 100%); }
-  .back.reveal-mode { border-color: #fbbf24; background: radial-gradient(circle at center, #422006 0%, #000 100%); }
+  .back.is-wild { border-color: var(--wild); background: radial-gradient(circle at center, #4a044e 0%, #000 100%); }
+  
+  .back.reveal-mode { border-color: #fbbf24; background: radial-gradient(circle at center, #422006 0%, #020617 100%); }
 
   .avatar {
     width: 110px; height: 110px; background: linear-gradient(135deg, var(--primary), #4f46e5); 
@@ -149,16 +187,17 @@
   .hint-container { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px 25px; border-radius: 18px; text-align: center; width: 100%; }
   .hint-val { font-size: 24px; font-weight: 800; color: var(--accent); }
   .is-impostor .hint-val { color: var(--impostor); }
+  .is-wild .hint-val { color: var(--wild); }
 
   .tap-hint { margin-top: 40px; font-size: 12px; font-weight: 800; opacity: 0.6; animation: pulse 2s infinite; transition: opacity 0.1s; }
   .card.flipped .tap-hint { opacity: 0 !important; visibility: hidden; animation: none; }
 
   .timer { font-size: 110px; font-weight: 900; margin: 30px 0; text-align: center; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
-  
+   
   .overlay {
     position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(15px);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 100; opacity: 0; pointer-events: none; transition: 0.3s; padding: 30px;
+    z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; padding: 30px;
   }
   .overlay.show { opacity: 1; pointer-events: auto; }
   .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: rgba(30,41,59,0.6); border-radius: 16px; }
@@ -176,25 +215,23 @@
 </head>
 <body>
 
-<div class="bg-mesh"></div>
+<div class="bg-mesh" id="main-bg"></div>
 <div id="confetti-layer" class="confetti-container"></div>
 
-<!-- MENU -->
 <div id="v-menu" class="container fade-in" style="justify-content: center; text-align: center;">
   <h1>IMPOSTOR</h1>
   <div class="sub-title">by Lisek & Gemini</div>
   <div style="margin: 40px 0;">
-    <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--accent);">
-      <span style="font-size:50px">👑</span>
-      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">CORRECTED</h3>
-      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Pełna kontrola Emoji/Tekst</p>
+    <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--wild);">
+      <span style="font-size:50px">🤠</span>
+      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">WILD UPDATE</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Nowe tło i czystsze animacje!</p>
     </div>
   </div>
   <button class="btn primary" onclick="nav.to('v-setup')">ROZPOCZNIJ GRĘ</button>
 </div>
 
-<!-- SETUP -->
-<div id="v-setup" class="container hidden fade-in">
+<div id="v-setup" class="container hidden">
   <h1>Konfiguracja</h1>
   <div class="sub-title" style="margin-bottom:10px">Skład i zasady</div>
   <label>Gracze</label>
@@ -203,8 +240,13 @@
   <label>Kategorie</label>
   <div class="cat-grid" id="cat-grid"></div>
   <label>Zasady</label>
-  
+   
   <div class="setting-row">
+    <span style="font-size:14px; font-weight:600; color:#d946ef;">TRYB DZIKA KARTA (MIN. 3)</span>
+    <label class="switch"><input type="checkbox" id="opt-wild"><span class="slider" style="background:#581c87;"></span></label>
+  </div>
+
+  <div class="setting-row" style="margin-top:10px">
     <span style="font-size:14px; font-weight:600; color:#fbbf24;">TRYB EMOJI (DLA WSZYSTKICH)</span>
     <label class="switch"><input type="checkbox" id="opt-emoji-all"><span class="slider"></span></label>
   </div>
@@ -221,8 +263,7 @@
   <button class="btn primary" onclick="game.start()">GRAJ</button>
 </div>
 
-<!-- KARTA -->
-<div id="v-card" class="container hidden fade-in" style="justify-content: center;">
+<div id="v-card" class="container hidden" style="justify-content: center;">
   <div class="scene">
     <div class="card" id="game-card" onclick="game.flip()">
       <div class="face front">
@@ -241,16 +282,14 @@
   </div>
 </div>
 
-<!-- STARTER -->
-<div id="v-starter" class="container hidden fade-in" style="text-align:center; justify-content:center;">
+<div id="v-starter" class="container hidden" style="text-align:center; justify-content:center;">
   <div class="role-tag" style="margin-bottom:30px">RUNDĘ ROZPOCZYNA</div>
   <h1 id="start-name" style="font-size:56px; color:var(--accent); margin-bottom:15px; text-shadow: 0 0 30px rgba(6,182,212,0.4);">NICK</h1>
   <p style="color:var(--text-dim); font-size:16px">Zadaj pierwsze pytanie.</p>
   <div style="margin-top:60px; width:100%"><button class="btn primary" onclick="game.startTimer()">START CZASU</button></div>
 </div>
 
-<!-- TIMER -->
-<div id="v-timer" class="container hidden fade-in">
+<div id="v-timer" class="container hidden">
   <div style="margin-top:auto; text-align:center">
     <div class="role-tag">POZOSTAŁY CZAS</div>
     <div class="timer" id="timer-disp">00:00</div>
@@ -262,7 +301,6 @@
   </div>
 </div>
 
-<!-- OVERLAYS -->
 <div id="overlay" class="overlay">
   <h1 style="color:white; margin-bottom:10px">PAUZA</h1>
   <button class="btn primary" style="width:100%; max-width:300px" onclick="game.resume()">WZNÓW ODLICZANIE</button>
@@ -281,8 +319,7 @@
   <button class="btn primary" onclick="game.closeSecret()">OK, JUŻ WIEM</button>
 </div>
 
-<!-- REVEAL -->
-<div id="v-reveal" class="container hidden fade-in" style="justify-content:center;">
+<div id="v-reveal" class="container hidden" style="justify-content:center;">
   <h1 style="text-align:center; margin-bottom:10px">FINAŁ</h1>
   <div class="scene" style="height:400px">
     <div class="card" id="reveal-card">
@@ -309,7 +346,7 @@
 </div>
 
 <script>
-/* --- BAZA DANYCH Z NAPRAWIONYMI TEKSTAMI W RAP HITACH --- */
+/* --- BAZA DANYCH --- */
 const DB = {
   "Polskie Rap Hity": [
     {w:"Szklanki", h:"Young Leosia", e:"🥃"}, {w:"Kiss Cam", h:"Mata", e:"💋"}, {w:"Złote Tarasy", h:"Bedoes", e:"🏬"}, {w:"Patointeligencja", h:"Mata Liceum", e:"🏫"}, {w:"Disney", h:"Kizo", e:"🏰"}, {w:"Ostatnia Nadzieja", h:"Sobel", e:"💔"}, {w:"Polskie Tango", h:"Taco", e:"🇵🇱"}, {w:"Szampan", h:"Sanah", e:"🍾"}, {w:"California", h:"White 2115", e:"🌴"}, {w:"Jetlag", h:"Malik", e:"✈️"}, {w:"Lawenda", h:"Bedoes", e:"💜"}, {w:"Dres", h:"Kizo", e:"👕"}, {w:"BFF", h:"Bambi", e:"👯‍♀️"}, {w:"Taxi", h:"Kizo", e:"🚖"}, {w:"Malibu Barbie", h:"Club 2020", e:"🍹"}, {w:"Chyba że z Tobą", h:"Modelki", e:"💃"}, {w:"Stan", h:"Sobel", e:"☁️"}, {w:"Piękny świat", h:"Gibbs", e:"🌍"}, {w:"Bubbletea", h:"Quebo", e:"🧋"}, {w:"100 dni do matury", h:"Mata", e:"🎓"}, {w:"Tamagotchi", h:"Taco", e:"👾"}, {w:"Język ciała", h:"Tymek", e:"👅"}, {w:"Candy", h:"Quebo", e:"🍬"}, {w:"Szafir", h:"Mata", e:"💎"}, {w:"Molly", h:"ReTo", e:"💊"}, {w:"Ogrody", h:"Kukon", e:"🌳"}, {w:"Papuga", h:"Mata", e:"🦜"}, {w:"Bigos", h:"Kabe", e:"🥘"}, {w:"Deszcz", h:"Taco", e:"☔️"}, {w:"Kebab w cienkim", h:"Smolasty", e:"🥙"}, {w:"Gelato", h:"Kukon", e:"🍦"}, {w:"Rower", h:"Lech Rocher", e:"🚲"}, {w:"Pijemy za lepszy czas", h:"Smolasty", e:"🍻"}, {w:"Ona by tak chciała", h:"Ronnie Ferrari", e:"🔥"}, {w:"Eldorado", h:"Bedoes", e:"💰"}, {w:"Sierpień", h:"Oki", e:"🗓️"}, {w:"Modelki", h:"Sobel", e:"👠"}, {w:"Bungee", h:"Gibbs", e:"🪢"}, {w:"Plecak", h:"Białas", e:"🎒"}, {w:"Dom", h:"Bitamina", e:"🏠"}, {w:"Wiatr", h:"Oki", e:"💨"}, {w:"Kawasaki", h:"Żabson", e:"🏍️"}, {w:"Gugu", h:"Szpaku", e:"👶"}, {w:"Trap", h:"White", e:"🕸️"}, {w:"Audi", h:"ReTo", e:"🚗"}, {w:"Zioło", h:"Sarius", e:"🌿"}
@@ -349,17 +386,40 @@ const DB = {
   ],
   "Zwierzęta": [
     {w:"Pies", h:"Smycz", e:"🐕"}, {w:"Kot", h:"Kuweta", e:"🐈"}, {w:"Żyrafa", h:"Szyja", e:"🦒"}, {w:"Kura", h:"Rosół", e:"🐔"}, {w:"Świnia", h:"Chlew", e:"🐖"}, {w:"Pszczoła", h:"Ul", e:"🐝"}, {w:"Komar", h:"Krew", e:"🦟"}, {w:"Mysz", h:"Pułapka", e:"🐁"}, {w:"Wąż", h:"Jad", e:"🐍"}, {w:"Słoń", h:"Trąba", e:"🐘"}, {w:"Rekin", h:"Płetwa", e:"🦈"}, {w:"Pingwin", h:"Fraku", e:"🐧"}, {w:"Małpa", h:"Banan", e:"🐒"}, {w:"Krowa", h:"Mleko", e:"🐄"}, {w:"Koń", h:"Siodło", e:"🐎"}, {w:"Ryba", h:"Woda", e:"🐟"}, {w:"Pająk", h:"Sieć", e:"🕷️"}, {w:"Wilk", h:"Wataha", e:"🐺"}, {w:"Niedźwiedź", h:"Miodek", e:"🐻"}, {w:"Delfin", h:"Ssak", e:"🐬"}, {w:"Motyl", h:"Kok", e:"🦋"}, {w:"Żaba", h:"Bocian", e:"🐸"}, {w:"Lis", h:"Chytry", e:"🦊"}, {w:"Sowa", h:"Noc", e:"🦉"}, {w:"Biedronka", h:"Kropki", e:"🐞"}, {w:"Ślimak", h:"Muszla", e:"🐌"}, {w:"Jeż", h:"Igły", e:"🦔"}, {w:"Chomik", h:"Kołowrotek", e:"🐹"}, {w:"Papuga", h:"Gadanie", e:"🦜"}, {w:"Zebra", h:"Paski", e:"🦓"}, {w:"Lew", h:"Król", e:"🦁"}, {w:"Tygrys", h:"Dżungla", e:"🐅"}, {w:"Wiewiórka", h:"Orzech", e:"🐿️"}, {w:"Krokodyl", h:"Zęby", e:"🐊"}, {w:"Hipopotam", h:"Gruby", e:"🦛"}, {w:"Wielbłąd", h:"Garb", e:"🐪"}, {w:"Panda", h:"Bambus", e:"🐼"}
+  ],
+  /* --- DZIKIE KARTY --- */
+  "WildCards": [
+      {w:"Snajper", h:"Masz jeden strzał. Wskaż Impostora. Jeśli się pomylisz, odpadasz.", e:"🎯"},
+      {w:"Błazen", h:"Twój cel: zostać wyrzuconym w głosowaniu.", e:"🤡"},
+      {w:"Niemowa", h:"Nie możesz się odzywać przez pierwszą połowę rundy.", e:"🤐"},
+      {w:"Adwokat", h:"Wybierz gracza. Musisz go bronić, nawet jeśli jest Impostorem.", e:"🛡️"}
   ]
 };
 
+/* --- NOWA LOGIKA NAWIGACJI DLA PŁYNNYCH PRZEJŚĆ --- */
 const nav = {
   to: (id) => {
-    document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
-    const el = document.getElementById(id);
-    el.classList.remove('hidden');
-    el.classList.remove('fade-in');
-    void el.offsetWidth; 
-    el.classList.add('fade-in');
+    const current = document.querySelector('.container:not(.hidden)');
+    const next = document.getElementById(id);
+
+    if (current) {
+      current.classList.remove('fade-in');
+      current.classList.add('fade-out');
+      setTimeout(() => {
+        current.classList.add('hidden');
+        current.classList.remove('fade-out');
+        showNext();
+      }, 300); // Czas zgodny z animacją exitScreen
+    } else {
+      showNext();
+    }
+
+    function showNext() {
+      next.classList.remove('hidden');
+      // Wymuszenie reflow, żeby zrestartować animację
+      void next.offsetWidth;
+      next.classList.add('fade-in');
+    }
   }
 };
 
@@ -367,7 +427,7 @@ const nav = {
 function spawnConfetti(emoji) {
   const container = document.getElementById('confetti-layer');
   const count = 40; 
-  
+   
   for (let i = 0; i < count; i++) {
     const el = document.createElement('div');
     el.classList.add('confetti');
@@ -376,7 +436,7 @@ function spawnConfetti(emoji) {
     el.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
     el.style.fontSize = (Math.random() * 20 + 20) + 'px';
     container.appendChild(el);
-    
+     
     setTimeout(() => el.remove(), 4000);
   }
 }
@@ -384,7 +444,7 @@ function spawnConfetti(emoji) {
 const game = {
   players: ["Pizdel", "Brzydal", "Lisek"],
   impostorHistory: [],
-  currentRoleData: [], wordData: null, hintOn: true, emojiMode: false, time: 120, timer: null, currIdx: 0,
+  currentRoleData: [], wordData: null, hintOn: true, emojiMode: false, wildMode: false, time: 120, timer: null, currIdx: 0,
 
   addPlayer: function() { this.players.push(""); this.renderPlayers(); },
   renderPlayers: function() {
@@ -408,6 +468,7 @@ const game = {
     const grid = document.getElementById('cat-grid');
     grid.innerHTML = '';
     Object.keys(DB).forEach(k => {
+      if(k === 'WildCards') return; // Nie pokazujemy dzikich kart w menu
       const div = document.createElement('div');
       let cls = 'cat-item';
       if(k === 'Hardcore') cls += ' hardcore';
@@ -424,11 +485,20 @@ const game = {
     if(!activeCats.length) return alert("Wybierz kategorię!");
     const pList = this.players.filter(p => p.trim());
     if(pList.length < 3) return alert("Minimum 3 graczy!");
-    
+     
     // Opcje
     this.hintOn = document.getElementById('opt-hint').checked;
     this.emojiMode = document.getElementById('opt-emoji-all').checked;
+    this.wildMode = document.getElementById('opt-wild').checked;
     this.time = parseInt(document.getElementById('opt-time').value) || 120;
+
+    // --- TOGGLE WILD WEST BACKGROUND ---
+    const bgMesh = document.getElementById('main-bg');
+    if (this.wildMode) {
+        bgMesh.classList.add('bg-wild-west');
+    } else {
+        bgMesh.classList.remove('bg-wild-west');
+    }
 
     const cat = activeCats[Math.floor(Math.random() * activeCats.length)];
     const list = DB[cat];
@@ -444,9 +514,20 @@ const game = {
     const impName = eligible[Math.floor(Math.random() * eligible.length)];
     this.impostorHistory.push(impName);
 
+    // --- LOGIKA: DZIKA KARTA (tylko dla niewinnych) ---
+    let wildName = null;
+    let wildCardData = null;
+    if (this.wildMode && pList.length >= 3) {
+        const innocents = pList.filter(name => name !== impName);
+        wildName = innocents[Math.floor(Math.random() * innocents.length)];
+        wildCardData = DB.WildCards[Math.floor(Math.random() * DB.WildCards.length)];
+    }
+
     this.currentRoleData = pList.map(name => ({
         name: name,
-        isImp: name === impName
+        isImp: name === impName,
+        isWild: name === wildName,
+        wildData: name === wildName ? wildCardData : null
     }));
 
     // Shuffle
@@ -465,15 +546,15 @@ const game = {
     const card = document.getElementById('game-card');
     const back = document.getElementById('c-back');
     const avatarEl = document.getElementById('c-avatar');
-    
+     
     card.classList.remove('flipped');
     back.className = 'face back'; 
-    
+     
     document.getElementById('c-name').innerText = data.name;
-    
+     
     const nameLower = data.name.toLowerCase().trim();
     avatarEl.style.background = ''; 
-    avatarEl.style.fontSize = '';   
+    avatarEl.style.fontSize = '';    
 
     if (nameLower === 'lisek') {
         avatarEl.innerText = '🦊';
@@ -489,21 +570,18 @@ const game = {
     }
 
     document.getElementById('card-controls').classList.add('hidden');
-    
+     
     let html = '';
     if(data.isImp) {
       let hintText = this.wordData.h;
       let labelText = "PODPOWIEDŹ";
       
-      // --- SZTYWNA LOGIKA EMOJI / TEKST ---
       if (this.emojiMode) {
-          // Jeśli tryb emoji włączony -> ZAWSZE emoji
           labelText = "EMOJI HINT";
-          hintText = this.wordData.e; // Bierzemy z pola 'e'
+          hintText = this.wordData.e;
       } else {
-          // Jeśli tryb emoji wyłączony -> ZAWSZE tekst
           labelText = "PODPOWIEDŹ";
-          hintText = this.wordData.h; // Bierzemy z pola 'h' (teraz wszędzie jest tekst)
+          hintText = this.wordData.h;
       }
 
       if (!this.hintOn) hintText = "Brak podpowiedzi";
@@ -517,6 +595,19 @@ const game = {
         <div class="hint-container is-impostor"><div class="hint-label">${labelText}</div><div class="hint-val">${hintText}</div></div>
       `;
       back.classList.add('is-impostor');
+    } else if (data.isWild) {
+        // --- WIDOK DZIKIEJ KARTY ---
+        back.classList.add('is-wild');
+        html = `
+        <div class="role-tag" style="color:white">DZIKA KARTA</div>
+        <div class="big-word" style="color:var(--wild); text-shadow:0 0 20px rgba(217, 70, 239, 0.6); font-size:32px">${data.wildData.w.toUpperCase()}</div>
+        <div style="font-size:40px; margin-bottom:10px">${data.wildData.e}</div>
+        <div class="hint-container is-wild" style="border-color:var(--wild-glow)">
+            <div class="hint-label" style="color:var(--wild)">TWOJE ZADANIE</div>
+            <div class="hint-val" style="font-size:16px; font-weight:600; color:white">${data.wildData.h}</div>
+        </div>
+        <div style="margin-top:15px; font-size:12px; color:var(--text-dim);">Jesteś Niewinnym. Znasz hasło.</div>
+      `;
     } else {
       html = `
         <div class="role-tag">TWOJE HASŁO</div>
@@ -530,17 +621,20 @@ const game = {
   flip: function() {
     const card = document.getElementById('game-card');
     if(card.classList.contains('flipped')) return;
-    
+     
     card.classList.add('flipped');
-    
+     
     const data = this.currentRoleData[this.currIdx];
     const nameLower = data.name.toLowerCase().trim();
     if (nameLower === 'lisek') spawnConfetti('🦊');
     else if (nameLower === 'pizdel' || nameLower === 'dell') spawnConfetti('🧟');
     else if (nameLower === 'brzydal' || nameLower === 'brzydki') spawnConfetti('🚖');
 
+    if(data.isWild) setTimeout(() => spawnConfetti(data.wildData.e), 300);
+
     setTimeout(() => {
       document.getElementById('card-controls').classList.remove('hidden');
+      document.getElementById('card-controls').classList.add('fade-in');
       const isLast = this.currIdx === this.currentRoleData.length - 1;
       if(isLast) { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-ready').classList.remove('hidden'); }
       else { document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-ready').classList.add('hidden'); }
@@ -550,13 +644,17 @@ const game = {
   next: function() {
     const card = document.getElementById('game-card');
     const back = document.getElementById('c-back');
+    document.getElementById('card-controls').classList.remove('fade-in');
     card.classList.remove('flipped');
     setTimeout(() => { back.className = 'face back'; }, 150); 
     setTimeout(() => { this.currIdx++; this.setupCard(); }, 600);
   },
 
   cancelRound: function() {
-    if(confirm("Czy na pewno chcesz anulować tę rundę?")) { nav.to('v-setup'); }
+    if(confirm("Czy na pewno chcesz anulować tę rundę?")) {
+        this.resetBackground();
+        nav.to('v-setup');
+    }
   },
 
   finishDealing: function() {
@@ -605,8 +703,7 @@ const game = {
       if(p.isImp) {
           let hintText = this.wordData.h;
           let labelText = "PODPOWIEDŹ";
-          
-          // --- SZTYWNA LOGIKA EMOJI / TEKST ---
+           
           if (this.emojiMode) {
               labelText = "EMOJI HINT";
               hintText = this.wordData.e;
@@ -614,9 +711,9 @@ const game = {
               labelText = "PODPOWIEDŹ";
               hintText = this.wordData.h;
           }
-          
+           
           if (!this.hintOn) hintText = "Brak podpowiedzi";
-          
+           
           html = `
             <div class="role-tag">TWOJA ROLA</div>
             <div style="font-size:36px; font-weight:900; color:var(--impostor); margin-bottom:15px">IMPOSTER</div>
@@ -624,6 +721,15 @@ const game = {
                 KATEGORIA: <span style="color:#fff">${this.wordData.cat}</span>
             </div>
             <div class="hint-container is-impostor"><div class="hint-label">${labelText}</div><div class="hint-val">${hintText}</div></div>
+          `;
+      } else if (p.isWild) {
+         html = `
+            <div class="role-tag">DZIKA KARTA</div>
+            <div style="font-size:32px; font-weight:900; color:var(--wild); margin-bottom:10px">${p.wildData.w.toUpperCase()} ${p.wildData.e}</div>
+            <div class="hint-container is-wild" style="border-color:var(--wild-glow)">
+                <div class="hint-label" style="color:var(--wild)">ZADANIE</div>
+                <div class="hint-val" style="font-size:16px; font-weight:600; color:white">${p.wildData.h}</div>
+            </div>
           `;
       } else {
           html = `
@@ -653,11 +759,23 @@ const game = {
     document.getElementById('rev-hint').innerText = "Podpowiedź: " + (this.emojiMode ? this.wordData.e : this.wordData.h);
     const card = document.getElementById('reveal-card'); card.classList.add('flipped');
     document.getElementById('btn-do-reveal').classList.add('hidden');
-    setTimeout(() => { document.getElementById('reveal-details').classList.remove('hidden'); }, 800);
+    setTimeout(() => {
+        document.getElementById('reveal-details').classList.remove('hidden');
+        // Wymuszenie animacji wejścia dla detali
+        document.getElementById('reveal-details').classList.remove('fade-in');
+        void document.getElementById('reveal-details').offsetWidth;
+        document.getElementById('reveal-details').classList.add('fade-in');
+    }, 800);
+  },
+
+  resetBackground: function() {
+      document.getElementById('main-bg').classList.remove('bg-wild-west');
   }
 };
 
 game.initSetup();
+// Dodanie resetu tła przy powrocie do menu po grze
+document.querySelector('#reveal-details .outline').addEventListener('click', () => game.resetBackground());
 </script>
 </body>
 </html>
