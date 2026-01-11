@@ -32,7 +32,7 @@
     position: relative;
   }
 
-  /* --- TŁA --- */
+  /* --- TĹA --- */
   .bg-mesh {
     position: fixed; inset: -50%;
     background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.15), transparent 60%),
@@ -44,7 +44,7 @@
     transform-origin: center;
   }
   
-  /* TŁO WESTERN */
+  /* TĹO WESTERN */
   .bg-mesh.bg-wild-west {
     animation: none;
     inset: 0;
@@ -61,4 +61,692 @@
   }
 
   /* KONFETTI */
-  .co
+  .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .confetti { position: absolute; top: -50px; font-size: 28px; opacity: 0.8; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+  .hidden { display: none !important; }
+   
+  .container {
+    height: 100%; display: flex; flex-direction: column; 
+    padding: env(safe-area-inset-top) 24px calc(20px + env(safe-area-inset-bottom)) 24px;
+    width: 100%; max-width: 500px; margin: 0 auto; overflow-y: auto;
+    position: relative; z-index: 2; scrollbar-width: none;
+    opacity: 0;
+  }
+  .container::-webkit-scrollbar { display: none; }
+
+  /* ANIMACJE */
+  .fade-in { animation: enterScreen 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards; }
+  .fade-out { animation: exitScreen 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) forwards; }
+  @keyframes enterScreen { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes exitScreen { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-20px) scale(0.98); } }
+
+  h1 { 
+    font-size: 42px; font-weight: 900; margin-bottom: 4px; letter-spacing: -1.5px; line-height: 1;
+    background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; color: transparent;
+  }
+  .sub-title { font-size: 13px; color: var(--accent); font-weight: 700; letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase; }
+  label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; display:block; margin-bottom: 10px; margin-top: 24px; }
+
+  .glass-panel { background: var(--glass); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 20px; }
+
+  .btn {
+    width: 100%; padding: 18px; border-radius: 18px; border: none;
+    font-size: 16px; font-weight: 800; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; will-change: transform, filter;
+  }
+  .btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+  .btn:active { transform: scale(0.97) translateY(0); filter: brightness(0.9); }
+  .primary { background: var(--primary); color: white; box-shadow: 0 8px 30px var(--primary-glow); }
+  .danger { background: var(--impostor); color: white; box-shadow: 0 8px 30px var(--impostor-glow); }
+  .wild-btn { background: var(--wild); color: white; box-shadow: 0 8px 30px var(--wild-glow); }
+  .secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
+  .outline { background: transparent; border: 2px solid rgba(255,255,255,0.2); color: var(--text-dim); }
+
+  .input-row { background: rgba(0,0,0,0.3); border-radius: 14px; padding: 6px 16px; display: flex; align-items: center; margin-bottom: 10px; border: 1px solid var(--glass-border); transition: 0.2s; }
+  .input-row:focus-within { border-color: var(--primary); background: rgba(0,0,0,0.5); }
+  .input-row input { background: transparent; border: none; color: white; font-size: 16px; padding: 12px 0; flex: 1; outline: none; font-weight: 600; font-family: inherit; }
+  .del-btn { color: var(--impostor); font-weight: 900; padding: 10px; cursor: pointer; opacity: 0.8; }
+  .add-btn { background: rgba(255,255,255,0.03); border: 2px dashed rgba(255,255,255,0.1); color: var(--text-dim); padding: 14px; border-radius: 14px; text-align: center; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: 0.2s; }
+  .add-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.3); }
+
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
+  .cat-item { background: rgba(30, 41, 59, 0.6); padding: 18px; border-radius: 16px; border: 2px solid transparent; cursor: pointer; text-align: center; transition: 0.2s; }
+  .cat-item.active { border-color: var(--accent); background: rgba(6, 182, 212, 0.15); color: white; box-shadow: 0 0 20px rgba(6, 182, 212, 0.2); }
+  .cat-item:hover { transform: translateY(-3px); }
+  .cat-item.active:hover { transform: translateY(-3px) scale(1.02); }
+  .cat-item.hardcore.active { border-color: var(--impostor); background: rgba(239,68,68,0.2); }
+  .cat-item.rap.active { border-color: #a855f7; background: rgba(168, 85, 247, 0.2); }
+  .cat-name { font-weight: 800; font-size: 13px; }
+  .cat-count { font-size: 10px; color: var(--text-dim); margin-top: 4px; font-weight: 600; }
+  .cat-item.hardcore { border-color: rgba(239,68,68,0.3); } .cat-item.hardcore .cat-name { color: #fca5a5; }
+  .cat-item.rap { border-color: rgba(168, 85, 247, 0.3); } .cat-item.rap .cat-name { color: #d8b4fe; }
+
+  .scene { width: 100%; height: 50vh; min-height: 380px; perspective: 1200px; margin: 20px 0 30px 0; cursor: pointer; }
+  .card { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); transform-style: preserve-3d; will-change: transform; }
+  .card.flipped { transform: rotateY(180deg); }
+  .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(145deg, #1e293b, #0f172a); }
+  .back { background: #020617; transform: rotateY(180deg); border: 2px solid var(--accent); }
+  .back.is-impostor { border-color: var(--impostor); background: radial-gradient(circle at center, #450a0a 0%, #000 100%); }
+  .back.is-wild { border-color: var(--wild); }
+  .back.reveal-mode { border-color: #fbbf24; background: radial-gradient(circle at center, #422006 0%, #020617 100%); }
+
+  .avatar { width: 110px; height: 110px; background: linear-gradient(135deg, var(--primary), #4f46e5); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 900; margin-bottom: 24px; box-shadow: 0 0 40px var(--primary-glow); color: white; }
+  .role-tag { font-size: 11px; letter-spacing: 3px; opacity: 0.7; margin-bottom: 12px; font-weight: 800; text-transform: uppercase; }
+  .big-word { font-size: 40px; font-weight: 900; text-align: center; line-height: 1.1; color: white; margin-bottom: 20px; }
+  .hint-container { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px 25px; border-radius: 18px; text-align: center; width: 100%; }
+  .hint-val { font-size: 24px; font-weight: 800; color: var(--accent); }
+  .is-impostor .hint-val { color: var(--impostor); }
+
+  /* WILD CARD BAR */
+  .wild-bar {
+    margin-top: 20px; width: 100%; padding: 12px; border-radius: 14px;
+    background: rgba(217, 70, 239, 0.15); border: 1px solid var(--wild);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .wild-info-btn {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--wild); color: white;
+    font-weight: 900; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 10px var(--wild-glow);
+  }
+
+  .tap-hint { margin-top: 40px; font-size: 12px; font-weight: 800; opacity: 0.6; animation: pulse 2s infinite; transition: opacity 0.1s; }
+  .card.flipped .tap-hint { opacity: 0 !important; visibility: hidden; animation: none; }
+  .timer { font-size: 110px; font-weight: 900; margin: 30px 0; text-align: center; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
+   
+  .overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; padding: 30px; }
+  .overlay.show { opacity: 1; pointer-events: auto; }
+  .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: rgba(30,41,59,0.6); border-radius: 16px; }
+  .switch { position: relative; width: 52px; height: 30px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; inset: 0; background: #334155; border-radius: 34px; transition: .3s; }
+  .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: .3s; }
+  input:checked + .slider { background: var(--primary); }
+  input:checked + .slider:before { transform: translateX(22px); }
+
+  .remind-grid { width: 100%; max-height: 60vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .remind-btn { text-align: left; padding: 15px; font-size: 16px; justify-content: flex-start; }
+  @keyframes pulse { 0%,100% { opacity:0.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.05); } }
+</style>
+</head>
+<body>
+
+<div class="bg-mesh" id="main-bg"></div>
+<div id="confetti-layer" class="confetti-container"></div>
+
+<div id="v-menu" class="container fade-in" style="justify-content: center; text-align: center;">
+  <h1>IMPOSTOR</h1>
+  <div class="sub-title">by Lisek & Gemini</div>
+  <div style="margin: 40px 0;">
+    <div class="glass-panel" style="padding: 30px; margin-bottom: 10px; border-color: var(--wild);">
+      <span style="font-size:50px">đ¤ </span>
+      <h3 style="margin-top:15px; font-size:24px; font-weight:800; color:white;">WILD WEST</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Dzika Karta widzi hasĹo!</p>
+    </div>
+  </div>
+  <button class="btn primary" onclick="nav.to('v-setup')">ROZPOCZNIJ GRÄ</button>
+</div>
+
+<div id="v-setup" class="container hidden">
+  <h1>Konfiguracja</h1>
+  <div class="sub-title" style="margin-bottom:10px">SkĹad i zasady</div>
+  <label>Gracze</label>
+  <div id="players-list"></div>
+  <div class="add-btn" onclick="game.addPlayer()">+ Dodaj gracza</div>
+  <label>Kategorie</label>
+  <div class="cat-grid" id="cat-grid"></div>
+  <label>Zasady</label>
+   
+  <div class="setting-row">
+    <span style="font-size:14px; font-weight:600; color:#d946ef;">TRYB DZIKA KARTA (MIN. 3)</span>
+    <label class="switch"><input type="checkbox" id="opt-wild"><span class="slider" style="background:#581c87;"></span></label>
+  </div>
+  <div class="setting-row" style="margin-top:10px">
+    <span style="font-size:14px; font-weight:600; color:#fbbf24;">TRYB EMOJI (DLA WSZYSTKICH)</span>
+    <label class="switch"><input type="checkbox" id="opt-emoji-all"><span class="slider"></span></label>
+  </div>
+  <div class="setting-row" style="margin-top:10px">
+    <span style="font-size:14px; font-weight:600">PodpowiedĹş dla Impostera (Std)</span>
+    <label class="switch"><input type="checkbox" id="opt-hint" checked><span class="slider"></span></label>
+  </div>
+  <div class="setting-row" style="margin-top:10px">
+    <span style="font-size:14px; font-weight:600">Czas rundy (sekundy)</span>
+    <input type="number" id="opt-time" value="120" style="width:70px; background:transparent; border:none; color:white; text-align:right; font-size:18px; font-weight:700;">
+  </div>
+  <div style="height: 30px"></div>
+  <button class="btn primary" onclick="game.start()">GRAJ</button>
+</div>
+
+<div id="v-card" class="container hidden" style="justify-content: center;">
+  <div class="scene">
+    <div class="card" id="game-card" onclick="game.flip()">
+      <div class="face front">
+        <div class="role-tag">RUNDA DLA</div>
+        <div class="avatar" id="c-avatar">?</div>
+        <h1 id="c-name" style="color:white; font-size:36px">Gracz</h1>
+        <div class="tap-hint">DOTKNIJ KARTY</div>
+      </div>
+      <div class="face back" id="c-back"></div>
+    </div>
+  </div>
+  <div id="card-controls" class="hidden fade-in">
+    <button class="btn secondary" id="btn-next" onclick="game.next()">PRZEKAĹť DALEJ</button>
+    <button class="btn primary hidden" id="btn-ready" onclick="game.finishDealing()">WSZYSCY GOTOWI</button>
+    <button class="btn outline" style="margin-top:15px; border-color:rgba(239,68,68,0.5); color:#fca5a5; font-size:14px; padding:15px;" onclick="game.cancelRound()">â ANULUJ RUNDÄ</button>
+  </div>
+</div>
+
+<div id="v-starter" class="container hidden" style="text-align:center; justify-content:center;">
+  <div class="role-tag" style="margin-bottom:30px">RUNDÄ ROZPOCZYNA</div>
+  <h1 id="start-name" style="font-size:56px; color:var(--accent); margin-bottom:15px; text-shadow: 0 0 30px rgba(6,182,212,0.4);">NICK</h1>
+  <p style="color:var(--text-dim); font-size:16px">Zadaj pierwsze pytanie.</p>
+  <div style="margin-top:60px; width:100%"><button class="btn primary" onclick="game.startTimer()">START CZASU</button></div>
+</div>
+
+<div id="v-timer" class="container hidden">
+  <div style="margin-top:auto; text-align:center">
+    <div class="role-tag">POZOSTAĹY CZAS</div>
+    <div class="timer" id="timer-disp">00:00</div>
+    <p style="color:var(--text-dim)">Obserwuj mowÄ ciaĹa!</p>
+  </div>
+  <div style="margin-top:auto; margin-bottom:40px">
+    <button class="btn outline" style="margin-bottom:10px; border-color:var(--accent); color:var(--accent);" onclick="game.showRemindMenu()">â PRZYPOMNIJ ROLÄ</button>
+    <button class="btn secondary" onclick="game.pause()">PAUZA / GĹOSOWANIE</button>
+  </div>
+</div>
+
+<div id="overlay" class="overlay">
+  <h1 style="color:white; margin-bottom:10px">PAUZA</h1>
+  <button class="btn primary" style="width:100%; max-width:300px" onclick="game.resume()">WZNĂW ODLICZANIE</button>
+  <button class="btn danger" style="width:100%; max-width:300px" onclick="game.preReveal()">KONIEC I GĹOSOWANIE</button>
+</div>
+
+<div id="overlay-remind" class="overlay">
+  <h2 style="margin-bottom:20px; font-weight:800; color:var(--accent)">WYBIERZ SIEBIE</h2>
+  <div id="remind-list" class="remind-grid"></div>
+  <button class="btn outline" style="margin-top:10px" onclick="game.closeRemind()">ANULUJ</button>
+</div>
+
+<div id="overlay-secret" class="overlay">
+  <h2 style="margin-bottom:20px; color:white">TWOJA ROLA</h2>
+  <div id="secret-content" style="width:100%; margin-bottom:30px"></div>
+  <button class="btn primary" onclick="game.closeSecret()">OK, JUĹť WIEM</button>
+</div>
+
+<div id="overlay-wild-info" class="overlay">
+  <div class="glass-panel" style="padding:30px; text-align:center; max-width:350px; border-color:var(--wild);">
+    <div id="wi-emoji" style="font-size:60px; margin-bottom:10px">đ</div>
+    <h2 id="wi-title" style="color:var(--wild); font-size:32px; font-weight:900; margin-bottom:20px">NAZWA</h2>
+    <p id="wi-desc" style="font-size:18px; line-height:1.5; color:white; margin-bottom:30px">Opis...</p>
+    <button class="btn primary" onclick="document.getElementById('overlay-wild-info').classList.remove('show')">ROZUMIEM</button>
+  </div>
+</div>
+
+<div id="overlay-sniper" class="overlay">
+    <h2 style="margin-bottom:20px; color:var(--impostor)">đŤ WYBIERZ CEL</h2>
+    <p style="margin-bottom:20px; text-align:center; font-size:12px; color:var(--text-dim)">JeĹli trafisz Impostora, wygrywasz.<br>JeĹli trafisz Niewinnego, odpadasz.</p>
+    <div id="sniper-list" class="remind-grid"></div>
+    <button class="btn outline" onclick="document.getElementById('overlay-sniper').classList.remove('show')">ANULUJ</button>
+</div>
+
+<div id="v-reveal" class="container hidden" style="justify-content:center;">
+  <h1 style="text-align:center; margin-bottom:10px">FINAĹ</h1>
+  <div class="scene" style="height:400px">
+    <div class="card" id="reveal-card">
+      <div class="face front" style="border-color: #fbbf24; background: radial-gradient(circle, #422006 0%, #020617 100%);">
+        <div style="font-size:70px">?</div>
+        <div style="margin-top:20px; font-weight:900; color:#fbbf24;">KTO TO?</div>
+      </div>
+      <div class="face back reveal-mode">
+        <div class="role-tag" style="color:#fbbf24">IMPOSTEREM BYĹ</div>
+        <div id="rev-imp-name" style="font-size:48px; font-weight:900; color:white; margin:20px 0; text-shadow: 0 0 30px #fbbf24;">NICK</div>
+        <div id="sniper-msg" style="display:none; color:var(--wild); font-weight:bold; margin-top:10px; font-size:16px;"></div>
+      </div>
+    </div>
+  </div>
+  <button class="btn primary" id="btn-do-reveal" onclick="game.doReveal()">ODKRYJ PRAWDÄ</button>
+  <div id="reveal-details" class="hidden" style="width:100%; text-align:center;">
+    <div class="glass-panel" style="padding:20px; margin-bottom:20px">
+      <div class="role-tag">HASĹO</div>
+      <div id="rev-word" style="font-size:32px; font-weight:900; color:var(--accent)">SĹowo</div>
+      <div id="rev-hint" style="font-size:14px; color:var(--text-dim); margin-top:8px"></div>
+    </div>
+    <button class="btn secondary" onclick="game.start()">GRAJ PONOWNIE</button>
+    <button class="btn outline" onclick="nav.to('v-menu')">MENU</button>
+  </div>
+</div>
+
+<script>
+/* --- POTÄĹťNA BAZA DANYCH (KARNA EDYCJA x2) --- */
+const DB = {
+  "Polskie Rap Hity": [
+    {w:"Szklanki", h:"Young Leosia", e:"đĽ"}, {w:"Kiss Cam", h:"Mata", e:"đ"}, {w:"ZĹote Tarasy", h:"Bedoes", e:"đŹ"}, {w:"Patointeligencja", h:"Mata Liceum", e:"đŤ"}, {w:"Disney", h:"Kizo", e:"đ°"}, {w:"Ostatnia Nadzieja", h:"Sobel", e:"đ"}, {w:"Polskie Tango", h:"Taco", e:"đľđą"}, {w:"Szampan", h:"Sanah", e:"đž"}, {w:"California", h:"White 2115", e:"đ´"}, {w:"Jetlag", h:"Malik", e:"âď¸"}, {w:"Lawenda", h:"Bedoes", e:"đ"}, {w:"Dres", h:"Kizo", e:"đ"}, {w:"BFF", h:"Bambi", e:"đŻââď¸"}, {w:"Taxi", h:"Kizo", e:"đ"}, {w:"Malibu Barbie", h:"Club 2020", e:"đš"}, {w:"Chyba Ĺźe z TobÄ", h:"Modelki", e:"đ"}, {w:"Stan", h:"Sobel", e:"âď¸"}, {w:"PiÄkny Ĺwiat", h:"Gibbs", e:"đ"}, {w:"Bubbletea", h:"Quebo", e:"đ§"}, {w:"100 dni do matury", h:"Mata", e:"đ"}, {w:"Tamagotchi", h:"Taco", e:"đž"}, {w:"JÄzyk ciaĹa", h:"Tymek", e:"đ"}, {w:"Candy", h:"Quebo", e:"đŹ"}, {w:"Szafir", h:"Mata", e:"đ"}, {w:"Molly", h:"ReTo", e:"đ"}, {w:"Ogrody", h:"Kukon", e:"đł"}, {w:"Papuga", h:"Mata", e:"đŚ"}, {w:"Bigos", h:"Kabe", e:"đĽ"}, {w:"Deszcz", h:"Taco", e:"âď¸"}, {w:"Kebab w cienkim", h:"Smolasty", e:"đĽ"}, {w:"Gelato", h:"Kukon", e:"đŚ"}, {w:"Rower", h:"Lech Rocher", e:"đ˛"}, {w:"Pijemy za lepszy czas", h:"Smolasty", e:"đť"}, {w:"Ona by tak chciaĹa", h:"Ronnie Ferrari", e:"đĽ"}, {w:"Eldorado", h:"Bedoes", e:"đ°"}, {w:"SierpieĹ", h:"Oki", e:"đď¸"}, {w:"Modelki", h:"Sobel", e:"đ "}, {w:"Bungee", h:"Gibbs", e:"đŞ˘"}, {w:"Plecak", h:"BiaĹas", e:"đ"}, {w:"Dom", h:"Bitamina", e:"đ "}, {w:"Wiatr", h:"Oki", e:"đ¨"}, {w:"Kawasaki", h:"Ĺťabson", e:"đď¸"}, {w:"Gugu", h:"Szpaku", e:"đś"}, {w:"Trap", h:"White", e:"đ¸ď¸"}, {w:"Audi", h:"ReTo", e:"đ"}, {w:"ZioĹo", h:"Sarius", e:"đż"},
+    /* DODATEK x2 */
+    {w:"Vanilla Sky", h:"Sky", e:"âď¸"}, {w:"International Level", h:"Bedoes", e:"đ"}, {w:"Blueberry", h:"Kizo", e:"đŤ"}, {w:"PĂłĹnoc", h:"Mata", e:"đ"}, {w:"5 Influencerek", h:"Zeamsone", e:"đ¤ł"}, {w:"Jeremy Sochan", h:"Oki", e:"đ"}, {w:"Pornografia", h:"Pro8l3m", e:"đ"}, {w:"Nicea", h:"Pro8l3m", e:"đŤđˇ"}, {w:"Fiji", h:"Taco", e:"đď¸"}, {w:"Marmur", h:"Taco", e:"đ¨"}, {w:"Art-B", h:"Oskar", e:"đ¸"}, {w:"ZadzwoniÄ pĂłĹşniej", h:"Bedoes", e:"đ"}, {w:"Rio", h:"White 2115", e:"đ§đˇ"}, {w:"Morgan", h:"White 2115", e:"đĽ"}, {w:"Ameryka", h:"Kizo", e:"đşđ¸"}, {w:"Avatar", h:"Kizo", e:"đľ"}, {w:"Bandyta", h:"Sobel", e:"đĽˇ"}, {w:"Drobna", h:"Sobel", e:"đ¤"}, {w:"Hustle As Usual", h:"Malik", e:"đź"}, {w:"Jagodzianki", h:"Malik", e:"đŤ"}, {w:"RobiÄ to co chcÄ", h:"Ĺťabson", e:"đ¤ˇ"}, {w:"KsiÄĹźniczki", h:"Ĺťabson", e:"đ"}, {w:"Puzzle", h:"Szpaku", e:"đ§Š"}, {w:"RĂłĹźowa Pantera", h:"Szpaku", e:"đ"}, {w:"Bossman", h:"ReTo", e:"đ˘"}, {w:"Billy Kid", h:"ReTo", e:"đ¤ "}, {w:"Wiking", h:"Sarius", e:"âď¸"}, {w:"MĹody Matczak", h:"Mata", e:"đŚ"}, {w:"La La La", h:"Mata", e:"đś"}, {w:"MC", h:"Mata", e:"đ"}, {w:"Patoreakcja", h:"Mata", e:"đ¤Ź"}, {w:"Lucky Punch", h:"BiaĹas", e:"đĽ"}, {w:"Drill", h:"Alberto", e:"đ ď¸"}, {w:"Dwutakt", h:"Alberto", e:"âšď¸"}
+  ],
+  "Polscy Raperzy": [
+    {w:"Taco Hemingway", h:"WÄs", e:"đ¨đť"}, {w:"Quebonafide", h:"Egzotyka", e:"đşď¸"}, {w:"Mata", h:"Patoreakcja", e:"đ¤Ź"}, {w:"Bedoes", h:"2115", e:"đť"}, {w:"Oki", h:"JeĹźyk", e:"đŚ"}, {w:"Kizo", h:"Kawa", e:"â"}, {w:"Ĺťabson", h:"Ĺťabka", e:"đ¸"}, {w:"Kukon", h:"Ogrody", e:"đš"}, {w:"Szpaku", h:"Simba", e:"đŚ"}, {w:"Pezet", h:"PĹomieĹ", e:"đĽ"}, {w:"SokĂłĹ", h:"Narrator", e:"đ¤"}, {w:"Paluch", h:"BOR", e:"đŚž"}, {w:"Malik Montana", h:"Import", e:"đŚ"}, {w:"White 2115", h:"Ĺajcior", e:"âŞ"}, {w:"Sobel", h:"Impreza", e:"đ"}, {w:"Young Leosia", h:"Hulanki", e:"đ"}, {w:"Bambi", h:"IRL", e:"đŚ"}, {w:"Otsochodzi", h:"Tarcho", e:"đ˘"}, {w:"Gibbs", h:"Dopehouse", e:"đ "}, {w:"Chivas", h:"MĹody", e:"đś"}, {w:"Kaz BaĹagane", h:"Stolica", e:"đ"}, {w:"ReTo", h:"Klapki", e:"đŠ´"}, {w:"Guzior", h:"Mefedron", e:"đ"}, {w:"Sarius", h:"Antihype", e:"đŤ"}, {w:"Paktofonika", h:"Jestem Bogiem", e:"đ"}, {w:"Liroy", h:"Scyzoryk", e:"đŞ"}, {w:"Tede", h:"TVN", e:"đş"}, {w:"O.S.T.R.", h:"Skrzypce", e:"đť"}, {w:"Peja", h:"JeĹźyce", e:"đ˘"}, {w:"Popek", h:"Oczy", e:"đ"}, {w:"Kabe", h:"Francja", e:"đŤđˇ"}, {w:"Alberto", h:"Dwutakt", e:"đ"}, {w:"Smolasty", h:"DuĹźe Oczy", e:"đ"}, {w:"Mr. Polska", h:"Holandia", e:"đłđą"}, {w:"Fifi", h:"WWA", e:"đ"}, {w:"Belmondo", h:"MĹody G", e:"đ§ź"}, {w:"Jan-Rapowanie", h:"KrakĂłw", e:"đĽ¨"}, {w:"KÄKÄ", h:"Radom", e:"đŽ"}, {w:"BiaĹas", h:"SB Maffija", e:"đ"}, {w:"Solar", h:"Fotowoltaika", e:"âď¸"}, {w:"Wac Toja", h:"Kapitan", e:"â"}, {w:"Szamz", h:"GĹos", e:"đŁď¸"}, {w:"Kinny Zimmer", h:"Zuch", e:"âď¸"}, {w:"Fukaj", h:"Szczecin", e:"đ¤"}, {w:"Vkie", h:"KrakĂłw", e:"đĄď¸"},
+    /* DODATEK x2 */
+    {w:"Aleshen", h:"MĹody", e:"đ¸"}, {w:"Zeamsone", h:"5 minut", e:"âąď¸"}, {w:"Asster", h:"Gwiazda", e:"â­"}, {w:"Kronkel Dom", h:"Niemcy", e:"đŠđŞ"}, {w:"Francys", h:"Wyspa", e:"đď¸"}, {w:"Bonson", h:"Pezet", e:"đş"}, {w:"SĹoĹ", h:"Horror", e:"đš"}, {w:"Grubson", h:"Na szczycie", e:"đď¸"}, {w:"Fokus", h:"Smok", e:"đ˛"}, {w:"Rahim", h:"Pakt", e:"đ¤"}, {w:"Magik", h:"Skok", e:"đŞ"}, {w:"Hemp Gru", h:"JLB", e:"đŹ"}, {w:"Molesta", h:"Ewenement", e:"đď¸"}, {w:"Borixon", h:"Alibabki", e:"đśď¸"}, {w:"WĹodi", h:"Chmura", e:"âď¸"}, {w:"Wilku", h:"WDZ", e:"đş"}, {w:"Bilon", h:"HG", e:"đ°"}, {w:"Kaczor", h:"Gracz", e:"đŚ"}, {w:"DonGuralEsko", h:"Betonowe", e:"đł"}, {w:"Shellerini", h:"PDG", e:"đŚ"}, {w:"Miuosh", h:"ĹlÄsk", e:"đ­"}, {w:"Joda", h:"Gwiezdne", e:"đ˝"}, {w:"Avi", h:"Sycylia", e:"đŽđš"}, {w:"Louis Villain", h:"Moyes", e:"đŠ"}, {w:"Pikers", h:"Lo-fi", e:"đŤď¸"}, {w:"MĹody Dron", h:"Lata", e:"đ"}, {w:"Hewra", h:"Dziwne", e:"đĽ´"}, {w:"Schafter", h:"Restaurant", e:"đ˝ď¸"}, {w:"PlanBe", h:"ZĹoty", e:"đĽ"}, {w:"Kartky", h:"CieĹ", e:"đ"}
+  ],
+  "Polski Internet": [
+    {w:"Friz", h:"Ekipa", e:"đŚ"}, {w:"Wersow", h:"Sowa", e:"đŚ"}, {w:"WardÄga", h:"Las", e:"đ˛"}, {w:"Kononowicz", h:"Mleko", e:"đĽ"}, {w:"Stanowski", h:"Zero", e:"0ď¸âŁ"}, {w:"Boxdel", h:"WĹodarz", e:"đ˘"}, {w:"Fagata", h:"Plan", e:"đ"}, {w:"Natsu", h:"PĹatki", e:"đĽŁ"}, {w:"Mata", h:"McDonald", e:"đ"}, {w:"Lewandowski", h:"Barcelona", e:"đŞđ¸"}, {w:"Pudzian", h:"CierpliwoĹÄ", e:"đŞ"}, {w:"Budda", h:"Loteria", e:"đŤ"}, {w:"Goats", h:"Projekt", e:"đ"}, {w:"Linkiewicz", h:"Autobus", e:"đ"}, {w:"Najman", h:"CzÄstochowa", e:"đĽ"}, {w:"Xayoo", h:"Szachy", e:"âď¸"}, {w:"Gimper", h:"Hajsownicy", e:"đľ"}, {w:"Japczan", h:"Gruby", e:"đ"}, {w:"Tromba", h:"WÄĹź", e:"đ"}, {w:"Mlekozyniak", h:"Czapka", e:"đ§˘"}, {w:"KsiÄĹźulo", h:"Muala", e:"đĽ"}, {w:"Dymorfia", h:"SiĹownia", e:"đď¸"}, {w:"Young Multi", h:"Reakcja", e:"đ˛"}, {w:"Pasut", h:"Abstrachuje", e:"đ­"}, {w:"Dubiel", h:"Kenia", e:"đż"}, {w:"Blowek", h:"Minecraft", e:"đŠ"}, {w:"Genzie", h:"Dom", e:"đ "}, {w:"Patec", h:"PodrĂłĹźe", e:"âď¸"}, {w:"Lexy", h:"Chapstick", e:"đ"}, {w:"Mini Majk", h:"Niski", e:"đ"}, {w:"Czaro", h:"Magia", e:"đŞ"}, {w:"Mandzio", h:"Gotowanie", e:"đł"}, {w:"Nitrozyniak", h:"BMW", e:"đ"}, {w:"Rafonix", h:"Tibijka", e:"đŽ"}, {w:"Daniel Magical", h:"KocioĹek", e:"đĽ"}, {w:"Poczciwy Krzychu", h:"Mustang", e:"đ"}, {w:"Wojtek Gola", h:"Biseks", e:"đłď¸âđ"}, {w:"Maja StaĹko", h:"Aktywistka", e:"đ˘"}, {w:"Dziki Trener", h:"Prawda", e:"đŁď¸"}, {w:"FelicjaĹska", h:"Alkohol", e:"đˇ"}, {w:"Kamerzysta", h:"Worek", e:"đ°"}, {w:"Kruszwil", h:"PrestiĹź", e:"đ¤ľ"}, {w:"Stuu", h:"Pingwin", e:"đ§"},
+    /* DODATEK x2 */
+    {w:"Gonciarz", h:"Japonia", e:"đŻđľ"}, {w:"MietczyĹski", h:"Lektury", e:"đ"}, {w:"Klocuch", h:"Kruci", e:"đş"}, {w:"Isamu", h:"Pornhub", e:"đ"}, {w:"J.K. Mikke", h:"Rurkowce", e:"đŚ"}, {w:"Testoviron", h:"Rolex", e:"đ"}, {w:"Bonus BGC", h:"Lufa", e:"đ"}, {w:"Tiger Bonzo", h:"Akat", e:"đď¸"}, {w:"Sowa", h:"Przyjaciele", e:"đŚ"}, {w:"MĹody G", h:"Wanna", e:"đ"}, {w:"Rafatus", h:"Ĺwieca", e:"đŻď¸"}, {w:"Bystrzak", h:"Tajfun", e:"đŞď¸"}, {w:"Medusa", h:"Nos", e:"đ"}, {w:"DeeJayPallaside", h:"Duchy", e:"đť"}, {w:"Rezi", h:"Enduro", e:"đď¸"}, {w:"Stuu", h:"Pandora", e:"đŚ"}, {w:"Gargamel", h:"WyjaĹnianie", e:"đľď¸"}, {w:"Fanggotten", h:"Radio", e:"đť"}, {w:"Niekryty", h:"Krytyk", e:"đ"}, {w:"Cyber Marian", h:"Peruka", e:"đ´"}, {w:"Z Dupy", h:"CzĹowiek", e:"đ"}, {w:"Waksy", h:"SzkoĹa", e:"đŤ"}, {w:"Team X", h:"Dom", e:"â"}, {w:"Natsu World", h:"Projekt", e:"đ"}, {w:"Murcix", h:"Ĺwinka", e:"đˇ"}, {w:"Fusialka", h:"CS", e:"đŤ"}, {w:"Wujek Ĺuki", h:"Manager", e:"đ¨âđź"}, {w:"Poczciwy", h:"Krzychu", e:"đ"}, {w:"Ryskala", h:"Pies", e:"đś"}, {w:"Qesek", h:"TaksĂłwka", e:"đ"}, {w:"Franio", h:"Omegle", e:"đš"}
+  ],
+  "Gry Wideo": [
+    {w:"Minecraft", h:"Klocki", e:"đ§ą"}, {w:"GTA V", h:"KradzieĹź", e:"đŤ"}, {w:"Fortnite", h:"Budowanie", e:"đ¨"}, {w:"League of Legends", h:"ToksycznoĹÄ", e:"â ď¸"}, {w:"CS:GO", h:"Bomba", e:"đŁ"}, {w:"FIFA", h:"PiĹka", e:"â˝"}, {w:"The Witcher 3", h:"Geralt", e:"âď¸"}, {w:"Cyberpunk 2077", h:"Bug", e:"đ¤"}, {w:"Sims", h:"Basen", e:"đ"}, {w:"Among Us", h:"Impostor", e:"ŕś"}, {w:"Roblox", h:"Dzieci", e:"đś"}, {w:"Valorant", h:"Strzelanka", e:"đŻ"}, {w:"Call of Duty", h:"Wojna", e:"đď¸"}, {w:"Mario", h:"Grzyby", e:"đ"}, {w:"Pokemon", h:"Pikachu", e:"âĄ"}, {w:"Assassin's Creed", h:"Kaptur", e:"đĄď¸"}, {w:"God of War", h:"Synu", e:"đŞ"}, {w:"Red Dead Redemption", h:"Kowboj", e:"đ¤ "}, {w:"Tibia", h:"Expienie", e:"đĄď¸"}, {w:"Metin2", h:"Kowal", e:"đ¨"}, {w:"Brawl Stars", h:"Telefon", e:"đą"}, {w:"Need for Speed", h:"WyĹcigi", e:"đď¸"}, {w:"Tomb Raider", h:"Lara", e:"đş"}, {w:"Resident Evil", h:"Zombie", e:"đ§"}, {w:"Dark Souls", h:"ĹmierÄ", e:"â ď¸"}, {w:"Elden Ring", h:"PierĹcieĹ", e:"đ"}, {w:"Rocket League", h:"Samochody", e:"đ"}, {w:"Overwatch", h:"Bohaterowie", e:"đŚ¸"}, {w:"World of Warcraft", h:"Ork", e:"đš"}, {w:"Dota 2", h:"Turniej", e:"đ"}, {w:"Subway Surfers", h:"Metro", e:"đ"}, {w:"Clash Royale", h:"Karty", e:"đ"}, {w:"Candy Crush", h:"Cukierki", e:"đŹ"}, {w:"Tetris", h:"Klocki", e:"đ§ą"}, {w:"Pac-Man", h:"Duchy", e:"đť"}, {w:"Zelda", h:"Link", e:"đ§"}, {w:"Halo", h:"Master Chief", e:"đŤ"},
+    /* DODATEK x2 */
+    {w:"Baldur's Gate 3", h:"MiĹ", e:"đť"}, {w:"Hogwarts Legacy", h:"Czarodziej", e:"đ§"}, {w:"Diablo IV", h:"PiekĹo", e:"đĽ"}, {w:"Starfield", h:"Kosmos", e:"đ"}, {w:"Gothic", h:"Bezi", e:"đĄď¸"}, {w:"Heroes III", h:"PoniedziaĹek", e:"đ°"}, {w:"Fallout", h:"Krypta", e:"â˘ď¸"}, {w:"Skyrim", h:"Smok", e:"đ"}, {w:"Civilization", h:"Gandhi", e:"â˘ď¸"}, {w:"Stardew Valley", h:"Farma", e:"đ§âđž"}, {w:"Terraria", h:"2D", e:"âď¸"}, {w:"Rust", h:"KamieĹ", e:"đŞ¨"}, {w:"Apex Legends", h:"Skok", e:"đŞ"}, {w:"PUBG", h:"Patelnia", e:"đł"}, {w:"Team Fortress 2", h:"Czapki", e:"đŠ"}, {w:"Portal", h:"Ciasto", e:"đ°"}, {w:"Half-Life", h:"Ĺom", e:"đŚ"}, {w:"Doom", h:"Szatan", e:"đż"}, {w:"Animal Crossing", h:"DĹugi", e:"ç¸"}, {w:"Genshin Impact", h:"Anime", e:"đ"}, {w:"Uncharted", h:"Skarb", e:"đ§­"}, {w:"The Last of Us", h:"Grzyb", e:"đ"}, {w:"Spider-Man", h:"SieÄ", e:"đ¸ď¸"}, {w:"Gran Turismo", h:"Licencja", e:"đ"}, {w:"Tekken", h:"Turniej", e:"đĽ"}, {w:"Mortal Kombat", h:"Fatality", e:"đŠ¸"}, {w:"Street Fighter", h:"Hadouken", e:"đ"}, {w:"Worms", h:"Banan", e:"đ"}, {w:"Angry Birds", h:"Proca", e:"đŚ"}, {w:"Flappy Bird", h:"Rura", e:"đ˘"}
+  ],
+  "Marki": [
+    {w:"Apple", h:"JabĹko", e:"đ"}, {w:"Nike", h:"ĹyĹźwa", e:"đ"}, {w:"Adidas", h:"Paski", e:"đ"}, {w:"BMW", h:"Kierunkowskaz", e:"đ"}, {w:"McDonald's", h:"Burger", e:"đ"}, {w:"Coca-Cola", h:"MikoĹaj", e:"đĽ¤"}, {w:"Samsung", h:"Galaxy", e:"đą"}, {w:"IKEA", h:"Klopsiki", e:"đŞ"}, {w:"Mercedes", h:"Gwiazda", e:"â­"}, {w:"Audi", h:"KĂłĹka", e:"â­"}, {w:"Gucci", h:"Pasek", e:"đ"}, {w:"Tesla", h:"PrÄd", e:"đ"}, {w:"Amazon", h:"Paczka", e:"đŚ"}, {w:"Netflix", h:"Serial", e:"đŹ"}, {w:"YouTube", h:"Subskrypcja", e:"âśď¸"}, {w:"Facebook", h:"Twarz", e:"đ"}, {w:"TikTok", h:"TaĹce", e:"đľ"}, {w:"PlayStation", h:"Konsola", e:"đŽ"}, {w:"Xbox", h:"Zielony", e:"â"}, {w:"Lego", h:"BĂłl stopy", e:"đ§ą"}, {w:"Biedronka", h:"Paleta", e:"đ"}, {w:"Lidl", h:"TydzieĹ", e:"đ"}, {w:"Pepsi", h:"Konkurencja", e:"đĽ¤"}, {w:"Zara", h:"Ubrania", e:"đ"}, {w:"H&M", h:"Moda", e:"đ"}, {w:"Louis Vuitton", h:"Torebka", e:"đ"}, {w:"Rolex", h:"Zegarek", e:"â"}, {w:"Dior", h:"Perfumy", e:"đ§´"}, {w:"Puma", h:"Kot", e:"đ"}, {w:"Reebok", h:"Buty", e:"đ"}, {w:"KFC", h:"Kurczak", e:"đ"}, {w:"Burger King", h:"Korona", e:"đ"}, {w:"Starbucks", h:"Kawa", e:"â"}, {w:"Red Bull", h:"SkrzydĹa", e:"đŚ"}, {w:"Monster", h:"Energia", e:"âĄ"}, {w:"Ĺťabka", h:"Hot-dog", e:"đ¸"}, {w:"Orlen", h:"Paliwo", e:"â˝"}, {w:"CCC", h:"Buty", e:"đ "}, {w:"Allegro", h:"Zakupy", e:"đď¸"},
+    /* DODATEK x2 */
+    {w:"Google", h:"Wyszukiwarka", e:"đ"}, {w:"Microsoft", h:"Okna", e:"đŞ"}, {w:"Intel", h:"Procesor", e:"đť"}, {w:"AMD", h:"Ryzen", e:"đ´"}, {w:"Nvidia", h:"Karta", e:"đŠ"}, {w:"Spotify", h:"Muzyka", e:"đ§"}, {w:"Uber", h:"Przejazd", e:"đ"}, {w:"Bolt", h:"Hulajnoga", e:"đ´"}, {w:"Tinder", h:"Randka", e:"đĽ"}, {w:"OnlyFans", h:"Subskrypcja", e:"đ"}, {w:"Discord", h:"Czat", e:"đŹ"}, {w:"Twitch", h:"Stream", e:"đ"}, {w:"Steam", h:"Gry", e:"đŽ"}, {w:"Epic Games", h:"Fortnite", e:"đ"}, {w:"Zalando", h:"Paczka", e:"đŚ"}, {w:"InPost", h:"Paczkomat", e:"đŽ"}, {w:"Reserved", h:"Polska", e:"đ"}, {w:"Cropp", h:"MĹodzieĹź", e:"đ§˘"}, {w:"Sinsay", h:"Tanio", e:"đ"}, {w:"Rossmann", h:"Kosmetyki", e:"đ"}, {w:"Hebe", h:"Drogeria", e:"đ§´"}, {w:"Dino", h:"Polska", e:"đŚ"}, {w:"Kaufland", h:"Niemcy", e:"đ"}, {w:"Carrefour", h:"Francja", e:"đ"}, {w:"Auchan", h:"Ptak", e:"đŚ"}, {w:"Castorama", h:"Budowa", e:"đ¨"}, {w:"Leroy Merlin", h:"Zielony", e:"triangle"}, {w:"Media Expert", h:"WĹÄczamy", e:"đš"}, {w:"RTV Euro AGD", h:"SprzÄt", e:"đş"}, {w:"X-kom", h:"Komputery", e:"đť"}
+  ],
+  "Geografia": [
+    {w:"Polska", h:"Dom", e:"đľđą"}, {w:"Warszawa", h:"Stolica", e:"đď¸"}, {w:"KrakĂłw", h:"Smok", e:"đ"}, {w:"ParyĹź", h:"WieĹźa", e:"đź"}, {w:"Londyn", h:"Big Ben", e:"đ°ď¸"}, {w:"Nowy Jork", h:"Statua", e:"đ˝"}, {w:"Egipt", h:"Piramida", e:"đş"}, {w:"Japonia", h:"Sushi", e:"đŁ"}, {w:"WĹochy", h:"Pizza", e:"đ"}, {w:"Niemcy", h:"SÄsiad", e:"đŠđŞ"}, {w:"Rosja", h:"WĂłdka", e:"đˇđş"}, {w:"Chiny", h:"Mur", e:"đ¨đł"}, {w:"Australia", h:"Kangur", e:"đŚ"}, {w:"Brazylia", h:"KarnawaĹ", e:"đ§đˇ"}, {w:"Tatry", h:"GĂłry", e:"đď¸"}, {w:"BaĹtyk", h:"Morze", e:"đ"}, {w:"WisĹa", h:"Rzeka", e:"đ§"}, {w:"Sahara", h:"Piasek", e:"đď¸"}, {w:"Mount Everest", h:"Szczyt", e:"đď¸"}, {w:"Afryka", h:"Kontynent", e:"đ"}, {w:"Antarktyda", h:"LĂłd", e:"âď¸"}, {w:"Kanada", h:"LiĹÄ", e:"đ"}, {w:"Meksyk", h:"Tacos", e:"đŽ"}, {w:"Hiszpania", h:"Byk", e:"đ"}, {w:"Grecja", h:"Ruiny", e:"đď¸"}, {w:"Turcja", h:"Kebab", e:"đĽ"}, {w:"Indie", h:"Curry", e:"đ"}, {w:"Dubaj", h:"Bogactwo", e:"đď¸"}, {w:"Amazonka", h:"DĹźungla", e:"đ´"}, {w:"Mazury", h:"Jeziora", e:"âľ"}, {w:"Bieszczady", h:"Wilki", e:"đş"}, {w:"Wawel", h:"KrĂłl", e:"đ°"}, {w:"Hawaje", h:"Kwiaty", e:"đş"}, {w:"Islandia", h:"Wulkan", e:"đ"}, {w:"Norwegia", h:"Fiordy", e:"đď¸"},
+    /* DODATEK x2 */
+    {w:"Ukraina", h:"SÄsiad", e:"đşđŚ"}, {w:"Czechy", h:"Piwo", e:"đ¨đż"}, {w:"SĹowacja", h:"GĂłry", e:"đ¸đ°"}, {w:"Szwecja", h:"Ikea", e:"đ¸đŞ"}, {w:"Finlandia", h:"MikoĹaj", e:"đŤđŽ"}, {w:"Dania", h:"Klocki", e:"đŠđ°"}, {w:"Holandia", h:"Tulipany", e:"đłđą"}, {w:"Belgia", h:"Czekolada", e:"đ§đŞ"}, {w:"Szwajcaria", h:"Zegarki", e:"đ¨đ­"}, {w:"Austria", h:"WiedeĹ", e:"đŚđš"}, {w:"WÄgry", h:"Bratanki", e:"đ­đş"}, {w:"Chorwacja", h:"Wakacje", e:"đ­đˇ"}, {w:"Portugalia", h:"Ronaldo", e:"đľđš"}, {w:"Argentyna", h:"Messi", e:"đŚđˇ"}, {w:"Kolumbia", h:"Kawa", e:"đ¨đ´"}, {w:"Peru", h:"Lama", e:"đľđŞ"}, {w:"Chile", h:"Papryka", e:"đ¨đą"}, {w:"Wietnam", h:"Zupa", e:"đťđł"}, {w:"Tajlandia", h:"SĹoĹ", e:"đšđ­"}, {w:"Korea PĹn", h:"Atom", e:"đ°đľ"}, {w:"Korea PĹd", h:"K-pop", e:"đ°đˇ"}, {w:"Nowa Zelandia", h:"Hobbit", e:"đłđż"}, {w:"Madagaskar", h:"Pingwiny", e:"đ˛đŹ"}, {w:"Alaska", h:"Zimno", e:"âď¸"}, {w:"Teksas", h:"Kowboj", e:"đ¤ "}, {w:"Floryda", h:"Aligator", e:"đ"}, {w:"Kalifornia", h:"Hollywood", e:"đŹ"}, {w:"Czarnobyl", h:"Promieniowanie", e:"â˘ď¸"}, {w:"TrĂłjkÄt Bermudzki", h:"ZaginiÄcia", e:"â ď¸"}, {w:"Atlantyda", h:"Zatopiona", e:"đ"}
+  ],
+  "Sportowcy": [
+    {w:"Lewandowski", h:"Gol", e:"â˝"}, {w:"Messi", h:"Argentyna", e:"đ"}, {w:"Ronaldo", h:"Siuuu", e:"đââď¸"}, {w:"MaĹysz", h:"Skoki", e:"đż"}, {w:"Stoch", h:"Kamil", e:"âˇď¸"}, {w:"Iga ĹwiÄtek", h:"Tenis", e:"đž"}, {w:"Pudzianowski", h:"SiĹacz", e:"đŞ"}, {w:"BĹachowicz", h:"MMA", e:"đĽ"}, {w:"Tyson", h:"Boks", e:"đĽ"}, {w:"Jordan", h:"Kosz", e:"đ"}, {w:"Kubica", h:"F1", e:"đď¸"}, {w:"Zmarzlik", h:"ĹťuĹźel", e:"đď¸"}, {w:"Usain Bolt", h:"Bieg", e:"đ"}, {w:"Phelps", h:"Basen", e:"đ"}, {w:"Schumacher", h:"Ferrari", e:"đď¸"}, {w:"SzczÄsny", h:"Bramkarz", e:"đ§¤"}, {w:"Gortat", h:"NBA", e:"đ"}, {w:"BĹaszczykowski", h:"WisĹa", e:"â˝"}, {w:"Hurkacz", h:"Serwis", e:"đž"}, {w:"Sochan", h:"WĹosy", e:"đ¨"}, {w:"Neymar", h:"Fryzura", e:"đââď¸"}, {w:"Mbappe", h:"ĹťĂłĹw", e:"đ˘"}, {w:"Haaland", h:"Robot", e:"đ¤"}, {w:"Djokovic", h:"Rakietka", e:"đž"}, {w:"Lebron James", h:"KrĂłl", e:"đ"}, {w:"Curry", h:"TrĂłjka", e:"3ď¸âŁ"}, {w:"McGregor", h:"Showman", e:"đŽđŞ"}, {w:"Khabib", h:"OrzeĹ", e:"đŚ"}, {w:"Zidane", h:"GĹĂłwka", e:"đŁď¸"}, {w:"Maradona", h:"RÄka Boga", e:"đď¸"}, {w:"Pele", h:"KrĂłl", e:"đ¤´"}, {w:"RadwaĹska", h:"KrakĂłw", e:"đž"}, {w:"GoĹota", h:"Ucieczka", e:"đ"},
+    /* DODATEK x2 */
+    {w:"Ĺwiderski", h:"SiatkĂłwka", e:"đ"}, {w:"Kurek", h:"Atak", e:"đ"}, {w:"Leon", h:"Serwis", e:"đ"}, {w:"JÄdrzejczyk", h:"UFC", e:"đĽ"}, {w:"Gamrot", h:"Zapasy", e:"đ¤ź"}, {w:"Milik", h:"SĹupek", e:"â˝"}, {w:"ZieliĹski", h:"Neapol", e:"â˝"}, {w:"Grosicki", h:"Turbo", e:"đď¸"}, {w:"Kiwior", h:"Arsenal", e:"đĄď¸"}, {w:"Verstappen", h:"Red Bull", e:"đď¸"}, {w:"Hamilton", h:"Mercedes", e:"đď¸"}, {w:"Alonso", h:"Hiszpan", e:"đŞđ¸"}, {w:"Federer", h:"Szwajcar", e:"đ¨đ­"}, {w:"Nadal", h:"MÄczka", e:"đž"}, {w:"Williams", h:"Siostry", e:"đž"}, {w:"Woods", h:"Golf", e:"âł"}, {w:"Ali", h:"Motyl", e:"đŚ"}, {w:"Fury", h:"Cygan", e:"đĽ"}, {w:"Joshua", h:"Anglia", e:"đŹđ§"}, {w:"Doncic", h:"SĹowenia", e:"đ¸đŽ"}, {w:"Jokic", h:"Joker", e:"đ"}, {w:"Antetokounmpo", h:"Grek", e:"đŹđˇ"}, {w:"Wembanyama", h:"Wysoki", e:"đŚ"}, {w:"WĹodarczyk", h:"MĹot", e:"đ¨"}, {w:"Lisek", h:"Tyczka", e:"đĽ"}, {w:"Majka", h:"Rower", e:"đ˛"}, {w:"Kwiatkowski", h:"Mistrz", e:"đ"}, {w:"Dudek", h:"Dance", e:"đş"}, {w:"Boniek", h:"PZPN", e:"đ"}
+  ],
+  "Hardcore": [
+    {w:"Inflacja", h:"DroĹźyzna", e:"đ¸"}, {w:"Synestezja", h:"ZmysĹy", e:"đ¨"}, {w:"Paradoks", h:"SprzecznoĹÄ", e:"đ"}, {w:"Altruizm", h:"Pomoc", e:"đ¤"}, {w:"Nostalgia", h:"Wspomnienie", e:"đď¸"}, {w:"Karma", h:"PowrĂłt", e:"âťď¸"}, {w:"Ego", h:"Ja", e:"đ"}, {w:"Metafora", h:"PrzenoĹnia", e:"đ"}, {w:"Ironia", h:"Los", e:"đ"}, {w:"Deja vu", h:"PowtĂłrka", e:"đľâđŤ"}, {w:"Placebo", h:"Cukier", e:"đŹ"}, {w:"Stereotyp", h:"Schemat", e:"đŚ"}, {w:"Abstrakcja", h:"Sztuka", e:"đźď¸"}, {w:"Chaos", h:"BaĹagan", e:"đ"}, {w:"Utopia", h:"Idea", e:"đ°"}, {w:"Nihilizm", h:"Nic", e:"âŤ"}, {w:"Prokrastynacja", h:"Zwlekanie", e:"âł"}, {w:"Empatia", h:"WspĂłĹczucie", e:"â¤ď¸"}, {w:"Euforia", h:"RadoĹÄ", e:"đ¤Š"}, {w:"Introwertyk", h:"WnÄtrze", e:"đś"}, {w:"Relatywizm", h:"Punkt widzenia", e:"đ"}, {w:"Hipokryzja", h:"FaĹsz", e:"đ­"}, {w:"Melancholia", h:"Smutek", e:"đ"}, {w:"Sarkazm", h:"Ĺťart", e:"đ"}, {w:"Charyzma", h:"Urok", e:"â¨"}, {w:"Dedukcja", h:"Sherlock", e:"đľď¸"}, {w:"Intuicja", h:"Przeczucie", e:"đŽ"}, {w:"Ksenofobia", h:"Obcy", e:"đ˝"}, {w:"Mizantropia", h:"Ludzie", e:"đââď¸"}, {w:"Hedonizm", h:"PrzyjemnoĹÄ", e:"đĽł"}, {w:"Stoicyzm", h:"SpokĂłj", e:"đż"}, {w:"Plagiat", h:"KradzieĹź", e:"đ"}, {w:"Cenzura", h:"Zakaz", e:"đ"}, {w:"Demagogia", h:"Manipulacja", e:"đŁď¸"}, {w:"Eufemizm", h:"Ĺagodzenie", e:"đŹ"}, {w:"Surrealizm", h:"Sen", e:"đŤ "}, {w:"Awangarda", h:"NowoĹÄ", e:"đ"}, {w:"Ekstrawertyk", h:"Towarzyski", e:"đ˘"},
+    /* DODATEK x2 */
+    {w:"Schizofrenia", h:"GĹosy", e:"đŁď¸"}, {w:"Depresja", h:"Smutek", e:"đ"}, {w:"Narcyzm", h:"Lustro", e:"đŞ"}, {w:"Psychopata", h:"Emocje", e:"đŞ"}, {w:"Socjopata", h:"SpoĹeczeĹstwo", e:"đď¸"}, {w:"Autyzm", h:"Spektrum", e:"đ"}, {w:"Paranoja", h:"Strach", e:"đ"}, {w:"Teoria Spiskowa", h:"Folia", e:"đ˝"}, {w:"Mandela Effect", h:"PamiÄÄ", e:"đ§ "}, {w:"Efekt Motyla", h:"Zmiana", e:"đŚ"}, {w:"Kot SchrĂśdingera", h:"PudeĹko", e:"đŚ"}, {w:"Brzytwa Ockhama", h:"Prostota", e:"đŞ"}, {w:"Prawo Murphy'ego", h:"Pech", e:"đ"}, {w:"Sztuczna Inteligencja", h:"Robot", e:"đ¤"}, {w:"Blockchain", h:"Krypto", e:"đ"}, {w:"NFT", h:"MaĹpa", e:"đźď¸"}, {w:"Metaverse", h:"VR", e:"đĽ˝"}, {w:"Globalne Ocieplenie", h:"Klimat", e:"đĄď¸"}, {w:"Feminizm", h:"Prawa", e:"âď¸"}, {w:"Patriarchat", h:"Ojciec", e:"đ§"}, {w:"Woke", h:"ĹwiadomoĹÄ", e:"đď¸"}, {w:"Cancel Culture", h:"Kasowanie", e:"â"}, {w:"FOMO", h:"Strach", e:"đą"}, {w:"Gaslighting", h:"Manipulacja", e:"đĽ"}, {w:"Love bombing", h:"MiĹoĹÄ", e:"đŁ"}, {w:"Red flag", h:"OstrzeĹźenie", e:"đŠ"}, {w:"Friendzone", h:"PrzyjaĹşĹ", e:"đ"}, {w:"Ghosting", h:"Duch", e:"đť"}, {w:"Simp", h:"Atencja", e:"đĽş"}, {w:"Incel", h:"SamotnoĹÄ", e:"đŤ"}
+  ],
+  "Filmy & Seriale": [
+    {w:"Shrek", h:"Cebula", e:"đ§"}, {w:"Titanic", h:"GĂłra", e:"đ§"}, {w:"Harry Potter", h:"Blizna", e:"âĄ"}, {w:"Matrix", h:"PiguĹka", e:"đ"}, {w:"Batman", h:"Sierota", e:"đŚ"}, {w:"Joker", h:"Ĺmiech", e:"đ¤Ą"}, {w:"Spider-Man", h:"Ugryzienie", e:"đˇď¸"}, {w:"KrĂłl Lew", h:"Sawanna", e:"đŚ"}, {w:"Kevin", h:"ZĹodzieje", e:"đ "}, {w:"WiedĹşmin", h:"Miecze", e:"âď¸"}, {w:"James Bond", h:"007", e:"đŤ"}, {w:"Minionki", h:"Banan", e:"đ"}, {w:"Star Wars", h:"Miecz", e:"đ"}, {w:"WĹadca PierĹcieni", h:"PierĹcieĹ", e:"đ"}, {w:"Avengers", h:"RÄkawica", e:"đŚ¸"}, {w:"Piraci z KaraibĂłw", h:"PerĹa", e:"đ´ââ ď¸"}, {w:"Szybcy i WĹciekli", h:"Rodzina", e:"đ"}, {w:"Barbie", h:"RĂłĹź", e:"đ"}, {w:"Oppenheimer", h:"Bomba", e:"đŁ"}, {w:"Stranger Things", h:"Nos", e:"đŠ¸"}, {w:"Wednesday", h:"Taniec", e:"đť"}, {w:"Squid Game", h:"Lalka", e:"đŚ"}, {w:"Breaking Bad", h:"KrysztaĹ", e:"âď¸"}, {w:"Gra o Tron", h:"Smok", e:"đ"}, {w:"Kiler", h:"Szakal", e:"đŤ"}, {w:"ChĹopaki nie pĹaczÄ", h:"Bunkier", e:"đˇ"}, {w:"DzieĹ Ĺwira", h:"AdaĹ", e:"đ"}, {w:"Dom z Papieru", h:"Maska", e:"đ°"}, {w:"Rick i Morty", h:"OgĂłrek", e:"đĽ"}, {w:"Ojciec Chrzestny", h:"Propozycja", e:"đš"}, {w:"Incepcja", h:"Sen", e:"đ"}, {w:"Interstellar", h:"Kosmos", e:"đ"}, {w:"Wielki Gatsby", h:"Impreza", e:"đĽ"}, {w:"Wilk z Wall Street", h:"PieniÄdze", e:"đ¸"}, {w:"Forrest Gump", h:"Bieg", e:"đ"}, {w:"Gladiator", h:"Rzym", e:"âď¸"}, {w:"Avatar", h:"Niebieski", e:"đľ"}, {w:"Ranczo", h:"WĂłjt", e:"đď¸"}, {w:"Ĺwiat wedĹug Kiepskich", h:"Mocny Full", e:"đş"},
+    /* DODATEK x2 */
+    {w:"Diuna", h:"Piasek", e:"đ"}, {w:"Top Gun", h:"Samolot", e:"âď¸"}, {w:"Indiana Jones", h:"Bicz", e:"đ¤ "}, {w:"Rocky", h:"Schody", e:"đĽ"}, {w:"Rambo", h:"Opaska", e:"đŤ"}, {w:"Terminator", h:"Robot", e:"đ¤"}, {w:"Obcy", h:"Kosmos", e:"đ˝"}, {w:"SzczÄki", h:"Rekin", e:"đŚ"}, {w:"Park Jurajski", h:"Dinozaur", e:"đŚ"}, {w:"PowrĂłt do przyszĹoĹci", h:"SamochĂłd", e:"đ"}, {w:"Toy Story", h:"Zabawki", e:"đ§¸"}, {w:"Kraina Lodu", h:"LĂłd", e:"âď¸"}, {w:"Mulan", h:"Chiny", e:"đ˛"}, {w:"Pocahontas", h:"Kolory", e:"đ"}, {w:"Aladyn", h:"Dywan", e:"đ§"}, {w:"Simpsonowie", h:"ĹťĂłĹci", e:"đŠ"}, {w:"Family Guy", h:"Pies", e:"đś"}, {w:"South Park", h:"Kenny", e:"đ"}, {w:"Biuro", h:"Papier", e:"đ"}, {w:"Przyjaciele", h:"Kawiarnia", e:"â"}, {w:"Teoria Wielkiego Podrywu", h:"Fizyka", e:"âď¸"}, {w:"Jak poznaĹem waszÄ matkÄ", h:"Parasol", e:"âď¸"}, {w:"Wikingowie", h:"TopĂłr", e:"đŞ"}, {w:"Peaky Blinders", h:"Czapki", e:"đ§˘"}, {w:"The Crown", h:"KrĂłlowa", e:"đ"}, {w:"Czarnobyl", h:"Elektrownia", e:"đ­"}, {w:"Black Mirror", h:"Technologia", e:"đŞ"}, {w:"Narcos", h:"Kolumbia", e:"đ¨đ´"}, {w:"1670", h:"Szlachta", e:"đŚ"}, {w:"Znachor", h:"Operacja", e:"đŠş"}
+  ],
+  "Miejsca": [
+    {w:"WiÄzienie", h:"Gryps", e:"đ"}, {w:"Szpital", h:"NFZ", e:"đĽ"}, {w:"KoĹciĂłĹ", h:"Taca", e:"âŞ"}, {w:"Lotnisko", h:"Odprawa", e:"âď¸"}, {w:"PlaĹźa", h:"Parawan", e:"đď¸"}, {w:"Las", h:"Kleszcz", e:"đ˛"}, {w:"SiĹownia", h:"Karnet", e:"đď¸"}, {w:"Kino", h:"Repertuar", e:"đż"}, {w:"SzkoĹa", h:"Dzwonek", e:"đŤ"}, {w:"Cmentarz", h:"Znicz", e:"đŞŚ"}, {w:"ZOO", h:"Klatka", e:"đŚ"}, {w:"Apteka", h:"Recepta", e:"đ"}, {w:"Biblioteka", h:"Cisza", e:"đ"}, {w:"Basen", h:"Chlor", e:"đ"}, {w:"Stacja Paliw", h:"Hot-dog", e:"â˝"}, {w:"Poczta", h:"Awizo", e:"đŽ"}, {w:"SÄd", h:"Wyrok", e:"âď¸"}, {w:"Teatr", h:"Kurtyna", e:"đ­"}, {w:"Kasyno", h:"Ruletka", e:"đ°"}, {w:"Burdel", h:"Czerwony", e:"đ"}, {w:"Cyrk", h:"Klaun", e:"đŞ"}, {w:"Sauna", h:"RÄcznik", e:"đ§"}, {w:"Fryzjer", h:"StrzyĹźenie", e:"đ"}, {w:"Bar", h:"Piwo", e:"đş"}, {w:"Stadion", h:"Mecz", e:"đď¸"}, {w:"Muzeum", h:"Obraz", e:"đźď¸"}, {w:"Piekarnia", h:"Chleb", e:"đĽ"}, {w:"Warzywniak", h:"Ziemniaki", e:"đĽ"}, {w:"Biuro", h:"Praca", e:"đź"}, {w:"Hotel", h:"Recepcja", e:"đ¨"}, {w:"Dworzec", h:"PociÄg", e:"đ"}, {w:"Park", h:"Ĺawka", e:"đł"}, {w:"Plac Zabaw", h:"HuĹtawka", e:"đ "}, {w:"Winda", h:"Guzik", e:"đ"}, {w:"Piwnica", h:"SĹoiki", e:"đĽ"}, {w:"Strych", h:"Kurz", e:"đ¸ď¸"},
+    /* DODATEK x2 */
+    {w:"Toaleta", h:"Papier", e:"đ˝"}, {w:"Kuchnia", h:"Gotowanie", e:"đł"}, {w:"Sypialnia", h:"Sen", e:"đď¸"}, {w:"Balkon", h:"Papieros", e:"đŹ"}, {w:"GaraĹź", h:"SamochĂłd", e:"đ§"}, {w:"OgrĂłd", h:"Kwiaty", e:"đť"}, {w:"Bunkier", h:"Wojna", e:"đĄď¸"}, {w:"Statek", h:"Morze", e:"đ˘"}, {w:"Samolot", h:"Niebo", e:"âď¸"}, {w:"PociÄg", h:"Tory", e:"đ"}, {w:"Autobus", h:"Bilet", e:"đ"}, {w:"Metro", h:"Podziemia", e:"đ"}, {w:"Tramwaj", h:"Szyny", e:"đ"}, {w:"TaksĂłwka", h:"Licznik", e:"đ"}, {w:"Jaskinia", h:"Nietoperz", e:"đŚ"}, {w:"Pustynia", h:"Piasek", e:"đď¸"}, {w:"DĹźungla", h:"Liany", e:"đ´"}, {w:"Wulkan", h:"Lawa", e:"đ"}, {w:"Wodospad", h:"Woda", e:"đ§"}, {w:"Lodowiec", h:"Zimno", e:"đ§"}, {w:"Wyspa", h:"Palma", e:"đď¸"}, {w:"Farma", h:"ZwierzÄta", e:"đ"}, {w:"MĹyn", h:"MÄka", e:"đŹď¸"}, {w:"Latarnia", h:"ĹwiatĹo", e:"đĄ"}, {w:"Zamek", h:"KrĂłl", e:"đ°"}, {w:"PaĹac", h:"KsiÄĹźniczka", e:"đ¸"}, {w:"WieĹźowiec", h:"Windy", e:"đď¸"}, {w:"Laboratorium", h:"Nauka", e:"đ§Ş"}, {w:"Warsztat", h:"Naprawa", e:"đ ď¸"}, {w:"Sklep", h:"Zakupy", e:"đ"}
+  ],
+  "Przedmioty": [
+    {w:"Telefon", h:"Ĺadowarka", e:"đą"}, {w:"Lustro", h:"Odbicie", e:"đŞ"}, {w:"Zegar", h:"Czas", e:"â°"}, {w:"Portfel", h:"Grosz", e:"đ"}, {w:"Pilot", h:"Baterie", e:"đş"}, {w:"Parasol", h:"Deszcz", e:"âď¸"}, {w:"Laptop", h:"Myszka", e:"đť"}, {w:"LodĂłwka", h:"Szron", e:"đ§"}, {w:"DĹugopis", h:"WkĹad", e:"đď¸"}, {w:"Papier toaletowy", h:"Rolka", e:"đ§ť"}, {w:"Klucze", h:"Brelok", e:"đ"}, {w:"Okulary", h:"SzkĹa", e:"đ"}, {w:"Buty", h:"SznurowadĹa", e:"đ"}, {w:"Plecak", h:"Zamek", e:"đ"}, {w:"KrzesĹo", h:"Oparcie", e:"đŞ"}, {w:"Widelec", h:"ZÄby", e:"đ´"}, {w:"Szczoteczka", h:"Pasta", e:"đŞĽ"}, {w:"GÄbka", h:"Piana", e:"đ§˝"}, {w:"GrzebieĹ", h:"WĹosy", e:"đ"}, {w:"SĹuchawki", h:"Muzyka", e:"đ§"}, {w:"ĹĂłĹźko", h:"KoĹdra", e:"đď¸"}, {w:"Dywan", h:"PodĹoga", e:"đ§ś"}, {w:"Lampa", h:"ĹťarĂłwka", e:"đĄ"}, {w:"RÄcznik", h:"Woda", e:"đ§"}, {w:"MydĹo", h:"Kostka", e:"đ§ź"}, {w:"Skarpetki", h:"Dziura", e:"đ§Ś"}, {w:"Czapka", h:"Zima", e:"đ§˘"}, {w:"Talerz", h:"Obiad", e:"đ˝ď¸"}, {w:"Kubek", h:"Ucho", e:"â"}, {w:"NoĹźyczki", h:"CiÄcie", e:"âď¸"}, {w:"Kalkulator", h:"Liczenie", e:"đ§Ž"}, {w:"GĹoĹnik", h:"Bas", e:"đ"}, {w:"Karta", h:"Bankomat", e:"đł"}, {w:"Zapalniczka", h:"OgieĹ", e:"đĽ"}, {w:"Ĺwieczka", h:"Wosk", e:"đŻď¸"}, {w:"MiotĹa", h:"Zamiatanie", e:"đ§š"}, {w:"Odkurzacz", h:"Worek", e:"đ"}, {w:"Pralka", h:"Wirowanie", e:"đ§ş"},
+    /* DODATEK x2 */
+    {w:"Ĺťelazko", h:"Prasowanie", e:"â¨ď¸"}, {w:"Suszarka", h:"WĹosy", e:"đ¨"}, {w:"MikrofalĂłwka", h:"Podgrzewanie", e:"đż"}, {w:"Czajnik", h:"WrzÄtek", e:"đŤ"}, {w:"Toster", h:"Grzanki", e:"đ"}, {w:"Mikser", h:"Ciasto", e:"đĽŁ"}, {w:"Patelnia", h:"Jajecznica", e:"đł"}, {w:"Garnek", h:"Zupa", e:"đ˛"}, {w:"Deska", h:"Krojenie", e:"đŞľ"}, {w:"NĂłĹź", h:"Ostrze", e:"đŞ"}, {w:"ĹyĹźka", h:"Zupa", e:"đĽ"}, {w:"Wiertarka", h:"Dziura", e:"đŤ"}, {w:"MĹotek", h:"GwoĹşdzie", e:"đ¨"}, {w:"ĹrubokrÄt", h:"Ĺruba", e:"đŞ"}, {w:"PiĹa", h:"Drewno", e:"đŞ"}, {w:"Drabina", h:"WysokoĹÄ", e:"đŞ"}, {w:"GaĹnica", h:"PoĹźar", e:"đ§Ż"}, {w:"Apteczka", h:"Leki", e:"đŠš"}, {w:"Latarka", h:"CiemnoĹÄ", e:"đŚ"}, {w:"Bateria", h:"Plus", e:"đ"}, {w:"Pendrive", h:"Dane", e:"đž"}, {w:"Drukarka", h:"Tusz", e:"đ¨ď¸"}, {w:"Monitor", h:"Ekran", e:"đĽď¸"}, {w:"Klawiatura", h:"Pisanie", e:"â¨ď¸"}, {w:"Myszka", h:"Klikanie", e:"đąď¸"}, {w:"Kamera", h:"Nagrywanie", e:"đš"}, {w:"Mikrofon", h:"GĹos", e:"đ¤"}, {w:"Gitara", h:"Struny", e:"đ¸"}, {w:"Pianino", h:"Klawisze", e:"đš"}, {w:"BÄben", h:"Rytm", e:"đĽ"}
+  ],
+  "Jedzenie": [
+    {w:"Pizza", h:"Ciasto", e:"đ"}, {w:"Sushi", h:"Surowe", e:"đŁ"}, {w:"Kebab", h:"Baranina", e:"đĽ"}, {w:"RosĂłĹ", h:"Niedziela", e:"đ˛"}, {w:"Schabowy", h:"Panierka", e:"đĽŠ"}, {w:"Lody", h:"GaĹka", e:"đŚ"}, {w:"Pierogi", h:"Farsz", e:"đĽ"}, {w:"Bigos", h:"Kapusta", e:"đĽ"}, {w:"PÄczek", h:"Lukier", e:"đŠ"}, {w:"Spaghetti", h:"Nitki", e:"đ"}, {w:"Burger", h:"BuĹka", e:"đ"}, {w:"Frytki", h:"Ketchup", e:"đ"}, {w:"Jajecznica", h:"Ĺniadanie", e:"đł"}, {w:"Kanapka", h:"MasĹo", e:"đĽŞ"}, {w:"Zupa", h:"ĹyĹźka", e:"đĽŁ"}, {w:"Czekolada", h:"Kostka", e:"đŤ"}, {w:"Tort", h:"Ĺwieczka", e:"đ"}, {w:"Popcorn", h:"Kukurydza", e:"đż"}, {w:"OgĂłrek", h:"Kiszon", e:"đĽ"}, {w:"Pomidor", h:"Czerwony", e:"đ"}, {w:"Chipsy", h:"Paczka", e:"đĽ"}, {w:"ParĂłwka", h:"MiÄso?", e:"đ­"}, {w:"Ser", h:"Dziury", e:"đ§"}, {w:"Chleb", h:"SkĂłrka", e:"đ"}, {w:"Jajko", h:"ĹťĂłĹtko", e:"đĽ"}, {w:"MasĹo", h:"Smarowanie", e:"đ§"}, {w:"JabĹko", h:"Ogryzek", e:"đ"}, {w:"Banan", h:"SkĂłrka", e:"đ"}, {w:"Woda", h:"Kran", e:"đ°"}, {w:"Cola", h:"BÄbelki", e:"đĽ¤"}, {w:"Herbata", h:"Torebka", e:"đľ"}, {w:"Kawa", h:"Kofeina", e:"â"}, {w:"RyĹź", h:"BiaĹy", e:"đ"}, {w:"Makaron", h:"WĹochy", e:"đ"}, {w:"Sernik", h:"Rodzynki", e:"đ°"}, {w:"Szarlotka", h:"Cynamon", e:"đĽ§"}, {w:"Placki", h:"Ziemniaczane", e:"đĽ"},
+    /* DODATEK x2 */
+    {w:"NaleĹniki", h:"DĹźem", e:"đĽ"}, {w:"Gofry", h:"Bita Ĺmietana", e:"đ§"}, {w:"Tosty", h:"Ser", e:"đ"}, {w:"Owsianka", h:"Mleko", e:"đĽŁ"}, {w:"PĹatki", h:"Ĺniadanie", e:"đĽŁ"}, {w:"Jogurt", h:"Owocowy", e:"đĽ"}, {w:"Kefir", h:"KwaĹny", e:"đĽ"}, {w:"TwarĂłg", h:"BiaĹy", e:"đ§"}, {w:"Szynka", h:"Kanapka", e:"đ"}, {w:"KieĹbasa", h:"Grill", e:"đ­"}, {w:"Boczek", h:"TĹusty", e:"đĽ"}, {w:"Stek", h:"Krwisty", e:"đĽŠ"}, {w:"Kurczak", h:"SkrzydeĹka", e:"đ"}, {w:"Ryba", h:"OĹci", e:"đ"}, {w:"Krewetki", h:"Owoce morza", e:"đŚ"}, {w:"SaĹatka", h:"Warzywa", e:"đĽ"}, {w:"Ziemniaki", h:"Obiad", e:"đĽ"}, {w:"Marchewka", h:"PomaraĹczowa", e:"đĽ"}, {w:"Cebula", h:"PĹacz", e:"đ§"}, {w:"Czosnek", h:"Zapach", e:"đ§"}, {w:"Papryka", h:"Ostra", e:"đśď¸"}, {w:"Pieczarki", h:"Grzyby", e:"đ"}, {w:"Truskawki", h:"Czerwone", e:"đ"}, {w:"Maliny", h:"Krzak", e:"đ"}, {w:"Arbuz", h:"Woda", e:"đ"}, {w:"Cytryna", h:"KwaĹna", e:"đ"}, {w:"PomaraĹcza", h:"Sok", e:"đ"}, {w:"Winogrona", h:"Wino", e:"đ"}, {w:"Gruszka", h:"Zielona", e:"đ"}, {w:"Brzoskwinia", h:"Pestka", e:"đ"}
+  ],
+  "ZwierzÄta": [
+    {w:"Pies", h:"Smycz", e:"đ"}, {w:"Kot", h:"Kuweta", e:"đ"}, {w:"Ĺťyrafa", h:"Szyja", e:"đŚ"}, {w:"Kura", h:"RosĂłĹ", e:"đ"}, {w:"Ĺwinia", h:"Chlew", e:"đ"}, {w:"PszczoĹa", h:"Ul", e:"đ"}, {w:"Komar", h:"Krew", e:"đŚ"}, {w:"Mysz", h:"PuĹapka", e:"đ"}, {w:"WÄĹź", h:"Jad", e:"đ"}, {w:"SĹoĹ", h:"TrÄba", e:"đ"}, {w:"Rekin", h:"PĹetwa", e:"đŚ"}, {w:"Pingwin", h:"Fraku", e:"đ§"}, {w:"MaĹpa", h:"Banan", e:"đ"}, {w:"Krowa", h:"Mleko", e:"đ"}, {w:"KoĹ", h:"SiodĹo", e:"đ"}, {w:"Ryba", h:"Woda", e:"đ"}, {w:"PajÄk", h:"SieÄ", e:"đˇď¸"}, {w:"Wilk", h:"Wataha", e:"đş"}, {w:"NiedĹşwiedĹş", h:"Miodek", e:"đť"}, {w:"Delfin", h:"Ssak", e:"đŹ"}, {w:"Motyl", h:"Kok", e:"đŚ"}, {w:"Ĺťaba", h:"Bocian", e:"đ¸"}, {w:"Lis", h:"Chytry", e:"đŚ"}, {w:"Sowa", h:"Noc", e:"đŚ"}, {w:"Biedronka", h:"Kropki", e:"đ"}, {w:"Ĺlimak", h:"Muszla", e:"đ"}, {w:"JeĹź", h:"IgĹy", e:"đŚ"}, {w:"Chomik", h:"KoĹowrotek", e:"đš"}, {w:"Papuga", h:"Gadanie", e:"đŚ"}, {w:"Zebra", h:"Paski", e:"đŚ"}, {w:"Lew", h:"KrĂłl", e:"đŚ"}, {w:"Tygrys", h:"DĹźungla", e:"đ"}, {w:"WiewiĂłrka", h:"Orzech", e:"đżď¸"}, {w:"Krokodyl", h:"ZÄby", e:"đ"}, {w:"Hipopotam", h:"Gruby", e:"đŚ"}, {w:"WielbĹÄd", h:"Garb", e:"đŞ"}, {w:"Panda", h:"Bambus", e:"đź"},
+    /* DODATEK x2 */
+    {w:"Koala", h:"Eukaliptus", e:"đ¨"}, {w:"Leniwiec", h:"Wolny", e:"đŚĽ"}, {w:"BĂłbr", h:"Tama", e:"đŚŤ"}, {w:"Wydra", h:"Woda", e:"đŚŚ"}, {w:"Szop", h:"Pracz", e:"đŚ"}, {w:"Nietoperz", h:"Wampir", e:"đŚ"}, {w:"Dzik", h:"Las", e:"đ"}, {w:"JeleĹ", h:"Rogi", e:"đŚ"}, {w:"ZajÄc", h:"Szybki", e:"đ"}, {w:"Szczur", h:"Ogon", e:"đ"}, {w:"GoĹÄb", h:"Miasto", e:"đŚ"}, {w:"ĹabÄdĹş", h:"Jezioro", e:"đŚ˘"}, {w:"Kaczka", h:"Kwa", e:"đŚ"}, {w:"OrzeĹ", h:"GodĹo", e:"đŚ"}, {w:"Flaming", h:"RĂłĹźowy", e:"đŚŠ"}, {w:"Paw", h:"Ogon", e:"đŚ"}, {w:"ĹťĂłĹw", h:"Skorupa", e:"đ˘"}, {w:"Jaszczurka", h:"Ogon", e:"đŚ"}, {w:"Kameleon", h:"Kolory", e:"đŚ"}, {w:"Dinozaur", h:"WymarĹy", e:"đŚ"}, {w:"Wieloryb", h:"Ocean", e:"đ"}, {w:"OĹmiornica", h:"Macki", e:"đ"}, {w:"Krab", h:"Szczypce", e:"đŚ"}, {w:"MrĂłwka", h:"Pracowita", e:"đ"}, {w:"Mucha", h:"Bzykanie", e:"đŞ°"}, {w:"Osa", h:"ĹťÄdĹo", e:"đ"}, {w:"GÄsienica", h:"LiĹÄ", e:"đ"}, {w:"Baran", h:"WeĹna", e:"đ"}, {w:"Koza", h:"Broda", e:"đ"}, {w:"OsioĹ", h:"Uparty", e:"đŤ"}
+  ],
+  "WildCards": [
+      {w:"Snajper", h:"MoĹźesz raz strzeliÄ. UĹźyj menu 'Przypomnij rolÄ'. Traf Impostora, by wygraÄ. PudĹo = giniesz.", e:"đŻ", id:"sniper"},
+      {w:"BĹazen", h:"TwĂłj cel: zostaÄ wyrzuconym w gĹosowaniu.", e:"đ¤Ą", id:"jester"},
+      {w:"Niemowa", h:"Nie moĹźesz siÄ odzywaÄ przez pierwszÄ poĹowÄ rundy.", e:"đ¤", id:"mute"},
+      /* ZMIANA: ADWOKAT TERAZ LOSUJE KLIENTA */
+      {w:"Adwokat", h:"Bronisz wylosowanego gracza. Nie moĹźesz pozwoliÄ, by odpadĹ, nawet jeĹli jest Impostorem.", e:"đĄď¸", id:"lawyer"}
+  ]
+};
+
+const nav = {
+  to: (id) => {
+    const current = document.querySelector('.container:not(.hidden)');
+    const next = document.getElementById(id);
+    if (current) {
+      current.classList.remove('fade-in'); current.classList.add('fade-out');
+      setTimeout(() => { current.classList.add('hidden'); current.classList.remove('fade-out'); showNext(); }, 300);
+    } else { showNext(); }
+    function showNext() { next.classList.remove('hidden'); void next.offsetWidth; next.classList.add('fade-in'); }
+  }
+};
+
+function spawnConfetti(emoji) {
+  const container = document.getElementById('confetti-layer');
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.classList.add('confetti'); el.innerText = emoji;
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+    el.style.fontSize = (Math.random() * 20 + 20) + 'px';
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+const game = {
+  players: ["Pizdel", "Brzydal", "Lisek"],
+  impostorHistory: [],
+  currentRoleData: [], wordData: null, hintOn: true, emojiMode: false, wildMode: false, time: 120, timer: null, currIdx: 0,
+  sniperUsed: false,
+
+  addPlayer: function() { this.players.push(""); this.renderPlayers(); },
+  renderPlayers: function() {
+    const el = document.getElementById('players-list'); el.innerHTML = '';
+    this.players.forEach((p, i) => {
+      const div = document.createElement('div'); div.className = 'input-row';
+      div.innerHTML = `<span style="margin-right:10px; font-weight:800; color:var(--text-dim); font-size:12px">${i+1}.</span><input type="text" value="${p}" oninput="game.players[${i}]=this.value" placeholder="Nick">${this.players.length > 3 ? `<div class="del-btn" onclick="game.remPlayer(${i})">â</div>` : ''}`;
+      el.appendChild(div);
+    });
+  },
+  remPlayer: function(i) { if(this.players.length>3){this.players.splice(i,1); this.renderPlayers();} },
+
+  initSetup: function() {
+    this.renderPlayers();
+    const grid = document.getElementById('cat-grid'); grid.innerHTML = '';
+    Object.keys(DB).forEach(k => {
+      if(k === 'WildCards') return;
+      const div = document.createElement('div');
+      let cls = 'cat-item active';
+      if(k === 'Hardcore') cls += ' hardcore';
+      if(k === 'Polskie Rap Hity' || k === 'Polscy Raperzy') cls += ' rap';
+      div.className = cls; 
+      div.innerHTML = `<div class="cat-name">${k}</div><div class="cat-count">${DB[k].length}</div>`;
+      div.onclick = () => div.classList.toggle('active');
+      grid.appendChild(div);
+    });
+  },
+
+  start: function() {
+    const activeCats = Array.from(document.querySelectorAll('.cat-item.active')).map(e => e.querySelector('.cat-name').innerText);
+    if(!activeCats.length) return alert("Wybierz kategoriÄ!");
+    const pList = this.players.filter(p => p.trim());
+    if(pList.length < 3) return alert("Minimum 3 graczy!");
+     
+    this.hintOn = document.getElementById('opt-hint').checked;
+    this.emojiMode = document.getElementById('opt-emoji-all').checked;
+    this.wildMode = document.getElementById('opt-wild').checked;
+    this.time = parseInt(document.getElementById('opt-time').value) || 120;
+    this.sniperUsed = false;
+
+    const bgMesh = document.getElementById('main-bg');
+    if (this.wildMode) bgMesh.classList.add('bg-wild-west'); else bgMesh.classList.remove('bg-wild-west');
+
+    const cat = activeCats[Math.floor(Math.random() * activeCats.length)];
+    const list = DB[cat];
+    const wObj = list[Math.floor(Math.random() * list.length)];
+    this.wordData = { ...wObj, cat: cat };
+
+    let eligible = pList.filter(name => !this.impostorHistory.includes(name));
+    if (eligible.length === 0) { this.impostorHistory = []; eligible = pList; }
+    const impName = eligible[Math.floor(Math.random() * eligible.length)];
+    this.impostorHistory.push(impName);
+
+    let wildName = null, wildCardData = null;
+    if (this.wildMode && pList.length >= 3) {
+        const innocents = pList.filter(name => name !== impName);
+        wildName = innocents[Math.floor(Math.random() * innocents.length)];
+        wildCardData = DB.WildCards[Math.floor(Math.random() * DB.WildCards.length)];
+    }
+
+    this.currentRoleData = pList.map(name => {
+        let pWildData = null;
+        if (name === wildName) {
+            // Klonujemy obiekt, Ĺźeby mĂłc dodaÄ klienta tylko dla tej rundy
+            pWildData = { ...wildCardData };
+            
+            // LOGIKA ADWOKATA: LOSOWANIE KLIENTA
+            if (pWildData.id === 'lawyer') {
+                const potentialClients = pList.filter(n => n !== name); // Wszyscy oprĂłcz adwokata
+                const clientName = potentialClients[Math.floor(Math.random() * potentialClients.length)];
+                pWildData.client = clientName;
+            }
+        }
+        return {
+            name: name,
+            isImp: name === impName,
+            isWild: name === wildName,
+            wildData: pWildData
+        };
+    });
+
+    for (let i = this.currentRoleData.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [this.currentRoleData[i], this.currentRoleData[j]] = [this.currentRoleData[j], this.currentRoleData[i]];
+    }
+
+    this.currIdx = 0;
+    this.setupCard();
+    nav.to('v-card');
+  },
+
+  setupCard: function() {
+    const data = this.currentRoleData[this.currIdx];
+    const back = document.getElementById('c-back');
+    const avatarEl = document.getElementById('c-avatar');
+    
+    document.getElementById('game-card').classList.remove('flipped');
+    back.className = 'face back'; 
+    document.getElementById('c-name').innerText = data.name;
+    document.getElementById('card-controls').classList.add('hidden');
+    
+    avatarEl.innerText = data.name[0].toUpperCase();
+    avatarEl.style.background = '';
+    const n = data.name.toLowerCase();
+    if(n.includes('lisek')) avatarEl.innerText = 'đŚ';
+    else if(n.includes('pizdel')) avatarEl.innerText = 'đ§';
+    else if(n.includes('brzydal')) avatarEl.innerText = 'đ';
+    
+    let html = '';
+    
+    if(data.isImp) {
+      back.classList.add('is-impostor');
+      let hint = this.emojiMode ? this.wordData.e : this.wordData.h;
+      if(!this.hintOn) hint = "Brak";
+      html = `
+        <div class="role-tag" style="color:white">TWOJA ROLA</div>
+        <div class="big-word" style="color:var(--impostor); text-shadow:0 0 20px rgba(239,68,68,0.6)">IMPOSTER</div>
+        <div style="font-size:12px; margin-bottom:10px; opacity:0.7">KATEGORIA: ${this.wordData.cat}</div>
+        <div class="hint-container is-impostor"><div class="hint-label">${this.emojiMode ? 'EMOJI' : 'PODPOWIEDĹš'}</div><div class="hint-val">${hint}</div></div>
+      `;
+    } else {
+        if (data.isWild) back.classList.add('is-wild');
+        html = `
+            <div class="role-tag">TWOJE HASĹO</div>
+            <div class="big-word" style="color:var(--accent)">${this.wordData.w}</div>
+            <div class="hint-container"><div class="hint-label">KATEGORIA</div><div class="hint-val" style="font-size:18px">${this.wordData.cat}</div></div>
+        `;
+        
+        if (data.isWild) {
+            html += `
+            <div class="wild-bar" onclick="game.showWildInfoFromCard(${this.currIdx})">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:24px">${data.wildData.e}</span>
+                    <div style="text-align:left;">
+                        <div style="font-size:10px; color:var(--wild); font-weight:800; letter-spacing:1px">DZIKA KARTA</div>
+                        <div style="font-size:16px; font-weight:700; color:white">${data.wildData.w.toUpperCase()}</div>
+                    </div>
+                </div>
+                <button class="wild-info-btn">?</button>
+            </div>
+            `;
+            
+            // JEĹLI TO ADWOKAT, POKAĹť KLIENTA OD RAZU NA KARCIE
+            if (data.wildData.id === 'lawyer') {
+                 html += `<div style="margin-top:10px; font-size:14px; color:white; font-weight:700; background:rgba(255,255,255,0.1); padding:8px; border-radius:10px;">TWĂJ KLIENT: <span style="color:var(--wild)">${data.wildData.client}</span></div>`;
+            }
+        }
+    }
+    back.innerHTML = html;
+  },
+
+  showWildInfoFromCard: function(idx) {
+      const d = this.currentRoleData[idx].wildData;
+      document.getElementById('wi-emoji').innerText = d.e;
+      document.getElementById('wi-title').innerText = d.w;
+      document.getElementById('wi-desc').innerText = d.h;
+      document.getElementById('overlay-wild-info').classList.add('show');
+      event.stopPropagation();
+  },
+
+  flip: function() {
+    const card = document.getElementById('game-card');
+    if(card.classList.contains('flipped')) return;
+    card.classList.add('flipped');
+    const data = this.currentRoleData[this.currIdx];
+    if(data.isWild) setTimeout(() => spawnConfetti(data.wildData.e), 300);
+    setTimeout(() => {
+      const ctrl = document.getElementById('card-controls');
+      ctrl.classList.remove('hidden'); ctrl.classList.add('fade-in');
+      const isLast = this.currIdx === this.currentRoleData.length - 1;
+      document.getElementById('btn-next').classList.toggle('hidden', isLast);
+      document.getElementById('btn-ready').classList.toggle('hidden', !isLast);
+    }, 400);
+  },
+
+  next: function() {
+    const card = document.getElementById('game-card');
+    document.getElementById('card-controls').classList.remove('fade-in');
+    card.classList.remove('flipped');
+    setTimeout(() => { document.getElementById('c-back').className = 'face back'; }, 150);
+    setTimeout(() => { this.currIdx++; this.setupCard(); }, 600);
+  },
+
+  finishDealing: function() {
+    nav.to('v-starter');
+    document.getElementById('start-name').innerText = this.currentRoleData[Math.floor(Math.random() * this.currentRoleData.length)].name;
+  },
+
+  startTimer: function() {
+    nav.to('v-timer');
+    this.updateTimerDisplay(this.time);
+    if(this.timer) clearInterval(this.timer);
+    this.timer = setInterval(() => {
+      this.time--; this.updateTimerDisplay(this.time);
+      if(this.time <= 0) { clearInterval(this.timer); this.preReveal(); }
+    }, 1000);
+  },
+  updateTimerDisplay: function(t) {
+    const m = Math.floor(t / 60), s = t % 60;
+    document.getElementById('timer-disp').innerText = `${m}:${s<10?'0':''}${s}`;
+  },
+
+  pause: function() { clearInterval(this.timer); document.getElementById('overlay').classList.add('show'); },
+  resume: function() { document.getElementById('overlay').classList.remove('show'); this.startTimer(); },
+  cancelRound: function() { if(confirm("AnulowaÄ?")) { document.getElementById('main-bg').classList.remove('bg-wild-west'); nav.to('v-setup'); } },
+
+  showRemindMenu: function() {
+      const list = document.getElementById('remind-list'); list.innerHTML = '';
+      [...this.currentRoleData].sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
+          const btn = document.createElement('button'); btn.className = 'btn secondary remind-btn';
+          btn.innerText = p.name; btn.onclick = () => game.showSecret(p);
+          list.appendChild(btn);
+      });
+      document.getElementById('overlay-remind').classList.add('show');
+  },
+  closeRemind: function() { document.getElementById('overlay-remind').classList.remove('show'); },
+  
+  showSecret: function(p) {
+      const content = document.getElementById('secret-content');
+      let html = '';
+      if(p.isImp) {
+          html = `<div class="role-tag">TWOJA ROLA</div><h1 style="color:var(--impostor)">IMPOSTOR</h1><div class="hint-container is-impostor"><div class="hint-val">${this.emojiMode?this.wordData.e:this.wordData.h}</div></div>`;
+      } else {
+          html = `<div class="role-tag">TWOJE HASĹO</div><h1 style="color:var(--accent)">${this.wordData.w}</h1><div class="hint-container"><div class="hint-val" style="font-size:16px">${this.wordData.cat}</div></div>`;
+          
+          if(p.isWild) {
+              html += `<div style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
+                <div class="role-tag" style="color:var(--wild)">TWOJA DZIKA KARTA</div>
+                <div style="font-size:24px; color:var(--wild); font-weight:800">${p.wildData.w} ${p.wildData.e}</div>
+                <p style="font-size:14px; margin-top:5px; color:#ccc">${p.wildData.h}</p>
+              </div>`;
+              
+              if (p.wildData.id === 'sniper' && !this.sniperUsed) {
+                  html += `<button class="btn danger" style="margin-top:20px" onclick="game.triggerSniper()">đŤ ODDAJ STRZAĹ</button>`;
+              }
+              // ADWOKAT W MENU SEKRETNYM
+              if (p.wildData.id === 'lawyer') {
+                   html += `<div style="margin-top:15px; background:rgba(217, 70, 239, 0.2); padding:10px; border-radius:10px; border:1px solid var(--wild);">
+                        <div style="font-size:12px; font-weight:800; color:var(--wild)">TWOJE ZADANIE</div>
+                        <div style="color:white; font-size:16px">BROĹ GRACZA: <strong>${p.wildData.client}</strong></div>
+                   </div>`;
+              }
+          }
+      }
+      content.innerHTML = html;
+      document.getElementById('overlay-remind').classList.remove('show');
+      document.getElementById('overlay-secret').classList.add('show');
+  },
+  closeSecret: function() { document.getElementById('overlay-secret').classList.remove('show'); },
+
+  triggerSniper: function() {
+      this.closeSecret();
+      const list = document.getElementById('sniper-list'); list.innerHTML = '';
+      const sniperName = this.currentRoleData.find(p => p.isWild && p.wildData.id === 'sniper').name;
+      this.currentRoleData.forEach(p => {
+          if (p.name === sniperName) return; 
+          const btn = document.createElement('button'); 
+          btn.className = 'btn secondary remind-btn';
+          btn.innerText = `Strzel w: ${p.name}`;
+          btn.onclick = () => {
+              if(confirm(`Na pewno strzeliÄ w gracza ${p.name}?`)) game.handleShot(p);
+          };
+          list.appendChild(btn);
+      });
+      document.getElementById('overlay-sniper').classList.add('show');
+  },
+
+  handleShot: function(target) {
+      document.getElementById('overlay-sniper').classList.remove('show');
+      this.sniperUsed = true;
+      clearInterval(this.timer);
+      document.getElementById('overlay').classList.remove('show');
+      const card = document.getElementById('reveal-card'); 
+      card.classList.remove('flipped');
+      document.getElementById('btn-do-reveal').classList.add('hidden'); 
+      document.getElementById('reveal-details').classList.remove('hidden');
+      const imposter = this.currentRoleData.find(p => p.isImp);
+      const sniper = this.currentRoleData.find(p => p.isWild && p.wildData.id === 'sniper');
+      document.getElementById('rev-imp-name').innerText = imposter.name;
+      document.getElementById('rev-word').innerText = this.wordData.w;
+      document.getElementById('rev-hint').innerText = "Koniec gry przez strzaĹ snajpera!";
+      const msgEl = document.getElementById('sniper-msg');
+      msgEl.style.display = 'block';
+      if (target.isImp) {
+          spawnConfetti('đŻ'); spawnConfetti('đ');
+          msgEl.innerHTML = `SNAJPER (${sniper.name}) TRAFIĹ! <br>IMPOSTOR ZLIKWIDOWANY!`;
+          msgEl.style.color = '#4ade80';
+      } else {
+          msgEl.innerHTML = `SNAJPER (${sniper.name}) SPUDĹOWAĹ! <br>ZSTRZELIĹ NIEWINNEGO (${target.name}) I ODPADA!`;
+          msgEl.style.color = '#ef4444';
+      }
+      nav.to('v-reveal');
+      setTimeout(() => card.classList.add('flipped'), 500);
+  },
+
+  preReveal: function() {
+    clearInterval(this.timer); document.getElementById('overlay').classList.remove('show');
+    document.getElementById('sniper-msg').style.display = 'none';
+    const card = document.getElementById('reveal-card'); card.classList.remove('flipped');
+    document.getElementById('btn-do-reveal').classList.remove('hidden');
+    document.getElementById('reveal-details').classList.add('hidden');
+    nav.to('v-reveal');
+  },
+
+  doReveal: function() {
+    const imposter = this.currentRoleData.find(p => p.isImp);
+    document.getElementById('rev-imp-name').innerText = imposter.name;
+    document.getElementById('rev-word').innerText = this.wordData.w;
+    document.getElementById('rev-hint').innerText = "PodpowiedĹş: " + (this.emojiMode ? this.wordData.e : this.wordData.h);
+    document.getElementById('reveal-card').classList.add('flipped');
+    document.getElementById('btn-do-reveal').classList.add('hidden');
+    setTimeout(() => { 
+        document.getElementById('reveal-details').classList.remove('hidden'); 
+        document.getElementById('reveal-details').classList.remove('fade-in');
+        void document.getElementById('reveal-details').offsetWidth;
+        document.getElementById('reveal-details').classList.add('fade-in');
+    }, 800);
+  }
+};
+
+game.initSetup();
+document.querySelector('#reveal-details .outline').addEventListener('click', () => { document.getElementById('main-bg').classList.remove('bg-wild-west'); });
+</script>
+</body>
+</html>
